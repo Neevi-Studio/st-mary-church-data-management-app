@@ -112,7 +112,6 @@ function LoginPage() {
                 </div>
 
                 <p className="text-slate-600 text-sm font-normal    ">
-                    © NeeviStudio 2025.
                 </p>
             </div>
             <div className="hidden md:flex relative h-full w-1/3">
