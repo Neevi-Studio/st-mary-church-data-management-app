@@ -3,24 +3,13 @@ import DropdownNotification from "./DropdownNotification";
 import DropdownUser from "./DropdownUser";
 import Image from "next/image";
 import { useContext } from "react";
-import { SideBarContext } from "@/components/contexts/SideBarContextContext";
 import { usePathname } from "next/navigation";
+import { SideBarContext } from "@/components/context/SideBarContextContext";
 
 
 const Header = () => {
 
     const { isSideBarOpen, toggled, setToggled, SetSideBar, broken } = useContext(SideBarContext)
-
-    // const pathname = usePathname()
-    // const activeTabName =
-    //     pathname === "/" ? "Dashboard" :
-    //         pathname.includes('banners') ? "Banners" :
-    //             pathname.includes('categoryTypes') ? "Category Types" :
-    //                 pathname.includes('categories') ? "Categories" :
-    //                     pathname.includes('coupons') ? "Coupons" :
-    //                         pathname.includes('packages') ? "Packages" :
-    //                             pathname.includes('stickers') ? "Stickers" :
-    //                                 'Dashboard'
 
     return (
         <header className="sticky top-0 z-10 flex w-full bg-white drop-shadow-1 border-b ">

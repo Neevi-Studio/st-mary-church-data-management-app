@@ -1,4 +1,3 @@
-import { SideBarContext } from '@/components/contexts/SideBarContextContext';
 import Image from 'next/image';
 import Link from 'next/link';
 import React, { useContext } from 'react'
@@ -10,12 +9,12 @@ import { AiFillProfile } from "react-icons/ai";
 import { TbCategoryFilled, TbPackages } from "react-icons/tb";
 import { BiSolidCoupon } from "react-icons/bi";
 import { RiEmojiStickerLine } from "react-icons/ri";
+import { SideBarContext } from '@/components/context/SideBarContextContext';
 
 function SideBar() {
     const { isSideBarOpen, toggled, setToggled, setBroken, SetSideBar, broken } = useContext(SideBarContext)
 
     const pathname = usePathname();
-    const organization = "organization"
 
     const themeColors = {
         sidebar: {

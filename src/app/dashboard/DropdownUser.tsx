@@ -1,20 +1,18 @@
 'use client'
 import { useRouter } from 'next/navigation';
-import { removeCookie } from '../../components/utils/local-storage.util'
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button } from "@nextui-org/react";
-import { useSession } from '@/components/contexts/sessionContext';
-
+import { useAuthContext } from '@/components/context/AuthContext';
+import { useAuth } from '@/components/hooks/useAuth';
+import { apiLogoutUser } from '@/components/utils/HiddenRequests';
 const DropdownUser = () => {
-    const { push } = useRouter()
-    const { user } = useSession()
+    const { userData } = useAuthContext();
 
-    const handleLogout = () => {
-        removeCookie("token");
-        document.cookie = 'loggedIn=false'
-        removeCookie("loggedIn");
-        localStorage.removeItem("authToken");
-        push("/login")
-    };
+    const { clearCookies } = useAuth()
+
+    async function logout() {
+        await apiLogoutUser()
+        clearCookies()
+    }
 
     return (
         <div className="relative">
@@ -22,12 +20,12 @@ const DropdownUser = () => {
                 <DropdownTrigger>
                     <Button variant="light" >
                         <p className="font-semibold" >
-                            {user?.firstname} {user?.lastname}
+                            {userData?.firstname} {userData?.lastname}
                         </p>
                     </Button>
                 </DropdownTrigger>
                 <DropdownMenu aria-label="Static Actions">
-                    <DropdownItem onClick={handleLogout} key="Logout" className="text-danger" color="danger">
+                    <DropdownItem onClick={logout} key="Logout" className="text-danger" color="danger">
                         Logout
                     </DropdownItem>
                 </DropdownMenu>

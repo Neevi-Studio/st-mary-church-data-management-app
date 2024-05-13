@@ -1,58 +1,49 @@
+import { AuthApi, LoginDto } from "@/Api";
+import { AXIOS_CONFIG } from "@/Api/ApiWrapper";
 import { NextRequest, NextResponse } from "next/server";
-import { AuthApi } from "@/Api/apis/auth-api";
-import { AXIOS_CONFIG } from "@/Api/wrapper";
-import { LoginDto } from "@/Api/models";
-import { getErrorResponse } from "@/components/hooks/helpers";
 
-export async function POST(req: NextRequest, res: NextResponse) {
-  try {
-    const data = (await req.json()) as LoginDto;
+export async function POST(req: NextRequest) {
+    try {
+        const data = (await req.json()) as LoginDto;
+        const password = req.headers.get("password") || ""
 
-    // Calling the signin method from AuthApi
-    const result = await new AuthApi(AXIOS_CONFIG).signin(data);
-    const token = result.data.authToken;
+        const result = await new AuthApi(AXIOS_CONFIG).signinToDashboard({ email: data.email, password });
 
-    // Checking if token or userData is missing in the response
-    if (!token || !result.data.userData) {
-      throw new Error("Token or user data not found");
+        const token = result.data.authToken
+        if (!token) throw new Error("Token not found");
+        if (!result.data.userData) throw new Error("User not found");
+
+        const response = new NextResponse(
+            JSON.stringify({
+                status: "success",
+                token,
+            }),
+            {
+                status: 200,
+                headers: { "Content-Type": "application/json" },
+            }
+        );
+
+
+        await Promise.all([
+            response.cookies.set({
+                name: "dashToken",
+                value: token,
+                // httpOnly: true,
+                // path: "/",
+                // secure: process.env.NODE_ENV !== "development",
+                // maxAge: 3600,
+            }),
+            response.cookies.set({
+                name: "dash-logged-in",
+                value: "true",
+                // maxAge: 3600,
+            }),
+
+        ]);
+
+        return response;
+    } catch (error: any) {
+        throw new Error(error);
     }
-
-    // Creating a success response with token
-    const response = new NextResponse(
-      JSON.stringify({
-        status: "success",
-        data: result.data,
-      }),
-      {
-        status: 200,
-        headers: { "Content-Type": "application/json" },
-      }
-    );
-
-    // Setting cookies
-    await Promise.all([
-      response.cookies.set({
-        name: "token",
-        value: token,
-        httpOnly: true,
-        path: "/",
-        secure: process.env.NODE_ENV === "production" ? true : false,
-        maxAge: 3600,
-      }),
-      response.cookies.set({
-        name: "loggedIn",
-        value: "true",
-        httpOnly: true,
-        path: "/",
-        maxAge: 3600,
-        secure: process.env.NODE_ENV === "production" ? true : false,
-      }),
-    ]);
-
-    return response;
-  } catch (error) {
-    console.log(error)
-    // @ts-ignore
-    return getErrorResponse(500, error.response?.data?.message);
-  }
 }

@@ -1,11 +1,8 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
+import { CookiesProvider } from 'next-client-cookies/server';
 import Providers from "@/components/utils/Provider";
-import { cookies } from 'next/headers'
-
-import { usePathname } from "next/navigation";
-import { useRouter } from "next/navigation";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +23,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
+      <CookiesProvider>
         <Providers>
           {children}
         </Providers>
+      </CookiesProvider>
       </body>
     </html>
   );
