@@ -20,6 +20,7 @@ import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } fr
 import { CreateUserDto } from '../models';
 import { GetAllUsersDTO } from '../models';
 import { GetAllUsersType } from '../models';
+import { GetPendingUsers } from '../models';
 import { UpdateUserDto } from '../models';
 import { User } from '../models';
 import { UserStatisticsDto } from '../models';
@@ -113,11 +114,11 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
-         * @param {Array<string>} body 
+         * @param {GetPendingUsers} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        findMatchingUsers: async (body: Array<string>, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        findMatchingUsers: async (body: GetPendingUsers, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling findMatchingUsers.');
@@ -608,11 +609,11 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {Array<string>} body 
+         * @param {GetPendingUsers} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findMatchingUsers(body: Array<string>, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
+        async findMatchingUsers(body: GetPendingUsers, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).findMatchingUsers(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -788,11 +789,11 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
-         * @param {Array<string>} body 
+         * @param {GetPendingUsers} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async findMatchingUsers(body: Array<string>, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
+        async findMatchingUsers(body: GetPendingUsers, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
             return UserApiFp(configuration).findMatchingUsers(body, options).then((request) => request(axios, basePath));
         },
         /**
@@ -923,12 +924,12 @@ export class UserApi extends BaseAPI {
     }
     /**
      * 
-     * @param {Array<string>} body 
+     * @param {GetPendingUsers} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public async findMatchingUsers(body: Array<string>, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
+    public async findMatchingUsers(body: GetPendingUsers, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
         return UserApiFp(this.configuration).findMatchingUsers(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
