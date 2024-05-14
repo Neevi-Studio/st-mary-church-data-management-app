@@ -23,7 +23,7 @@ type Props = {
 };
 
 function SideBarContextContext({ children }: Props) {
-  const [isSideBarOpen, SetSideBar] = useState<boolean>(true);
+  const [isSideBarOpen, SetSideBar] = useState<boolean>(false);
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
 

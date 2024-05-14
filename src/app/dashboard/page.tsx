@@ -1,5 +1,5 @@
 'use client'
-import React, { useContext, useState } from 'react'
+import React, { useContext, useMemo, useState } from 'react'
 // import {
 //     DndContext,
 //     closestCenter,
@@ -16,8 +16,6 @@ import React, { useContext, useState } from 'react'
 //     sortableKeyboardCoordinates,
 //     rectSortingStrategy
 // } from '@dnd-kit/sortable';
-import { useDroppable } from '@dnd-kit/core';
-import { CSS } from '@dnd-kit/utilities';
 import {
     Draggable,
     DraggableOverlay,
@@ -32,16 +30,117 @@ import {
     Modifiers,
 } from '@dnd-kit/core';
 import { Button } from '@nextui-org/react';
+import {
+    MaterialReactTable,
+    useMaterialReactTable,
+    type MRT_ColumnDef
+} from 'material-react-table';
+
+import { MdDeleteForever, MdEditDocument } from 'react-icons/md';
+import { useQuery } from '@tanstack/react-query';
+import { UserApi } from '@/Api';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import { useRouter } from 'next/navigation';
 
 function DashboardMain() {
 
+    const router = useRouter()
 
+    const { data: pendingFamilies } = useQuery({
+        queryKey: ['pendingFamilies'],
+        queryFn: async () => {
+            const res = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+            return res?.data
+        }
+    })
+
+    const columns = useMemo<MRT_ColumnDef<any>[]>(
+        () => [
+            {
+                accessorFn: (row) => `${row?.familyId || ''}`,
+                header: 'Family Id',
+                size: 150
+            },
+            {
+                accessorFn: (row) => `${row?.familyLastName || ''}`,
+                header: 'Family last name',
+                size: 150
+            },
+            {
+                accessorFn: (row) => `${row?.familyAddress || ''}`,
+                header: 'Family address',
+                size: 150
+            },
+        ],
+        []
+    );
+
+
+    const table = useMaterialReactTable({
+        muiTableContainerProps: {
+            sx: { overflow: 'scroll' }
+        },
+        columns,
+        data: pendingFamilies || [],
+        enableColumnFilterModes: true,
+        enableColumnOrdering: true,
+        enableGrouping: true,
+        enableColumnPinning: true,
+        enableFacetedValues: true,
+
+        muiTableBodyRowProps: ({ row }) => ({
+            onClick: () => router.push(`/dashboard/singleFamily?id=${row.original?.familyId}`),
+            sx: {
+                cursor: 'pointer',
+            },
+        }),
+        // enableRowActions: true,`
+        // initialState: {
+        //     columnPinning: {
+        //         right: ['mrt-row-actions']
+        //     }
+        // },
+        paginationDisplayMode: 'pages',
+        positionToolbarAlertBanner: 'bottom',
+        muiSearchTextFieldProps: {
+            size: 'small',
+            variant: 'outlined'
+        },
+        muiPaginationProps: {
+            color: 'primary',
+            shape: 'rounded',
+            variant: 'outlined'
+        },
+        // renderRowActions: ({ row }) => (
+        //     <div className="w-full flex items-center justify-around">
+        //         <MdDeleteForever
+        //             className="cursor-pointer"
+        //             onClick={() => {
+        //                 console.log(row)
+        //                 toggleDeleteModal(row?.original)
+        //             }}
+        //             size={25}
+        //             color="darkred"
+        //         />
+        //         <MdEditDocument
+        //             className="cursor-pointer"
+        //             onClick={() => toggleInfoModal(row?.original)}
+        //             size={25}
+        //         />
+        //     </div>
+        // ),
+    });
 
 
 
     return (
         <div >
-            {BasicSetup()}
+
+            <div className="flex-1  ">
+                <MaterialReactTable table={table} />
+            </div>
+
+
         </div>
     )
 }

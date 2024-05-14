@@ -1,9 +1,0 @@
-import React from 'react'
-
-function Stickers() {
-  return (
-    <h1>Stickers</h1>
-  )
-}
-
-export default Stickers

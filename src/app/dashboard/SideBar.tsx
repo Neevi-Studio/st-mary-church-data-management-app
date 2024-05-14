@@ -4,11 +4,11 @@ import React, { useContext } from 'react'
 import { Sidebar, Menu, MenuItem, MenuItemStyles, menuClasses } from 'react-pro-sidebar';
 import { LuHome, } from "react-icons/lu";
 import { usePathname } from 'next/navigation';
-import { MdWallpaper } from "react-icons/md";
-import { AiFillProfile } from "react-icons/ai";
-import { TbCategoryFilled, TbPackages } from "react-icons/tb";
-import { BiSolidCoupon } from "react-icons/bi";
-import { RiEmojiStickerLine } from "react-icons/ri";
+// import { MdWallpaper } from "react-icons/md";
+// import { AiFillProfile } from "react-icons/ai";
+// import { TbCategoryFilled, TbPackages } from "react-icons/tb";
+// import { BiSolidCoupon } from "react-icons/bi";
+// import { RiEmojiStickerLine } from "react-icons/ri";
 import { SideBarContext } from '@/components/context/SideBarContextContext';
 
 function SideBar() {
@@ -128,7 +128,7 @@ function SideBar() {
                     component={<Link href={`/dashboard`} />} >
                     Home
                 </MenuItem>
-
+{/* 
                 <MenuItem
                     icon={<MdWallpaper size={25} />}
                     onClick={closeSidebar}
@@ -175,7 +175,7 @@ function SideBar() {
                     active={pathname === `/dashboard/stickers`}
                     component={<Link href={`/dashboard/stickers`} />} >
                     Stickers
-                </MenuItem>
+                </MenuItem> */}
 
 
             </Menu>

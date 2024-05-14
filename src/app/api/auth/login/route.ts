@@ -5,9 +5,8 @@ import { NextRequest, NextResponse } from "next/server";
 export async function POST(req: NextRequest) {
     try {
         const data = (await req.json()) as LoginDto;
-        const password = req.headers.get("password") || ""
 
-        const result = await new AuthApi(AXIOS_CONFIG).dashboardSignIn({ email: data.email, password });
+        const result = await new AuthApi(AXIOS_CONFIG).dashboardSignIn({ email: data.email, password: data.password });
 
         const token = result.data.authToken
         if (!token) throw new Error("Token not found");

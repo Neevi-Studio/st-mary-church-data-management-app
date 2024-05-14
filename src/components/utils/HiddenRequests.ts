@@ -6,9 +6,8 @@ export async function apiLoginUser(credentials: LoginDto) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        password: credentials.password
       },
-      body: JSON.stringify({ email: credentials.email })
+      body: JSON.stringify({ email: credentials.email, password: credentials.password })
     });
     if (!response.ok) {
       throw new Error('Not registered or Invalid Credentials');
