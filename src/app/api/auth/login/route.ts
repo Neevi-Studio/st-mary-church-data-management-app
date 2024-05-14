@@ -1,5 +1,5 @@
 import { AuthApi, LoginDto } from "@/Api";
-import { AXIOS_CONFIG } from "@/Api/ApiWrapper";
+import { AXIOS_CONFIG } from "@/Api/wrapper";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -7,7 +7,7 @@ export async function POST(req: NextRequest) {
         const data = (await req.json()) as LoginDto;
         const password = req.headers.get("password") || ""
 
-        const result = await new AuthApi(AXIOS_CONFIG).signinToDashboard({ email: data.email, password });
+        const result = await new AuthApi(AXIOS_CONFIG).dashboardSignIn({ email: data.email, password });
 
         const token = result.data.authToken
         if (!token) throw new Error("Token not found");
@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
 
         await Promise.all([
             response.cookies.set({
-                name: "dashToken",
+                name: "saintmary-dashToken",
                 value: token,
                 // httpOnly: true,
                 // path: "/",
@@ -35,7 +35,7 @@ export async function POST(req: NextRequest) {
                 // maxAge: 3600,
             }),
             response.cookies.set({
-                name: "dash-logged-in",
+                name: "saintmary-dash-logged-in",
                 value: "true",
                 // maxAge: 3600,
             }),

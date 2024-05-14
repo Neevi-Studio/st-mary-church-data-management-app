@@ -1,15 +1,7 @@
 "use client"
-import React, { useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import React from 'react'
 
-function Main({ loggedIn }: any) {
-    const router = useRouter()
-console.log(loggedIn ,'LOGGED IN')
-
-    useEffect(() => {
-        if (loggedIn) router.push("/dashboard")
-        else router.push("login")
-    }, [loggedIn, router])
+function Main() {
 
 
     return (

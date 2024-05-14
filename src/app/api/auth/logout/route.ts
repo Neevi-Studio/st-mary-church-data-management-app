@@ -8,12 +8,12 @@ export async function GET(req: NextRequest) {
 
   await Promise.all([
     response.cookies.set({
-      name: "token",
+      name: "saintmary-dashToken",
       value: "",
       maxAge: -1,
     }),
     response.cookies.set({
-      name: "logged-in",
+      name: "saintmary-dash-logged-in",
       value: "",
       maxAge: -1,
     }),

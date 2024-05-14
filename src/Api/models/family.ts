@@ -46,6 +46,12 @@ export interface Family {
     individuals: Array<ObjectId>;
 
     /**
+     * @type {number}
+     * @memberof Family
+     */
+    temporaryFamilyId: number;
+
+    /**
      * @type {Date}
      * @memberof Family
      */

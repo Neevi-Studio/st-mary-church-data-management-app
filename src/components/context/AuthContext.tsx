@@ -37,19 +37,19 @@ function AuthContext({ children }: Props) {
 
     useEffect(() => {
         if (isLoggedIn && currentPathname === '/') {
-            push('/')
-        }
-        if (!isLoggedIn && currentPathname.includes('/dashboard')) {
             push('/dashboard')
+        }
+
+        if (!isLoggedIn && currentPathname.includes('/dashboard')) {
+            push('/')
         }
     }, [isLoggedIn, currentPathname])
 
     const { data: userData, mutate: getMyInfo } = useMutation({
         mutationKey: ['user'],
         mutationFn: async () => {
-            // const res = await new UserApi(AXIOS_CONFIG).getMyInfo()
-            // return res.data
-            return undefined
+            const res = await new UserApi(AXIOS_CONFIG).getMyProfile()
+            return res.data
         },
         onError: () => {
             clearCookies()

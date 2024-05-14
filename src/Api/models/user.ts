@@ -210,6 +210,54 @@ export interface User {
     responsibleServant: ObjectId;
 
     /**
+     * @type {number}
+     * @memberof User
+     */
+    temporaryServantId: number;
+
+    /**
+     * @type {number}
+     * @memberof User
+     */
+    temporaryStudentId: number;
+
+    /**
+     * @type {number}
+     * @memberof User
+     */
+    temporaryFamilyId: number;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    gender: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    notes: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    activeStatus?: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    activeStatusNotes?: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    familyMember?: string;
+
+    /**
      * @type {Date}
      * @memberof User
      */
