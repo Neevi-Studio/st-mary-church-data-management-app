@@ -1,41 +1,42 @@
 'use client'
 import React, { useState } from 'react'
 import {
-    Draggable,
-    DraggableOverlay,
     Droppable,
 } from '../../../components'
 import {
     DndContext,
     useDraggable,
 } from '@dnd-kit/core';
-import { Button } from '@nextui-org/react';
-
+import { Avatar, Button } from '@nextui-org/react';
+import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { UserApi } from '@/Api'
+import { ConfirmFamilyDTO, UserApi } from '@/Api'
 import { AXIOS_CONFIG } from '@/Api/wrapper'
 import { useSearchParams } from 'next/navigation'
+import { MdDelete, MdDragIndicator } from 'react-icons/md';
 
 function SingleFamilyEdit() {
 
     const id = useSearchParams().get('id')
+    const [selectedFamily, setSelectedFamily] = useState<any>(null)
 
-    const { data: selectedFamily } = useQuery({
+    useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
             const res = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+            setSelectedFamily(res?.data?.filter((item: any) => item?.familyId == id)[0])
             return res?.data?.filter((item: any) => item?.familyId == id)[0]
-        }
+        },
     })
 
     const { data: pendingUsers, mutate } = useMutation({
         mutationKey: ['pendingUsers'],
         mutationFn: async () => {
-            console.log(selectedFamily?.individuals)
             const res = await new UserApi(AXIOS_CONFIG).findMatchingUsers({ users: selectedFamily?.individuals })
             return res?.data
         }
     })
+
     React.useEffect(() => { selectedFamily && mutate() }, [selectedFamily])
 
     type DraggableProps = {
@@ -44,23 +45,23 @@ function SingleFamilyEdit() {
     };
 
 
+    function removeFamilyMember(memberFullName: string) {
+        setSelectedFamily((old: any) => {
+            const filtered = old?.individuals.filter((item: any) => item?.firstname + item?.lastname !== memberFullName)
+            return { ...old, individuals: filtered }
+        })
+    }
+
     const [isDragging, setIsDragging] = useState(false);
     const [parent, setParent] = useState<DraggableProps[] | []>([]);
-
-    const draggables = ['1', '2', '3', '4'];
 
 
     function handleDragEnd(event: any) {
         const { active, over } = event;
-        if (active?.id !== over?.id) {
-            console.log('childId', active.id)
-            console.log('ParentId', over.id)
+        if (active?.id !== over?.id && over?.id && active?.id) {
 
             setParent(old => {
-                // Remove any existing relationship for the active child or over parent
                 const filtered = old.filter(item => item.childId !== active.id && item.parentId !== over.id);
-
-                // Add the new relationship
                 return [...filtered, { parentId: over.id, childId: active.id }];
             })
 
@@ -68,18 +69,39 @@ function SingleFamilyEdit() {
         }
     }
 
-
     function removeChild(childId: string) {
         setParent((old) => old.filter((item) => item.childId !== childId));
     }
+
+
+    const { mutate: confirmFamilyy, isPending } = useMutation({
+        mutationKey: ['confirmFamily'],
+        mutationFn: async () => {
+            const body: ConfirmFamilyDTO = {
+                familyLastName: selectedFamily?.familyLastName,
+                familyAddress: selectedFamily?.familyAddress,
+                temporaryFamilyId: selectedFamily?.familyId,
+                individuals: selectedFamily?.individuals.map((individual: any) => ({
+                    userId: parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname)[0]?.childId,
+                    pendingUser: {
+                        ...individual
+                    }
+                }))
+            }
+            const res = await new UserApi(AXIOS_CONFIG).confirmFamily(body)
+            return res?.data
+        },
+        onError: (error) => console.log(error)
+    })
+
 
 
     return (
         <div>
             <div className='flex flex-col gap-y-3 border-2 border-gray-500 p-3 rounded-lg' >
                 <p className='font-bold text-3xl'>Family last name: {selectedFamily?.familyLastName}</p>
-                <p className='font-bold text-xl'>{selectedFamily?.familyLastName}</p>
-
+                <p className='font-bold text-xl'>{selectedFamily?.familyAddress}</p>
+                <p className='font-bold text-xl'>Family ID: #{selectedFamily?.familyId}</p>
             </div>
 
             <DndContext
@@ -87,9 +109,50 @@ function SingleFamilyEdit() {
                 onDragEnd={handleDragEnd}
                 onDragCancel={() => setIsDragging(false)}
             >
-                <div className='grid grid-cols-3' >
 
-                    {pendingUsers?.filter((user) => !parent.some((item) => item.childId === user?.id))
+
+                <div className='grid grid-cols-3 gap-5 mt-5' >
+                    {selectedFamily?.individuals?.map((individual: any) => (
+                        <Droppable
+                            key={individual?.firstname + individual?.lastname} id={individual?.firstname + individual?.lastname} dragging={isDragging}>
+                            <div className='flex flex-col gap-y-1 p-4 relative w-full h-full '>
+                                {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname)?.length === 0 &&
+                                    <Button
+                                        size='sm'
+                                        isIconOnly
+                                        color='danger'
+                                        className='absolute top-0 right-0 m-3'
+                                        onClick={() => removeFamilyMember(individual?.firstname + individual?.lastname)}
+                                    >
+                                        <MdDelete size={28} />
+                                    </Button>
+                                }
+                                <div className='flex flex-col items-start self-start' >
+                                    <p>Name: {individual?.firstname} {individual?.lastname} </p>
+                                    <p>Gender: {individual?.gender}</p>
+                                    <p>familyMember: {individual?.familyMember}</p>
+                                    <p>Email: {individual?.email}</p>
+                                    <p>Date of birth: {individual?.dateOfBirth}</p>
+                                    <p>Grade: {individual?.grade}</p>
+                                </div>
+                                {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname).map((itemm) =>
+                                    <DraggableItem
+                                        key={itemm?.childId}
+                                        user={pendingUsers?.filter((user) => user?.id === itemm?.childId)[0]}
+                                        removeChild={removeChild}
+                                        isInList={true}
+                                    >
+                                    </DraggableItem>
+                                )}
+
+                            </div>
+                        </Droppable>
+                    ))}
+                </div>
+
+
+                <div className='grid grid-cols-4 gap-5 mb-12 mt-5' >
+                    {pendingUsers?.filter((user) => !parent.some((item) => item.childId === user?.id?.toString()))
                         .map((user) => (
                             <DraggableItem
                                 key={user?.id?.toString()}
@@ -100,29 +163,12 @@ function SingleFamilyEdit() {
                             </DraggableItem>
                         ))
                     }
-
-                </div>
-                <div className='grid grid-cols-3' >
-                    {selectedFamily?.individuals.map((individual: any) => (
-                        <Droppable
-                            key={individual?.firstname + individual?.lastname} id={individual?.firstname + individual?.lastname} dragging={isDragging}>
-
-                            {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname).map((itemm) =>
-                                <DraggableItem
-                                    key={itemm?.childId}
-                                    user={itemm}
-                                    removeChild={removeChild}
-                                    isInList={true}
-                                >
-                                </DraggableItem>
-                            )}
-
-                            <p>{individual?.firstname}</p>
-                        </Droppable>
-                    ))}
-                    <DraggableOverlay />
                 </div>
             </DndContext>
+
+            <Button isLoading={isPending} className='w-full  mb-12' color='primary' onClick={() => confirmFamilyy()}>
+                Confirm
+            </Button>
         </div>
     )
 }
@@ -132,44 +178,77 @@ export default SingleFamilyEdit
 
 
 
-
-
 type props = {
-    user: any;
-    removeChild: (childId: string) => void;
-    isInList: boolean;
+    user?: any;
+    removeChild?: (childId: string) => void;
+    isInList?: boolean;
+    isOverLay?: boolean;
 
 }
-function DraggableItem({ user, removeChild, isInList }: props) {
-    const { isDragging, setNodeRef, listeners } = useDraggable({
+export function DraggableItem({ user, removeChild, isInList, isOverLay }: props) {
+    const { isDragging, setNodeRef, listeners, transform, attributes, } = useDraggable({
         id: user?.id,
     });
 
-    return (
-        <Draggable
-            dragging={isDragging}
-            ref={setNodeRef}
-            listeners={listeners}
-            style={{
-                opacity: isDragging ? 0 : undefined,
-            }}
-            buttonStyle={{
-                backgroundColor: "#f7f7",
-                width: 300,
-                height: 300
-            }}
-        >
+    const style = {
+        transform: CSS.Transform.toString(transform),
+        zIndex: isDragging ? '100' : 'auto',
+        opacity: isDragging ? 0.7 : 1
+    };
 
-            <div className='bg-white flex flex-col gap-y-2'>
+    return (
+        <div
+            ref={setNodeRef}
+            style={style as React.CSSProperties}
+            {...listeners}
+            className='bg-white w-[300px] min-h-[300px] h-fit border-2 rounded-lg border-gray400 flex relative flex-col text-left   px-3 pt-2'>
+            <div className='flex flex-row gap-x-2 items-center absolute top-0 right-0 m-3'>
+                <Button
+                    color='primary'
+                    size='sm'
+                    isIconOnly
+                >
+                    <button
+                        {...attributes}
+                        {...listeners}
+                    >
+                        <MdDragIndicator size={28} />
+                    </button>
+                </Button>
                 {isInList &&
-                    <Button color='primary' onClick={() => removeChild(user?.id)} >
-                        Remove
+                    <Button
+                        size='sm'
+                        isIconOnly
+                        color='danger'
+                        onClick={() => removeChild && removeChild(user?.id)}
+                    >
+                        <MdDelete size={28} />
                     </Button>
                 }
-
-                <p className='font-bold text-lg'>Child ID: #{user?.firstname}</p>
             </div>
-
-        </Draggable>
+            <div className='flex flex-row gap-x-2 items-center -ml-1'>
+                <Avatar
+                    src={user?.avatar}
+                    alt='avatar'
+                    size='lg'
+                    className='mb-2'
+                    name={user?.firstname + ' ' + user?.lastname}
+                />
+                <div className='flex flex-col ' >
+                    <p className='font-semibold'>{user?.firstname} {user?.lastname}</p>
+                    <p >{user?.phoneNumber}</p>
+                </div>
+            </div>
+            {user?.email &&
+                <p >Email: {user?.email}</p>
+            }
+            {user?.address &&
+                <p >Address: {user?.address}</p>}
+            {user?.dateOfBirth && <p >Date of birth: {new Date(user?.dateOfBirth)?.toLocaleDateString()}</p>}
+            {user?.grade &&
+                <p >Grade: {user?.grade}</p>}
+            {user?.familyMember &&
+                <p >familyMember: {user?.familyMember}</p>}
+        </div>
     );
 }

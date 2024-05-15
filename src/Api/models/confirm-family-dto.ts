@@ -12,41 +12,36 @@
  * Do not edit the class manually.
  */
 
+import { ConfirmUserDTO } from './confirm-user-dto';
  /**
  * 
  *
  * @export
- * @interface PendingUserDTO
+ * @interface ConfirmFamilyDTO
  */
-export interface PendingUserDTO {
+export interface ConfirmFamilyDTO {
 
     /**
      * @type {string}
-     * @memberof PendingUserDTO
+     * @memberof ConfirmFamilyDTO
      */
-    email?: string;
+    familyLastName: string;
 
     /**
      * @type {string}
-     * @memberof PendingUserDTO
+     * @memberof ConfirmFamilyDTO
      */
-    firstname?: string;
+    familyAddress: string;
 
     /**
-     * @type {string}
-     * @memberof PendingUserDTO
+     * @type {number}
+     * @memberof ConfirmFamilyDTO
      */
-    lastname?: string;
+    temporaryFamilyId: number;
 
     /**
-     * @type {string}
-     * @memberof PendingUserDTO
+     * @type {Array<ConfirmUserDTO>}
+     * @memberof ConfirmFamilyDTO
      */
-    familyMember?: string;
-
-    /**
-     * @type {string}
-     * @memberof PendingUserDTO
-     */
-    phoneNumber?: string;
+    individuals: Array<ConfirmUserDTO>;
 }

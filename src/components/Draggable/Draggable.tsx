@@ -2,14 +2,8 @@ import React, { forwardRef } from 'react';
 import classNames from 'classnames';
 import type { DraggableSyntheticListeners } from '@dnd-kit/core';
 import type { Transform } from '@dnd-kit/utilities';
-
 import { Handle } from '../Item/components/Handle';
 
-import {
-  draggable,
-  draggableHorizontal,
-  draggableVertical,
-} from './draggable-svg';
 import styles from './Draggable.module.css';
 
 export enum Axis {

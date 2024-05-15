@@ -29,3 +29,41 @@ export async function apiLogoutUser() {
     throw new Error(error);
   }
 }
+
+export async function apiGetFamilies() {
+  try {
+    const response = await fetch(`/api/families`, {
+      method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+// export async function apiLogoutUser() {
+//   try {
+//     const response = await fetch(`/api/auth/logout`, {
+//       method: 'GET'
+//     });
+//     window.location.reload();
+//     return response;
+//   } catch (error: any) {
+//     throw new Error(error);
+//   }
+// }
+
+// export async function apiLogoutUser() {
+//   try {
+//     const response = await fetch(`/api/auth/logout`, {
+//       method: 'GET'
+//     });
+//     window.location.reload();
+//     return response;
+//   } catch (error: any) {
+//     throw new Error(error);
+//   }
+// }

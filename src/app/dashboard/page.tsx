@@ -35,18 +35,26 @@ import { useQuery } from '@tanstack/react-query';
 import { UserApi } from '@/Api';
 import { AXIOS_CONFIG } from '@/Api/wrapper';
 import { useRouter } from 'next/navigation';
+import { apiGetFamilies } from '@/components/utils/HiddenRequests';
 
 function DashboardMain() {
 
     const router = useRouter()
 
+
     const { data: pendingFamilies } = useQuery({
         queryKey: ['pendingFamilies'],
-        queryFn: async () => {
-            const res = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
-            return res?.data
-        }
+        queryFn: apiGetFamilies
     })
+
+
+    // const { data: pendingFamilies } = useQuery({
+    //     queryKey: ['pendingFamilies'],
+    //     queryFn: async () => {
+    //         const res = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+    //         return res?.data
+    //     }
+    // })
 
     const columns = useMemo<MRT_ColumnDef<any>[]>(
         () => [
@@ -69,13 +77,12 @@ function DashboardMain() {
         []
     );
 
-
     const table = useMaterialReactTable({
         muiTableContainerProps: {
             sx: { overflow: 'scroll' }
         },
         columns,
-        data: pendingFamilies || [],
+        data: pendingFamilies?.result || [],
         enableColumnFilterModes: true,
         enableColumnOrdering: true,
         enableGrouping: true,
