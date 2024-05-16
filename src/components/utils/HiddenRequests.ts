@@ -78,6 +78,23 @@ export async function apiConfirmFamily(body: ConfirmFamilyDTO) {
     throw new Error(error);
   }
 }
+
+export async function apiGetMyProfile() {
+  try {
+    const response = await fetch(`/api/mine`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
 // export async function apiLogoutUser() {
 //   try {
 //     const response = await fetch(`/api/auth/logout`, {
