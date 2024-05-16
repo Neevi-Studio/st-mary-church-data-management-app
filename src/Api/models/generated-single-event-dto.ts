@@ -27,11 +27,6 @@ export interface GeneratedSingleEventDTO {
      */
     id: string;
 
-    /**
-     * @type {string}
-     * @memberof GeneratedSingleEventDTO
-     */
-    id: string;
 
     /**
      * @type {string}

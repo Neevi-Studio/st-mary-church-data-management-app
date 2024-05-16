@@ -1,16 +1,19 @@
-import { AuthApi, ConfirmFamilyDTO, GetPendingUsers, LoginDto, UserApi } from "@/Api";
+import { ConfirmFamilyDTO, UserApi } from "@/Api";
 import { AXIOS_CONFIG } from "@/Api/wrapper";
 import { NextRequest, NextResponse } from "next/server";
+import cookie from 'cookie';
 
 export async function POST(req: NextRequest) {
+    
+            const cookies = cookie.parse(req.headers.get('Cookie') || '');
+            const tokenFroMCoockies = cookies['saintmary-dashToken'];
     try {
         const data = (await req.json()) as ConfirmFamilyDTO;
 
-        const tokenFroMCoockies = req.cookies.get('saintmary-dashToken');
 
         const result = await new UserApi(AXIOS_CONFIG).confirmFamily(data, {
             headers: {
-                Authorization: `Bearer ${tokenFroMCoockies?.value}`
+                Authorization: `Bearer ${tokenFroMCoockies}`
             }
         });
 

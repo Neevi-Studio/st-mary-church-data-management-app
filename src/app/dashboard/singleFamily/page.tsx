@@ -194,7 +194,7 @@ type props = {
     removeChild?: (childId: string) => void;
     isInList?: boolean;
 }
-export function DraggableItem({ user, removeChild, isInList }: props) {
+function DraggableItem({ user, removeChild, isInList }: props) {
     const { isDragging, setNodeRef, listeners, transform, attributes, } = useDraggable({
         id: user?.id,
     });
