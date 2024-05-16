@@ -10,30 +10,32 @@ import {
 import { Avatar, Button } from '@nextui-org/react';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, UserApi } from '@/Api'
-import { AXIOS_CONFIG } from '@/Api/wrapper'
-import { useSearchParams } from 'next/navigation'
+import { ConfirmFamilyDTO, User } from '@/Api'
+import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator } from 'react-icons/md';
+import { apiConfirmFamily, apiGetFamilies, apiGetMatchingFamilyUsers } from '@/components/utils/HiddenRequests';
+import toast from 'react-hot-toast';
 
 function SingleFamilyEdit() {
 
     const id = useSearchParams().get('id')
     const [selectedFamily, setSelectedFamily] = useState<any>(null)
+    const router = useRouter()
 
     useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
-            const res = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
-            setSelectedFamily(res?.data?.filter((item: any) => item?.familyId == id)[0])
-            return res?.data?.filter((item: any) => item?.familyId == id)[0]
+            const { result } = await apiGetFamilies()
+            setSelectedFamily(result?.filter((item: any) => item?.familyId == id)[0])
+            return result?.filter((item: any) => item?.familyId == id)[0]
         },
     })
 
     const { data: pendingUsers, mutate } = useMutation({
         mutationKey: ['pendingUsers'],
         mutationFn: async () => {
-            const res = await new UserApi(AXIOS_CONFIG).findMatchingUsers({ users: selectedFamily?.individuals })
-            return res?.data
+            const { result } = await apiGetMatchingFamilyUsers({ users: selectedFamily?.individuals })
+            return result
         }
     })
 
@@ -88,10 +90,14 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const res = await new UserApi(AXIOS_CONFIG).confirmFamily(body)
-            return res?.data
+            const { result } = await apiConfirmFamily(body)
+            return result
         },
-        onError: (error) => console.log(error)
+        onError: (error) => console.log(error),
+        onSuccess: () => {
+            toast.success('Family confirmed & created successfully')
+            router.back()
+        }
     })
 
 
@@ -138,7 +144,7 @@ function SingleFamilyEdit() {
                                 {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname).map((itemm) =>
                                     <DraggableItem
                                         key={itemm?.childId}
-                                        user={pendingUsers?.filter((user) => user?.id === itemm?.childId)[0]}
+                                        user={pendingUsers?.filter((user: User) => user?.id === itemm?.childId)[0]}
                                         removeChild={removeChild}
                                         isInList={true}
                                     >
@@ -152,8 +158,8 @@ function SingleFamilyEdit() {
 
 
                 <div className='grid grid-cols-4 gap-5 mb-12 mt-5' >
-                    {pendingUsers?.filter((user) => !parent.some((item) => item.childId === user?.id?.toString()))
-                        .map((user) => (
+                    {pendingUsers?.filter((user: User) => !parent.some((item) => item.childId === user?.id?.toString()))
+                        .map((user: User) => (
                             <DraggableItem
                                 key={user?.id?.toString()}
                                 user={user}
@@ -166,7 +172,7 @@ function SingleFamilyEdit() {
                 </div>
             </DndContext>
 
-            <Button isLoading={isPending} className='w-full  mb-12' color='primary' onClick={() => confirmFamilyy()}>
+            <Button isLoading={isPending} className='w-full bg-[#66A3D0] mb-12' color='primary' onClick={() => confirmFamilyy()}>
                 Confirm
             </Button>
         </div>
@@ -182,10 +188,8 @@ type props = {
     user?: any;
     removeChild?: (childId: string) => void;
     isInList?: boolean;
-    isOverLay?: boolean;
-
 }
-export function DraggableItem({ user, removeChild, isInList, isOverLay }: props) {
+export function DraggableItem({ user, removeChild, isInList }: props) {
     const { isDragging, setNodeRef, listeners, transform, attributes, } = useDraggable({
         id: user?.id,
     });

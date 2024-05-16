@@ -26,7 +26,7 @@ function SideBar() {
             icon: '#607489',
             // icon: '#155EEF',
             hover: {
-                backgroundColor: '#0040C1',
+                backgroundColor: '#66A3D0',
                 color: '#fff',
             },
             disabled: {
@@ -111,13 +111,12 @@ function SideBar() {
             backgroundColor={themeColors.sidebar.backgroundColor}
         >
             <Image
-                src="/next.svg"
+                src="/AppLogo.png"
                 width={150}
-                className='mb-8 p-6'
+                className='mb-8 p-6 self-center mx-auto'
                 height={150}
                 alt="logo"
             />
-
 
             <Menu menuItemStyles={menuItemStyles}>
 
@@ -128,7 +127,7 @@ function SideBar() {
                     component={<Link href={`/dashboard`} />} >
                     Home
                 </MenuItem>
-{/* 
+                {/* 
                 <MenuItem
                     icon={<MdWallpaper size={25} />}
                     onClick={closeSidebar}

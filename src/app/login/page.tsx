@@ -55,12 +55,13 @@ function LoginPage() {
             )}
             className="w-full max-h-screen h-screen flex flex-row  items-center  justify-between  "
         >
-            <div className="flex flex-col w-full h-full  justify-evenly  pt-10 pb-4  px-10 md:px-32 xl:px-[20%] md:justify-between md:w-2/3">
+            <div className="flex flex-col w-full h-full bg-white justify-evenly  pt-2 pb-6  px-10 md:px-32 xl:px-[20%] md:justify-between md:w-2/3">
+
                 <Image
-                    src="/next.svg"
-                    width={150}
-                    className="mb-4"
-                    height={150}
+                    src="/AppLogo.png"
+                    className='-mb-14 -ml-10'
+                    width={200}
+                    height={200}
                     alt="logo"
                 />
                 <div className="flex flex-col  w-full gap-y-5  ">
@@ -121,7 +122,7 @@ function LoginPage() {
 
                     <Button
                         type={'submit'}
-                        className=" py-2.5 bg-[#264744] rounded-lg   justify-center items-center gap-2  text-white  text-base font-semibold  leading-normal"
+                        className=" py-2.5 bg-[#66A3D0] rounded-lg   justify-center items-center gap-2  text-white  text-base font-semibold  leading-normal"
                     >
                         {isPending ? <Spinner color="white" size="sm" /> : 'Sign in'}
                     </Button>
@@ -131,9 +132,11 @@ function LoginPage() {
                     © NeeviStudio 2025.
                 </p>
             </div>
-            <div className="hidden md:flex relative h-full w-1/3">
+            <div className="hidden md:flex relative h-full  w-1/3">
                 <Image
-                    src="/login.jpeg"
+                    src="/banner.png"
+                    quality={100}
+                    priority
                     className="object-cover object-center "
                     alt="login"
                     fill

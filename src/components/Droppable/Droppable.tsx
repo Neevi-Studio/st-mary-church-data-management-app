@@ -1,7 +1,5 @@
 import React from 'react';
 import { useDroppable, UniqueIdentifier } from '@dnd-kit/core';
-import classNames from 'classnames';
-
 import styles from './Droppable.module.css';
 
 interface Props {
