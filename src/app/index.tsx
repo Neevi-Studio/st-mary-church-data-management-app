@@ -1,11 +1,11 @@
 "use client"
 import React from 'react'
 
-function Main() {
+function FullScreenLoader() {
 
 
     return (
-        <div id="SpinnerLoadingContainer" className="fixed left-0 top-0 z-50 h-screen w-screen bg-black bg-opacity-90 transition-all">
+        <div id="SpinnerLoadingContainer" className="fixed left-0 top-0 z-50 h-screen w-screen bg-black bg-opacity-50 transition-all">
             <div className="loader">
                 <div className="inner one"></div>
                 <div className="inner two"></div>
@@ -15,4 +15,4 @@ function Main() {
     )
 }
 
-export default Main
+export default FullScreenLoader

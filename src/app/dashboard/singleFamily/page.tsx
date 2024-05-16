@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator } from 'react-icons/md';
 import { apiConfirmFamily, apiGetFamilies, apiGetMatchingFamilyUsers } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
+import FullScreenLoader from '@/app';
 
 function SingleFamilyEdit() {
 
@@ -22,7 +23,7 @@ function SingleFamilyEdit() {
     const [selectedFamily, setSelectedFamily] = useState<any>(null)
     const router = useRouter()
 
-    useQuery({
+    const { isLoading } = useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
             const { result } = await apiGetFamilies()
@@ -31,7 +32,7 @@ function SingleFamilyEdit() {
         },
     })
 
-    const { data: pendingUsers, mutate } = useMutation({
+    const { data: pendingUsers, mutate, isPending: isLoading2 } = useMutation({
         mutationKey: ['pendingUsers'],
         mutationFn: async () => {
             const { result } = await apiGetMatchingFamilyUsers({ users: selectedFamily?.individuals })
@@ -109,6 +110,10 @@ function SingleFamilyEdit() {
                 <p className='font-bold text-xl'>{selectedFamily?.familyAddress}</p>
                 <p className='font-bold text-xl'>Family ID: #{selectedFamily?.familyId}</p>
             </div>
+
+            {(isLoading) &&
+                <FullScreenLoader />
+            }
 
             <DndContext
                 onDragStart={() => setIsDragging(true)}
