@@ -12,6 +12,7 @@
  * Do not edit the class manually.
  */
 
+import { ObjectId } from './object-id';
 import { StudentDto } from './student-dto';
  /**
  * 
@@ -20,6 +21,12 @@ import { StudentDto } from './student-dto';
  * @interface ConfirmUserDTO
  */
 export interface ConfirmUserDTO {
+
+    /**
+     * @type {ObjectId}
+     * @memberof ConfirmUserDTO
+     */
+    id: ObjectId;
 
     /**
      * @type {string}

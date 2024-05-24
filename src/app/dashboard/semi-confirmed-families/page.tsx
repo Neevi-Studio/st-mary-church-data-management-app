@@ -7,14 +7,14 @@ import {
 } from 'material-react-table';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { apiGetFamilies } from '@/components/utils/HiddenRequests';
-import FullScreenLoader from '..';
+import { apiGetSemiConfirmedFamilies } from '@/components/utils/HiddenRequests';
+import FullScreenLoader from '@/app';
 
-function DashboardMain() {
+function SemiConfirmed() {
     const router = useRouter()
     const { data: pendingFamilies, isLoading } = useQuery({
-        queryKey: ['pendingFamilies'],
-        queryFn: apiGetFamilies
+        queryKey: ['apiGetSemiConfirmedFamilies'],
+        queryFn: apiGetSemiConfirmedFamilies
     })
 
     const columns = useMemo<MRT_ColumnDef<any>[]>(
@@ -81,4 +81,4 @@ function DashboardMain() {
     )
 }
 
-export default DashboardMain
+export default SemiConfirmed

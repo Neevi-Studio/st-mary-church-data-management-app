@@ -43,6 +43,7 @@ export * from './populated-service-with-classes';
 export * from './populated-weekly-call';
 export * from './post-submission-dto';
 export * from './repeated-assignment';
+export * from './semi-confirmed-family';
 export * from './service';
 export * from './singel-custom-field-dto';
 export * from './single-class';

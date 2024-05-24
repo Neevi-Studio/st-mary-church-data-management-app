@@ -44,6 +44,52 @@ export async function apiGetFamilies() {
   }
 }
 
+export async function apiGetConfirmedFamilies() {
+  try {
+    const response = await fetch(`/api/families/confirmed`, {
+      method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiGetSemiConfirmedFamilies() {
+  try {
+    const response = await fetch(`/api/families/semiconfirmed`, {
+      method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiSemiConfirmFamily(body: ConfirmFamilyDTO) {
+  try {
+    const response = await fetch(`/api/families/semi-confirm`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(body)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
 export async function apiGetMatchingFamilyUsers(body: GetPendingUsers) {
   try {
     const response = await fetch(`/api/families/matching`, {
@@ -61,14 +107,14 @@ export async function apiGetMatchingFamilyUsers(body: GetPendingUsers) {
     throw new Error(error);
   }
 }
-export async function apiConfirmFamily(body: ConfirmFamilyDTO) {
+export async function apiConfirmFamily(familyId: string) {
   try {
     const response = await fetch(`/api/families/confirm`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(body)
+      body: JSON.stringify(familyId)
     });
     if (!response.ok) {
       throw new Error('Failed to fetch data');

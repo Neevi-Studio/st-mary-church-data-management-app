@@ -7,20 +7,20 @@ import {
 } from 'material-react-table';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { apiGetFamilies } from '@/components/utils/HiddenRequests';
-import FullScreenLoader from '..';
+import { apiGetConfirmedFamilies } from '@/components/utils/HiddenRequests';
+import FullScreenLoader from '@/app';
 
-function DashboardMain() {
+function ConfirmedFamilies() {
     const router = useRouter()
     const { data: pendingFamilies, isLoading } = useQuery({
-        queryKey: ['pendingFamilies'],
-        queryFn: apiGetFamilies
+        queryKey: ['apiGetConfirmedFamilies'],
+        queryFn: apiGetConfirmedFamilies
     })
 
     const columns = useMemo<MRT_ColumnDef<any>[]>(
         () => [
             {
-                accessorFn: (row) => `${row?.familyId || ''}`,
+                accessorFn: (row) => `${row?._id || ''}`,
                 header: 'Family Id',
                 size: 150
             },
@@ -81,4 +81,4 @@ function DashboardMain() {
     )
 }
 
-export default DashboardMain
+export default ConfirmedFamilies

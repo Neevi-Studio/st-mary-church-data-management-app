@@ -4,14 +4,14 @@ import { NextRequest, NextResponse } from "next/server";
 import cookie from 'cookie';
 
 export async function POST(req: NextRequest) {
-
-    const cookies = cookie.parse(req.headers.get('Cookie') || '');
-    const tokenFroMCoockies = cookies['saintmary-dashToken'];
+    
+            const cookies = cookie.parse(req.headers.get('Cookie') || '');
+            const tokenFroMCoockies = cookies['saintmary-dashToken'];
     try {
-        const id = (await req.json());
+        const data = (await req.json()) as ConfirmFamilyDTO;
 
 
-        const result = await new UserApi(AXIOS_CONFIG).confirmFamily(id, {
+        const result = await new UserApi(AXIOS_CONFIG).semiConfirmFamily(data, {
             headers: {
                 Authorization: `Bearer ${tokenFroMCoockies}`
             }

@@ -13,7 +13,7 @@ import { useMutation, useQuery } from '@tanstack/react-query'
 import { ConfirmFamilyDTO, User } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator } from 'react-icons/md';
-import { apiConfirmFamily, apiGetFamilies, apiGetMatchingFamilyUsers } from '@/components/utils/HiddenRequests';
+import { apiConfirmFamily, apiGetFamilies, apiGetMatchingFamilyUsers, apiSemiConfirmFamily } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
 import FullScreenLoader from '@/app';
 
@@ -91,7 +91,7 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const { result } = await apiConfirmFamily(body)
+            const { result } = await apiSemiConfirmFamily(body)
             return result
         },
         onError: (error) => console.log(error),
