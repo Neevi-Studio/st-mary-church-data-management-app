@@ -7,15 +7,18 @@ import {
     DndContext,
     useDraggable,
 } from '@dnd-kit/core';
-import { Avatar, Button } from '@nextui-org/react';
-import { CSS } from '@dnd-kit/utilities';
+import { Avatar, Button, Input, Modal, ModalBody, ModalContent, ModalFooter, ModalHeader } from '@nextui-org/react';
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, User } from '@/Api'
+import { ConfirmFamilyDTO, UpdatePendingUserDto, User } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
-import { MdDelete, MdDragIndicator } from 'react-icons/md';
-import { apiConfirmFamily, apiGetFamilies, apiGetMatchingFamilyUsers, apiSemiConfirmFamily } from '@/components/utils/HiddenRequests';
+import { MdDelete, MdDragIndicator, MdEdit, MdEditDocument } from 'react-icons/md';
+import { apiConfirmFamily, apiEditPendingFamilyAddress, apiEditPendingFamilyMember, apiGetFamilies, apiGetMatchingFamilyUsers, apiSemiConfirmFamily } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
 import FullScreenLoader from '@/app';
+import DropComponent from './DropComponent';
+import EditFamilyData from './EditFamilyData';
+import EditFamilyMemberModal from './EditFamilyMemberModal';
+import DraggableItem from '../DraggableItem';
 
 function SingleFamilyEdit() {
 
@@ -101,19 +104,91 @@ function SingleFamilyEdit() {
         }
     })
 
+    type editUser = {
+        familyId: string;
+        studentId: number;
+        body: UpdatePendingUserDto;
+    }
 
+    const { mutate: EditPendingFamilyMember, isPending: isEditing } = useMutation({
+        mutationKey: ['EditPendingFamilyMember'],
+        mutationFn: async (body: editUser) => {
+            const { result } = await apiEditPendingFamilyMember(body.familyId, body.studentId, body.body)
+            return result
+        },
+        onError: (error) => console.log(error),
+        onSuccess: () => {
+            toast.success('Family member edited successfully')
+            router.back()
+        }
+    })
+
+    type editFamilyData = {
+        familyId: string;
+        body: UpdatePendingUserDto;
+    }
+
+
+    const { mutate: EditPendingFamily, isPending: isEditiing2 } = useMutation({
+        mutationKey: ['EditPendingFamily'],
+        mutationFn: async (body: editFamilyData) => {
+            const { result } = await apiEditPendingFamilyAddress(body?.familyId, body.body)
+            return result
+        },
+        onError: (error) => console.log(error),
+        onSuccess: () => {
+            toast.success('Family data edited successfully')
+            router.back()
+        }
+    })
+
+    const [isOpen, setIsOpen] = useState(false)
+    const [isEditModalOpen, setIsEditModalOpen] = useState(false)
+    const [selectedIndividual, setSelectedIndividual] = useState<any>(null)
+
+    function handleOpenEditModal(individual: any) {
+        setSelectedIndividual(individual)
+        setIsEditModalOpen(true)
+    }
+
+    function handleCloseEditModal() {
+        setIsEditModalOpen(false)
+        setSelectedIndividual(null)
+    }
 
     return (
         <div>
-            <div className='flex flex-col gap-y-3 border-2 border-gray-500 p-3 rounded-lg' >
+            <div className='flex flex-col gap-y-3 border-2 border-gray-500 p-3 rounded-lg relative' >
                 <p className='font-bold text-3xl'>Family last name: {selectedFamily?.familyLastName}</p>
                 <p className='font-bold text-xl'>{selectedFamily?.familyAddress}</p>
                 <p className='font-bold text-xl'>Family ID: #{selectedFamily?.familyId}</p>
+                <Button
+                    isIconOnly
+                    className='absolute top-0 right-0 m-3'
+                    onClick={() => setIsOpen(true)}
+                >
+                    <MdEditDocument />
+                </Button>
             </div>
 
             {(isLoading) &&
                 <FullScreenLoader />
             }
+
+            <EditFamilyData
+                isOpen={isOpen}
+                setIsOpen={setIsOpen}
+                familyData={{ familyLastName: selectedFamily?.familyLastName, familyAddress: selectedFamily?.familyAddress, familyId: selectedFamily?.familyId }}
+                EditPendingFamily={EditPendingFamily}
+            />
+
+
+            <EditFamilyMemberModal
+                isOpen={isEditModalOpen}
+                setIsOpen={setIsEditModalOpen}
+                selectedIndividual={selectedIndividual}
+                EditPendingFamilyMember={EditPendingFamilyMember}
+            />
 
             <DndContext
                 onDragStart={() => setIsDragging(true)}
@@ -121,44 +196,18 @@ function SingleFamilyEdit() {
                 onDragCancel={() => setIsDragging(false)}
             >
 
-
                 <div className='grid grid-cols-3 gap-5 mt-5' >
-                    {selectedFamily?.individuals?.map((individual: any) => (
-                        <Droppable
-                            key={individual?.firstname + individual?.lastname} id={individual?.firstname + individual?.lastname} dragging={isDragging}>
-                            <div className='flex flex-col gap-y-1 p-4 relative w-full h-full '>
-                                {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname)?.length === 0 &&
-                                    <Button
-                                        size='sm'
-                                        isIconOnly
-                                        color='danger'
-                                        className='absolute top-0 right-0 m-3'
-                                        onClick={() => removeFamilyMember(individual?.firstname + individual?.lastname)}
-                                    >
-                                        <MdDelete size={28} />
-                                    </Button>
-                                }
-                                <div className='flex flex-col items-start self-start' >
-                                    <p>Name: {individual?.firstname} {individual?.lastname} </p>
-                                    <p>Gender: {individual?.gender}</p>
-                                    <p>familyMember: {individual?.familyMember}</p>
-                                    <p>Email: {individual?.email}</p>
-                                    <p>Date of birth: {individual?.dateOfBirth}</p>
-                                    <p>Grade: {individual?.grade}</p>
-                                </div>
-                                {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname).map((itemm) =>
-                                    <DraggableItem
-                                        key={itemm?.childId}
-                                        user={pendingUsers?.filter((user: User) => user?.id === itemm?.childId)[0]}
-                                        removeChild={removeChild}
-                                        isInList={true}
-                                    >
-                                    </DraggableItem>
-                                )}
-
-                            </div>
-                        </Droppable>
-                    ))}
+                    {selectedFamily?.individuals?.map((individual: any) =>
+                        <DropComponent
+                            individual={individual}
+                            removeFamilyMember={removeFamilyMember}
+                            parent={parent}
+                            pendingUsers={pendingUsers}
+                            removeChild={removeChild}
+                            handleOpenEditModal={handleOpenEditModal}
+                            isDragging={isDragging}
+                        />
+                    )}
                 </div>
 
 
@@ -175,12 +224,12 @@ function SingleFamilyEdit() {
                         ))
                     }
                 </div>
-            </DndContext>
+            </DndContext >
 
             <Button isLoading={isPending} className='w-full bg-[#66A3D0] mb-12' color='primary' onClick={() => confirmFamilyy()}>
                 Confirm
             </Button>
-        </div>
+        </div >
     )
 }
 
@@ -189,75 +238,3 @@ export default SingleFamilyEdit
 
 
 
-type props = {
-    user?: any;
-    removeChild?: (childId: string) => void;
-    isInList?: boolean;
-}
-function DraggableItem({ user, removeChild, isInList }: props) {
-    const { isDragging, setNodeRef, listeners, transform, attributes, } = useDraggable({
-        id: user?.id,
-    });
-
-    const style = {
-        transform: CSS.Transform.toString(transform),
-        zIndex: isDragging ? '100' : 'auto',
-        opacity: isDragging ? 0.7 : 1
-    };
-
-    return (
-        <div
-            ref={setNodeRef}
-            style={style as React.CSSProperties}
-            {...listeners}
-            className='bg-white w-[300px] min-h-[300px] h-fit border-2 rounded-lg border-gray400 flex relative flex-col text-left   px-3 pt-2'>
-            <div className='flex flex-row gap-x-2 items-center absolute top-0 right-0 m-3'>
-                <Button
-                    color='primary'
-                    size='sm'
-                    isIconOnly
-                >
-                    <button
-                        {...attributes}
-                        {...listeners}
-                    >
-                        <MdDragIndicator size={28} />
-                    </button>
-                </Button>
-                {isInList &&
-                    <Button
-                        size='sm'
-                        isIconOnly
-                        color='danger'
-                        onClick={() => removeChild && removeChild(user?.id)}
-                    >
-                        <MdDelete size={28} />
-                    </Button>
-                }
-            </div>
-            <div className='flex flex-row gap-x-2 items-center -ml-1'>
-                <Avatar
-                    src={user?.avatar}
-                    alt='avatar'
-                    size='lg'
-                    className='mb-2'
-                    name={user?.firstname + ' ' + user?.lastname}
-                />
-                <div className='flex flex-col ' >
-                    <p className='font-semibold'>{user?.firstname} {user?.lastname}</p>
-                    <p >{user?.phoneNumber}</p>
-                </div>
-            </div>
-            {user?.email &&
-                <p >Email: {user?.email}</p>
-            }
-            {user?.address &&
-                <p >Address: {user?.address}</p>}
-            {user?.dateOfBirth && <p >Date of birth: {new Date(user?.dateOfBirth)?.toLocaleDateString()}</p>}
-            {user?.grade &&
-                <p >Grade: {user?.grade}</p>}
-            {user?.familyMember &&
-                <p >familyMember: {user?.familyMember}</p>}
-        </div>
-    );
-}

@@ -23,6 +23,10 @@ import { GetAllUsersDTO } from '../models';
 import { GetAllUsersType } from '../models';
 import { GetPendingUsers } from '../models';
 import { SemiConfirmedFamily } from '../models';
+import { UpdatePendingFamilyData } from '../models';
+import { UpdatePendingUserDto } from '../models';
+import { UpdateSemiConfirmedFamilyData } from '../models';
+import { UpdateSemiConfirmedUser } from '../models';
 import { UpdateUserDto } from '../models';
 import { User } from '../models';
 import { UserStatisticsDto } from '../models';
@@ -106,7 +110,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -155,6 +159,114 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {UpdateSemiConfirmedUser} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editAUserInASemiConfirmedFamily: async (body: UpdateSemiConfirmedUser, familyId: string, studentId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling editAUserInASemiConfirmedFamily.');
+            }
+            // verify required parameter 'familyId' is not null or undefined
+            if (familyId === null || familyId === undefined) {
+                throw new RequiredError('familyId','Required parameter familyId was null or undefined when calling editAUserInASemiConfirmedFamily.');
+            }
+            // verify required parameter 'studentId' is not null or undefined
+            if (studentId === null || studentId === undefined) {
+                throw new RequiredError('studentId','Required parameter studentId was null or undefined when calling editAUserInASemiConfirmedFamily.');
+            }
+            const localVarPath = `/users/editAUserInASemiConfirmedFamily/{familyId}/{studentId}`
+                .replace(`{${"familyId"}}`, encodeURIComponent(String(familyId)))
+                .replace(`{${"studentId"}}`, encodeURIComponent(String(studentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdatePendingUserDto} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        editPendingFamilyInsideTheJsonFile: async (body: UpdatePendingUserDto, familyId: string, studentId: number, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling editPendingFamilyInsideTheJsonFile.');
+            }
+            // verify required parameter 'familyId' is not null or undefined
+            if (familyId === null || familyId === undefined) {
+                throw new RequiredError('familyId','Required parameter familyId was null or undefined when calling editPendingFamilyInsideTheJsonFile.');
+            }
+            // verify required parameter 'studentId' is not null or undefined
+            if (studentId === null || studentId === undefined) {
+                throw new RequiredError('studentId','Required parameter studentId was null or undefined when calling editPendingFamilyInsideTheJsonFile.');
+            }
+            const localVarPath = `/users/updateUserInPendingFamily/{familyId}/{studentId}`
+                .replace(`{${"familyId"}}`, encodeURIComponent(String(familyId)))
+                .replace(`{${"studentId"}}`, encodeURIComponent(String(studentId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {GetPendingUsers} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -187,7 +299,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -271,7 +383,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -590,7 +702,103 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFamilyLastNameOrAddress: async (body: UpdateSemiConfirmedFamilyData, familyId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateFamilyLastNameOrAddress.');
+            }
+            // verify required parameter 'familyId' is not null or undefined
+            if (familyId === null || familyId === undefined) {
+                throw new RequiredError('familyId','Required parameter familyId was null or undefined when calling updateFamilyLastNameOrAddress.');
+            }
+            const localVarPath = `/users/updateFamilyLastNameOrAddress/{familyId}`
+                .replace(`{${"familyId"}}`, encodeURIComponent(String(familyId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {UpdatePendingFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateFamilyLastNameOrAddressInsideTheJsonFile: async (body: UpdatePendingFamilyData, familyId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateFamilyLastNameOrAddressInsideTheJsonFile.');
+            }
+            // verify required parameter 'familyId' is not null or undefined
+            if (familyId === null || familyId === undefined) {
+                throw new RequiredError('familyId','Required parameter familyId was null or undefined when calling updateFamilyLastNameOrAddressInsideTheJsonFile.');
+            }
+            const localVarPath = `/users/updateFamilyLastNameOrAddressInJson/{familyId}`
+                .replace(`{${"familyId"}}`, encodeURIComponent(String(familyId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -638,7 +846,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -680,7 +888,7 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers['Content-Type'] === 'application/json';
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
             localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
@@ -731,6 +939,36 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async deleteClass(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<boolean>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).deleteClass(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {UpdateSemiConfirmedUser} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editAUserInASemiConfirmedFamily(body: UpdateSemiConfirmedUser, familyId: string, studentId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).editAUserInASemiConfirmedFamily(body, familyId, studentId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {UpdatePendingUserDto} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editPendingFamilyInsideTheJsonFile(body: UpdatePendingUserDto, familyId: string, studentId: number, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).editPendingFamilyInsideTheJsonFile(body, familyId, studentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -889,6 +1127,34 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFamilyLastNameOrAddress(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateFamilyLastNameOrAddress(body, familyId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {UpdatePendingFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {UpdateUserDto} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -949,6 +1215,28 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         async deleteClass(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<boolean>> {
             return UserApiFp(configuration).deleteClass(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateSemiConfirmedUser} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editAUserInASemiConfirmedFamily(body: UpdateSemiConfirmedUser, familyId: string, studentId: number, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
+            return UserApiFp(configuration).editAUserInASemiConfirmedFamily(body, familyId, studentId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdatePendingUserDto} body 
+         * @param {string} familyId 
+         * @param {number} studentId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async editPendingFamilyInsideTheJsonFile(body: UpdatePendingUserDto, familyId: string, studentId: number, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
+            return UserApiFp(configuration).editPendingFamilyInsideTheJsonFile(body, familyId, studentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1055,6 +1343,26 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFamilyLastNameOrAddress(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
+            return UserApiFp(configuration).updateFamilyLastNameOrAddress(body, familyId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdatePendingFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
+            return UserApiFp(configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {UpdateUserDto} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -1111,6 +1419,30 @@ export class UserApi extends BaseAPI {
      */
     public async deleteClass(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<boolean>> {
         return UserApiFp(this.configuration).deleteClass(id, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdateSemiConfirmedUser} body 
+     * @param {string} familyId 
+     * @param {number} studentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async editAUserInASemiConfirmedFamily(body: UpdateSemiConfirmedUser, familyId: string, studentId: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
+        return UserApiFp(this.configuration).editAUserInASemiConfirmedFamily(body, familyId, studentId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdatePendingUserDto} body 
+     * @param {string} familyId 
+     * @param {number} studentId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async editPendingFamilyInsideTheJsonFile(body: UpdatePendingUserDto, familyId: string, studentId: number, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
+        return UserApiFp(this.configuration).editPendingFamilyInsideTheJsonFile(body, familyId, studentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1226,6 +1558,28 @@ export class UserApi extends BaseAPI {
      */
     public async semiConfirmFamily(body: ConfirmFamilyDTO, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
         return UserApiFp(this.configuration).semiConfirmFamily(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdateSemiConfirmedFamilyData} body 
+     * @param {string} familyId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async updateFamilyLastNameOrAddress(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
+        return UserApiFp(this.configuration).updateFamilyLastNameOrAddress(body, familyId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdatePendingFamilyData} body 
+     * @param {string} familyId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
+        return UserApiFp(this.configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

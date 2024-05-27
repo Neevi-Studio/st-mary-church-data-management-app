@@ -20,7 +20,7 @@ function SemiConfirmed() {
     const columns = useMemo<MRT_ColumnDef<any>[]>(
         () => [
             {
-                accessorFn: (row) => `${row?.familyId || ''}`,
+                accessorFn: (row) => `${row?.temporaryFamilyId || ''}`,
                 header: 'Family Id',
                 size: 150
             },
@@ -51,7 +51,7 @@ function SemiConfirmed() {
         enableFacetedValues: true,
 
         muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => router.push(`/dashboard/singleFamily?id=${row.original?.familyId}`),
+            onClick: () => router.push(`/dashboard/single-semiconfirmed-family?id=${row.original?.temporaryFamilyId}`),
             sx: {
                 cursor: 'pointer',
             },
