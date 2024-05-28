@@ -7,34 +7,44 @@ import {
     DndContext,
     useDraggable,
 } from '@dnd-kit/core';
-import { Avatar, Button } from '@nextui-org/react';
+import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { ConfirmFamilyDTO, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator, MdEdit, MdEditDocument } from 'react-icons/md';
-import { apiConfirmFamily, apiEditFamilyAddressAndLastName, apiEditFamilyMember, apiGetFamilies, apiGetMatchingFamilyUsers, apiGetSemiConfirmedFamilies, apiSemiConfirmFamily } from '@/components/utils/HiddenRequests';
+import { apiConfirmFamily, apiEditFamilyAddressAndLastName, apiEditFamilyMember, apiGetFamilies, apiGetMatchingFamilyUsers, apiGetSemiConfirmedFamilies, apiGetSingleUser, apisearchUsers, apiSemiConfirmFamily, apiUpdateSemiConfirmedFamily } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
 import FullScreenLoader from '@/app';
 import EditFamilyData from './EditFamilyData';
 import EditFamilyMemberModal from './EditFamilyMemberModal';
+import UserDataModal from '../singleFamily/UserDataModal';
 
 function SingleFamilyEdit() {
 
     const id = useSearchParams().get('id')
     const [selectedFamily, setSelectedFamily] = useState<any>(null)
     const router = useRouter()
-    console.log(selectedFamily)
+    const [pendingUsers, setPendingUsers] = useState<any>([])
+
+
     const { isLoading } = useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
             const { result } = await apiGetSemiConfirmedFamilies()
-            setSelectedFamily(result?.filter((item: any) => item?.temporaryFamilyId == id)[0])
+            setSelectedFamily(result?.filter((item: any) => item?.id == id)[0])
             return result?.filter((item: any) => item?.familyId == id)[0]
         },
     })
 
-
+    const { mutate: UpdateSemiConfirmedFamily } = useMutation({
+        mutationKey: ['UpdateSemiConfirmedFamily'],
+        mutationFn: async (body: ConfirmFamilyDTO) => {
+            console.log(id, body)
+            const { result } = await apiUpdateSemiConfirmedFamily(id || '', body)
+            return result
+        },
+    })
 
 
     type DraggableProps = {
@@ -45,7 +55,7 @@ function SingleFamilyEdit() {
 
     function removeFamilyMember(memberFullName: string) {
         setSelectedFamily((old: any) => {
-            const filtered = old?.individuals.filter((item: any) => item?.firstname + item?.lastname !== memberFullName)
+            const filtered = old?.individuals?.filter((item: any) => item?.pendingUser?.firstname + item?.pendingUser?.lastname !== memberFullName)
             return { ...old, individuals: filtered }
         })
     }
@@ -71,22 +81,31 @@ function SingleFamilyEdit() {
         setParent((old) => old.filter((item) => item.childId !== childId));
     }
 
+    function removeChild2(userId: string) {
+        setSelectedFamily((old: any) => {
+            const filtered = old?.individuals?.filter((item: any) => item?.userId?.id !== userId)
+            console.log(filtered)
+            return { ...old, individuals: filtered }
+        })
+    }
+
 
     const { mutate: confirmFamilyy, isPending } = useMutation({
         mutationKey: ['confirmFamily'],
         mutationFn: async () => {
             const body: ConfirmFamilyDTO = {
+                id: selectedFamily?.id,
                 familyLastName: selectedFamily?.familyLastName,
                 familyAddress: selectedFamily?.familyAddress,
                 temporaryFamilyId: selectedFamily?.familyId,
                 individuals: selectedFamily?.individuals.map((individual: any) => ({
-                    userId: parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname)[0]?.childId,
+                    userId: parent?.filter((item) => item.parentId === individual?.pendingUser?.firstname + individual?.pendingUser?.lastname)[0]?.childId || individual?.userId?.id,
                     pendingUser: {
-                        ...individual
+                        ...individual?.pendingUser
                     }
                 }))
             }
-            const { result } = await apiSemiConfirmFamily(body)
+            const { result } = await apiConfirmFamily(id || '', body)
             return result
         },
         onError: (error) => console.log(error),
@@ -122,10 +141,9 @@ function SingleFamilyEdit() {
     }
 
 
-    const { mutate: EditPendingFamily, isPending: isEditiing2 } = useMutation({
+    const { mutate: EditPendingFamily } = useMutation({
         mutationKey: ['EditPendingFamily'],
         mutationFn: async (body: editFamilyData) => {
-            console.log(body)
             const { result } = await apiEditFamilyAddressAndLastName(body?.familyId, body.body)
             return result
         },
@@ -147,6 +165,37 @@ function SingleFamilyEdit() {
 
 
 
+
+    const { mutate: handleSearch, isPending: isSearching, data: users } = useMutation({
+        mutationKey: ['EditPendingFamilyMember'],
+        mutationFn: async (searchTerm: string) => {
+            const { result } = await apisearchUsers(searchTerm)
+            return result
+        }
+    })
+
+    const [userDataModalState, setUserDataModal] = useState(false)
+
+    const { mutate: getSingleUser, data: singleSearchedUser, isPending: isGettingSingleUser } = useMutation({
+        mutationKey: ['EditPendingFamilyMember'],
+        mutationFn: async (userId: string) => {
+            const { result } = await apiGetSingleUser(userId)
+            return result
+        },
+        onSuccess: () => {
+            setUserDataModal(true)
+        }
+    })
+
+
+    const [searchBarValue, setSearchBarValue] = useState('')
+
+    const addFamilyMember = (user: User) => {
+        setPendingUsers((old: any) => old.concat(user))
+        setUserDataModal(false)
+    }
+
+
     return (
         <div>
             <div className='flex flex-col gap-y-3 border-2 border-gray-500 p-3 rounded-lg relative' >
@@ -166,6 +215,51 @@ function SingleFamilyEdit() {
             {(isLoading) &&
                 <FullScreenLoader />
             }
+
+            <div className='flex items-center justify-center w-[50%] mx-auto my-6'>
+
+                <Input
+                    label="Search users"
+                    variant="bordered"
+                    placeholder="you can search with name, email or phone number"
+                    onChange={(e) => setSearchBarValue(e.target.value)}
+                    value={searchBarValue}
+                />
+                <Dropdown>
+                    <DropdownTrigger>
+                        <Button
+                            className={`${isSearching ? "-ml-40" : "-ml-32"} `}
+                            variant="bordered"
+                            isLoading={isSearching || isGettingSingleUser}
+                            disabled={isSearching || !searchBarValue || isGettingSingleUser}
+                            onClick={(e) => handleSearch(searchBarValue)}
+                        >
+                            Start search
+                        </Button>
+                    </DropdownTrigger>
+                    <DropdownMenu
+                        className='max-h-[150px] overflow-y-scroll w-[300px]' aria-label="Static Actions">
+                        {users?.map((item: any) => (
+                            <DropdownItem
+                                value={item?.id}
+                                key={item?.id}
+                                onClick={() => getSingleUser(item?.id)}
+                            >
+                                {item?.firstname} {item?.lastname}
+                            </DropdownItem>
+                        ))}
+                    </DropdownMenu>
+                </Dropdown>
+            </div>
+
+            <UserDataModal
+                isOpen={userDataModalState}
+                setIsOpen={setUserDataModal}
+                userData={singleSearchedUser}
+                onConfirm={(user: User) => {
+                    addFamilyMember(user)
+                }}
+            />
 
             <EditFamilyData
                 isOpen={isOpen}
@@ -193,15 +287,15 @@ function SingleFamilyEdit() {
                 <div className='grid grid-cols-3 gap-5 mt-5' >
                     {selectedFamily?.individuals?.map((individual: any) => (
                         <Droppable
-                            key={individual?.firstname + individual?.lastname} id={individual?.firstname + individual?.lastname} dragging={isDragging}>
+                            key={individual?.pendingUser?.firstname + individual?.pendingUser?.lastname} id={individual?.pendingUser?.firstname + individual?.pendingUser?.lastname} dragging={isDragging}>
                             <div className='flex flex-col gap-y-1 p-4 relative w-full h-full '>
                                 <div className='flex flex-row gap-x-1 items-center absolute top-0 right-0 m-3' >
-                                    {parent?.filter((item) => item.parentId === individual?.firstname + individual?.lastname)?.length === 0 &&
+                                    {parent?.filter((item) => item.parentId === individual?.pendingUser?.firstname + individual?.pendingUser?.lastname)?.length === 0 &&
                                         <Button
                                             size='sm'
                                             isIconOnly
                                             color='danger'
-                                            onClick={() => removeFamilyMember(individual?.firstname + individual?.lastname)}
+                                            onClick={() => removeFamilyMember(individual?.pendingUser?.firstname + individual?.pendingUser?.lastname)}
                                         >
                                             <MdDelete size={28} />
                                         </Button>
@@ -236,13 +330,24 @@ function SingleFamilyEdit() {
                                     </DraggableItem>
                                 }
 
+                                {parent?.filter((item: any) => item.parentId === individual?.pendingUser?.firstname + individual?.pendingUser?.lastname).map((itemm: any) =>
+                                    <DraggableItem
+                                        key={itemm?.childId}
+                                        user={pendingUsers?.filter((user: User) => user?.id === itemm?.childId)[0]}
+                                        removeChild={removeChild}
+                                        isInList={true}
+                                    >
+                                    </DraggableItem>
+                                )}
+
+
                             </div>
                         </Droppable>
                     ))}
                 </div>
 
 
-                {/* <div className='grid grid-cols-4 gap-5 mb-12 mt-5' >
+                <div className='grid grid-cols-4 gap-5 mb-12 mt-5' >
                     {pendingUsers?.filter((user: User) => !parent.some((item) => item.childId === user?.id?.toString()))
                         .map((user: User) => (
                             <DraggableItem
@@ -254,13 +359,15 @@ function SingleFamilyEdit() {
                             </DraggableItem>
                         ))
                     }
-                </div> */}
-            </DndContext>
+                </div>
+
+
+            </DndContext >
 
             <Button isLoading={isPending} className='w-full bg-[#66A3D0] mb-12' color='primary' onClick={() => confirmFamilyy()}>
                 Confirm
             </Button>
-        </div>
+        </div >
     )
 }
 

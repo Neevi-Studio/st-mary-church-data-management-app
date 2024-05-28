@@ -12,8 +12,8 @@ const Header = () => {
     const { isSideBarOpen, toggled, setToggled, SetSideBar, broken } = useContext(SideBarContext)
 
     return (
-        <header className="sticky top-0 z-10 flex w-full bg-white drop-shadow-1 border-b ">
-            <div className="flex flex-grow items-center justify-between px-4 py-8 shadow-2 md:px-6 2xl:px-11">
+        <header className="sticky top-0 z-[20] flex w-full bg-white drop-shadow-1 border-b ">
+            <div className="flex  flex-grow items-center justify-between px-4 py-8 shadow-2 md:px-6 2xl:px-11">
                 {broken &&
                     <div className="flex items-center gap-2 sm:gap-4 ">
                         <button

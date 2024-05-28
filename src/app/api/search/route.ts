@@ -1,6 +1,7 @@
-import { ConfirmFamilyDTO, UserApi } from "@/Api";
-import { AXIOS_CONFIG } from "@/Api/wrapper";
-import { NextRequest, NextResponse } from "next/server";
+
+import { NextRequest, NextResponse } from 'next/server';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import { UserApi } from '@/Api';
 import cookie from 'cookie';
 
 export async function POST(req: NextRequest) {
@@ -8,15 +9,13 @@ export async function POST(req: NextRequest) {
     const cookies = cookie.parse(req.headers.get('Cookie') || '');
     const tokenFroMCoockies = cookies['saintmary-dashToken'];
     try {
-        const body = (await req.json());
+        const data = (await req.json()) as string;
 
-console.log(body)
-        const result = await new UserApi(AXIOS_CONFIG).confirmFamily(body.body, body.familyId, {
+        const result = await new UserApi(AXIOS_CONFIG).searchUsers(data, {
             headers: {
                 Authorization: `Bearer ${tokenFroMCoockies}`
             }
         });
-
 
         const response = new NextResponse(
             JSON.stringify({
@@ -34,3 +33,10 @@ console.log(body)
         throw new Error(error);
     }
 }
+
+
+
+
+
+
+

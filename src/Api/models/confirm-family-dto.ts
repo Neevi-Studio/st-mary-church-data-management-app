@@ -21,12 +21,17 @@ import { ConfirmUserDTO } from './confirm-user-dto';
  */
 export interface ConfirmFamilyDTO {
 
+    
+    /**
+     * @type {string}
+     * @memberof ConfirmFamilyDTO
+     */
+    id: string;
     /**
      * @type {string}
      * @memberof ConfirmFamilyDTO
      */
     familyLastName: string;
-
     /**
      * @type {string}
      * @memberof ConfirmFamilyDTO

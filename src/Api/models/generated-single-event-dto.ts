@@ -20,6 +20,7 @@ import { User } from './user';
  * @interface GeneratedSingleEventDTO
  */
 export interface GeneratedSingleEventDTO {
+
     /**
      * @type {string}
      * @memberof GeneratedSingleEventDTO

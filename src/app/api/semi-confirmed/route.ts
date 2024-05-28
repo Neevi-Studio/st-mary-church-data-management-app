@@ -3,19 +3,19 @@ import { AXIOS_CONFIG } from "@/Api/wrapper";
 import { NextRequest, NextResponse } from "next/server";
 import cookie from 'cookie';
 
-export async function POST(req: NextRequest) {
-
+export async function PATCH(req: NextRequest) {
     const cookies = cookie.parse(req.headers.get('Cookie') || '');
     const tokenFroMCoockies = cookies['saintmary-dashToken'];
+
     try {
         const body = (await req.json());
 
-console.log(body)
-        const result = await new UserApi(AXIOS_CONFIG).confirmFamily(body.body, body.familyId, {
-            headers: {
-                Authorization: `Bearer ${tokenFroMCoockies}`
-            }
-        });
+        const result = await new UserApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body.body, body?.familyId,
+            {
+                headers: {
+                    Authorization: `Bearer ${tokenFroMCoockies}`
+                }
+            });
 
 
         const response = new NextResponse(

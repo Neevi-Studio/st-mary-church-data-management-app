@@ -39,11 +39,16 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
     return {
         /**
          * 
+         * @param {ConfirmFamilyDTO} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        confirmFamily: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        confirmFamily: async (body: ConfirmFamilyDTO, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling confirmFamily.');
+            }
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
                 throw new RequiredError('id','Required parameter id was null or undefined when calling confirmFamily.');
@@ -60,6 +65,8 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
                 query.set(key, localVarQueryParameter[key]);
@@ -70,6 +77,8 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -393,6 +402,39 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getDuplicateUsers: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/users/duplicateUsers`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @summary Get my profile -- APP (Just add the Token in the Header .. i will retrieve the user ID from it)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -670,6 +712,48 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {string} searchTerm 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        searchUsers: async (searchTerm: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'searchTerm' is not null or undefined
+            if (searchTerm === null || searchTerm === undefined) {
+                throw new RequiredError('searchTerm','Required parameter searchTerm was null or undefined when calling searchUsers.');
+            }
+            const localVarPath = `/users/search`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            if (searchTerm !== undefined) {
+                localVarQueryParameter['searchTerm'] = searchTerm;
+            }
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {ConfirmFamilyDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -808,6 +892,54 @@ export const UserApiAxiosParamCreator = function (configuration?: Configuration)
         },
         /**
          * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        updateSemiConfirmedFamily: async (body: UpdateSemiConfirmedFamilyData, familyId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateSemiConfirmedFamily.');
+            }
+            // verify required parameter 'familyId' is not null or undefined
+            if (familyId === null || familyId === undefined) {
+                throw new RequiredError('familyId','Required parameter familyId was null or undefined when calling updateSemiConfirmedFamily.');
+            }
+            const localVarPath = `/users/updateSemiConfirmedFamily/{familyId}`
+                .replace(`{${"familyId"}}`, encodeURIComponent(String(familyId)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {UpdateUserDto} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
@@ -907,12 +1039,13 @@ export const UserApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {ConfirmFamilyDTO} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async confirmFamily(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
-            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).confirmFamily(id, options);
+        async confirmFamily(body: ConfirmFamilyDTO, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).confirmFamily(body, id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1008,6 +1141,18 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async getAllUsers(body: GetAllUsersDTO, classId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<GetAllUsersType>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getAllUsers(body, classId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<>>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getDuplicateUsers(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1114,6 +1259,19 @@ export const UserApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
+         * @param {string} searchTerm 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchUsers(searchTerm: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<User>>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).searchUsers(searchTerm, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
          * @param {ConfirmFamilyDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1148,6 +1306,20 @@ export const UserApiFp = function(configuration?: Configuration) {
          */
         async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateSemiConfirmedFamily(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SemiConfirmedFamily>>> {
+            const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).updateSemiConfirmedFamily(body, familyId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -1191,12 +1363,13 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
     return {
         /**
          * 
+         * @param {ConfirmFamilyDTO} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async confirmFamily(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
-            return UserApiFp(configuration).confirmFamily(id, options).then((request) => request(axios, basePath));
+        async confirmFamily(body: ConfirmFamilyDTO, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
+            return UserApiFp(configuration).confirmFamily(body, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1267,6 +1440,14 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<>>> {
+            return UserApiFp(configuration).getDuplicateUsers(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @summary Get my profile -- APP (Just add the Token in the Header .. i will retrieve the user ID from it)
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1334,6 +1515,15 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
         },
         /**
          * 
+         * @param {string} searchTerm 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async searchUsers(searchTerm: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<User>>> {
+            return UserApiFp(configuration).searchUsers(searchTerm, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
          * @param {ConfirmFamilyDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
@@ -1360,6 +1550,16 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          */
         async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
             return UserApiFp(configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateSemiConfirmedFamilyData} body 
+         * @param {string} familyId 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateSemiConfirmedFamily(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<SemiConfirmedFamily>> {
+            return UserApiFp(configuration).updateSemiConfirmedFamily(body, familyId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -1392,13 +1592,14 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
 export class UserApi extends BaseAPI {
     /**
      * 
+     * @param {ConfirmFamilyDTO} body 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public async confirmFamily(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
-        return UserApiFp(this.configuration).confirmFamily(id, options).then((request) => request(this.axios, this.basePath));
+    public async confirmFamily(body: ConfirmFamilyDTO, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
+        return UserApiFp(this.configuration).confirmFamily(body, id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1473,6 +1674,15 @@ export class UserApi extends BaseAPI {
      */
     public async getAllUsers(body: GetAllUsersDTO, classId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<GetAllUsersType>> {
         return UserApiFp(this.configuration).getAllUsers(body, classId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async getDuplicateUsers(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<>>> {
+        return UserApiFp(this.configuration).getDuplicateUsers(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1551,6 +1761,16 @@ export class UserApi extends BaseAPI {
     }
     /**
      * 
+     * @param {string} searchTerm 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async searchUsers(searchTerm: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<User>>> {
+        return UserApiFp(this.configuration).searchUsers(searchTerm, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
      * @param {ConfirmFamilyDTO} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
@@ -1580,6 +1800,17 @@ export class UserApi extends BaseAPI {
      */
     public async updateFamilyLastNameOrAddressInsideTheJsonFile(body: UpdatePendingFamilyData, familyId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
         return UserApiFp(this.configuration).updateFamilyLastNameOrAddressInsideTheJsonFile(body, familyId, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdateSemiConfirmedFamilyData} body 
+     * @param {string} familyId 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof UserApi
+     */
+    public async updateSemiConfirmedFamily(body: UpdateSemiConfirmedFamilyData, familyId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<SemiConfirmedFamily>> {
+        return UserApiFp(this.configuration).updateSemiConfirmedFamily(body, familyId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 

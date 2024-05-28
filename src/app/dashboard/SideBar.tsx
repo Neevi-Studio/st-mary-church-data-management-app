@@ -10,8 +10,8 @@ import { usePathname } from 'next/navigation';
 // import { BiSolidCoupon } from "react-icons/bi";
 // import { RiEmojiStickerLine } from "react-icons/ri";
 import { SideBarContext } from '@/components/context/SideBarContextContext';
-import { MdOutlineConfirmationNumber, MdWallpaper } from 'react-icons/md';
-import { BsFileEarmarkBinaryFill } from 'react-icons/bs';
+import { MdFamilyRestroom, MdOutlineConfirmationNumber, MdPendingActions, MdWallpaper } from 'react-icons/md';
+import { FaList } from "react-icons/fa";
 
 function SideBar() {
     const { isSideBarOpen, toggled, setToggled, setBroken, SetSideBar, broken } = useContext(SideBarContext)
@@ -123,21 +123,21 @@ function SideBar() {
             <Menu menuItemStyles={menuItemStyles}>
 
                 <MenuItem
-                    icon={<LuHome size={25} />}
+                    icon={<FaList size={25} />}
                     onClick={closeSidebar}
                     active={pathname === `/dashboard`}
                     component={<Link href={`/dashboard`} />} >
                     Pending Families
                 </MenuItem>
                 <MenuItem
-                    icon={<BsFileEarmarkBinaryFill size={25} />}
+                    icon={<MdPendingActions size={25} />}
                     onClick={closeSidebar}
                     active={pathname === `/dashboard/semi-confirmed-families`}
                     component={<Link href={`/dashboard/semi-confirmed-families`} />} >
                     Semi Confiremd
                 </MenuItem>
                 <MenuItem
-                    icon={<MdOutlineConfirmationNumber size={25} />}
+                    icon={<MdFamilyRestroom size={25} />}
                     onClick={closeSidebar}
                     active={pathname === `/dashboard/confirmed`}
                     component={<Link href={`/dashboard/confirmed`} />} >

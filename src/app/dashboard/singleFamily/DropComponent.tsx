@@ -23,7 +23,7 @@ type props = {
     handleOpenEditModal: (value: boolean) => void
 }
 function DropComponent({ individual, removeFamilyMember, parent, pendingUsers, removeChild, isDragging, handleOpenEditModal }: props) {
-
+console.log(individual)
 
     return (
         <Droppable

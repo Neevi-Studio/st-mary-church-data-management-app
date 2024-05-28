@@ -1,4 +1,4 @@
-import { ConfirmFamilyDTO, GetPendingUsers, LoginDto, UpdatePendingFamilyData, UpdatePendingUserDto, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User } from "@/Api";
+import { ConfirmFamilyDTO, GetPendingUsers, LoginDto, UpdateFamilyDto, UpdatePendingFamilyData, UpdatePendingUserDto, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, UpdateUserDto, User } from "@/Api";
 
 export async function apiLoginUser(credentials: LoginDto) {
   try {
@@ -48,6 +48,66 @@ export async function apiGetConfirmedFamilies() {
   try {
     const response = await fetch(`/api/families/confirmed`, {
       method: 'GET'
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiGetSingleConfirmedFamily(familyId: string) {
+  try {
+    const response = await fetch(`/api/families/confirmed`, {
+      method: 'POST',
+      body: JSON.stringify(familyId),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiUpdateFamily(familyId: string, body: UpdateFamilyDto) {
+  try {
+    const response = await fetch(`/api/singleFamily`, {
+      method: 'PATCH',
+      body: JSON.stringify({ id: familyId, body: body }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiUpdateUser(userId: string, body: UpdateUserDto) {
+  try {
+    const response = await fetch(`/api/PatchSingleUser`, {
+      method: 'PATCH',
+      body: JSON.stringify({ id: userId, body: body }),
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiUpdateSemiConfirmedFamily(familyId: string, body: UpdateUserDto) {
+  try {
+    const response = await fetch(`/api/semi-confirmed`, {
+      method: 'PATCH',
+      body: JSON.stringify({ id: familyId, body: body }),
     });
     if (!response.ok) {
       throw new Error('Failed to fetch data');
@@ -180,14 +240,18 @@ export async function apiEditFamilyAddressAndLastName(familyId: string, body: Up
   }
 }
 
-export async function apiConfirmFamily(familyId: string) {
+export async function apiConfirmFamily(familyId: string, body: ConfirmFamilyDTO) {
+  const bodyy = {
+    familyId,
+    body
+  }
   try {
     const response = await fetch(`/api/families/confirm`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(familyId)
+      body: JSON.stringify(bodyy)
     });
     if (!response.ok) {
       throw new Error('Failed to fetch data');
@@ -205,6 +269,59 @@ export async function apiGetMyProfile() {
       headers: {
         'Content-Type': 'application/json',
       },
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apisearchUsers(searchTerm: string) {
+  try {
+    const response = await fetch(`/api/search`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(searchTerm)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiGetDuplicates() {
+  try {
+    const response = await fetch(`/api/getDuplicates`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiGetSingleUser(userId: string) {
+  try {
+    const response = await fetch(`/api/getSingleUser`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userId)
     });
     if (!response.ok) {
       throw new Error('Failed to fetch data');

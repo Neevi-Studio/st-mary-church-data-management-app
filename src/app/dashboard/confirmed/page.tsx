@@ -51,7 +51,7 @@ function ConfirmedFamilies() {
         enableFacetedValues: true,
 
         muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => router.push(`/dashboard/singleFamily?id=${row.original?.familyId}`),
+            onClick: () => router.push(`/dashboard/singleConfirmedFamily?id=${row.original?.id}`),
             sx: {
                 cursor: 'pointer',
             },
