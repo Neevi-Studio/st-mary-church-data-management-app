@@ -1151,7 +1151,7 @@ export const UserApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<>>>> {
+        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<[]>>> {
             const localVarAxiosArgs = await UserApiAxiosParamCreator(configuration).getDuplicateUsers(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -1443,7 +1443,7 @@ export const UserApiFactory = function (configuration?: Configuration, basePath?
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<>>> {
+        async getDuplicateUsers(options?: AxiosRequestConfig): Promise<AxiosResponse<[]>> {
             return UserApiFp(configuration).getDuplicateUsers(options).then((request) => request(axios, basePath));
         },
         /**
@@ -1681,7 +1681,7 @@ export class UserApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof UserApi
      */
-    public async getDuplicateUsers(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<>>> {
+    public async getDuplicateUsers(options?: AxiosRequestConfig) : Promise<AxiosResponse<[]>> {
         return UserApiFp(this.configuration).getDuplicateUsers(options).then((request) => request(this.axios, this.basePath));
     }
     /**
