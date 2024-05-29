@@ -26,6 +26,7 @@ function SingleFamilyEdit() {
     const [selectedFamily, setSelectedFamily] = useState<any>(null)
     const router = useRouter()
     const [pendingUsers, setPendingUsers] = useState<any>([])
+    const [parent, setParent] = useState<DraggableProps[] | []>([]);
 
 
     const { isLoading } = useQuery({
@@ -33,6 +34,8 @@ function SingleFamilyEdit() {
         queryFn: async () => {
             const { result } = await apiGetSemiConfirmedFamilies()
             setSelectedFamily(result?.filter((item: any) => item?.id == id)[0])
+            setParent(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id)?.map((item: any) => ({ parentId: item?.pendingUser?.firstname + item?.pendingUser?.lastname, childId: item?.userId?.id })))
+            setPendingUsers(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id).map((item: any) => item?.userId))
             return result?.filter((item: any) => item?.familyId == id)[0]
         },
     })
@@ -61,7 +64,6 @@ function SingleFamilyEdit() {
     }
 
     const [isDragging, setIsDragging] = useState(false);
-    const [parent, setParent] = useState<DraggableProps[] | []>([]);
 
 
     function handleDragEnd(event: any) {
@@ -196,6 +198,7 @@ function SingleFamilyEdit() {
     }
 
 
+
     return (
         <div>
             <div className='flex flex-col gap-y-3 border-2 border-gray-500 p-3 rounded-lg relative' >
@@ -215,6 +218,19 @@ function SingleFamilyEdit() {
             {(isLoading) &&
                 <FullScreenLoader />
             }
+            <div className='flex flex-col mt-5 space-y-1'>
+                <p className='font-bold text-xl'>Important Notes:</p>
+                <p>The user boxes at the top contain data from the previous database, which we are importing.</p>
+                <p>The user boxes at the bottom contain data from the current database to which we are migrating.</p>
+                <p>To migrate user data, drag and drop users from the bottom boxes to the top boxes.</p>
+                <p>Note: If there are discrepancies between the old and new databases, the data from the old database will overwrite the data in the new database.</p>
+                <p>This means that information in the larger box (top box) will replace the information in the smaller box (bottom box).</p>
+                <p>If a user does not have an edit button, this is normal. You can edit their details after creating the family.</p>
+                <p>If there is a user with no matchings .. it will be created once confirmed </p>
+                <p className='text-red-500 font-semibold'>
+                    If there are duplicates or incorrect data, please leave them as is until reviewed by an administrator.
+                </p>
+            </div>
 
             <div className='flex items-center justify-center w-[50%] mx-auto my-6'>
 
@@ -320,7 +336,7 @@ function SingleFamilyEdit() {
                                     <p>Date of birth: {individual?.pendingUser?.dateOfBirth}</p>
                                     <p>Grade: {individual?.pendingUser?.grade}</p>
                                 </div>
-
+                                {/* 
                                 {individual?.userId &&
                                     <DraggableItem
                                         user={individual?.userId}
@@ -328,7 +344,7 @@ function SingleFamilyEdit() {
                                         isInList={true}
                                     >
                                     </DraggableItem>
-                                }
+                                } */}
 
                                 {parent?.filter((item: any) => item.parentId === individual?.pendingUser?.firstname + individual?.pendingUser?.lastname).map((itemm: any) =>
                                     <DraggableItem

@@ -87,7 +87,7 @@ function SingleFamilyEdit() {
         mutationKey: ['confirmFamily'],
         mutationFn: async () => {
             const body: ConfirmFamilyDTO = {
-                id:"",
+                id: "",
                 familyLastName: selectedFamily?.familyLastName,
                 familyAddress: selectedFamily?.familyAddress,
                 temporaryFamilyId: selectedFamily?.familyId,
@@ -103,7 +103,7 @@ function SingleFamilyEdit() {
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
-            toast.success('Family confirmed & created successfully')
+            toast.success('Family semi confirmed successfully')
             router.back()
         }
     })
@@ -128,6 +128,7 @@ function SingleFamilyEdit() {
             toast.success('Family member edited successfully')
             setIsOpen(false)
             queryClient.invalidateQueries({ queryKey: [`pendingFamilies${id}`] })
+            setIsEditModalOpen(false)
         }
     })
 
@@ -231,6 +232,22 @@ function SingleFamilyEdit() {
                 userData={singleSearchedUser}
                 onConfirm={(user: User) => addUserToPendingUsers(user)}
             />
+            
+            <div className='flex flex-col mt-5 space-y-1'>
+                <p className='font-bold text-xl'>Important Notes:</p>
+                <p>The user boxes at the top contain data from the previous database, which we are importing.</p>
+                <p>The user boxes at the bottom contain data from the current database to which we are migrating.</p>
+                <p>To migrate user data, drag and drop users from the bottom boxes to the top boxes.</p>
+                <p>Note: If there are discrepancies between the old and new databases, the data from the old database will overwrite the data in the new database.</p>
+                <p>This means that information in the larger box (top box) will replace the information in the smaller box (bottom box).</p>
+                <p>If a user does not have an edit button, this is normal. You can edit their details after creating the family.</p>
+                <p>If there is a user with no matchings .. it will be created once confirmed </p>
+                <p className='text-red-500 font-semibold'>
+                    If there are duplicates or incorrect data, please leave them as is until reviewed by an administrator.
+                </p>
+            </div>
+
+
 
             <div className='flex items-center justify-center w-[50%] mx-auto my-6'>
 

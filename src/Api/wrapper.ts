@@ -19,7 +19,7 @@ export const AXIOS_CONFIG = new Configuration({
   baseOptions: {
     signal: ABORT_CONTROLLER.signal,
     // MONKEY PATCH
-    timeout: 10000,
+    timeout: 100000,
     // basePath: 'http://3.135.166.30:3333',
     baseURL: process.env.NEXT_PUBLIC_API_URL
   }

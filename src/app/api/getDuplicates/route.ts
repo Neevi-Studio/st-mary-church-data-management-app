@@ -15,7 +15,6 @@ export async function GET(req: NextRequest) {
                 Authorization: `Bearer ${tokenFroMCoockies}`
             }
         });
-
         const response = new NextResponse(
             JSON.stringify({
                 status: "success",

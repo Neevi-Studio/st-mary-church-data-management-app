@@ -10,7 +10,7 @@ import { usePathname } from 'next/navigation';
 // import { BiSolidCoupon } from "react-icons/bi";
 // import { RiEmojiStickerLine } from "react-icons/ri";
 import { SideBarContext } from '@/components/context/SideBarContextContext';
-import { MdFamilyRestroom, MdOutlineConfirmationNumber, MdPendingActions, MdWallpaper } from 'react-icons/md';
+import { MdFamilyRestroom, MdOutlineConfirmationNumber, MdOutlineControlPointDuplicate, MdPendingActions, MdWallpaper } from 'react-icons/md';
 import { FaList } from "react-icons/fa";
 
 function SideBar() {
@@ -142,6 +142,13 @@ function SideBar() {
                     active={pathname === `/dashboard/confirmed`}
                     component={<Link href={`/dashboard/confirmed`} />} >
                     Confirmed Families
+                </MenuItem>
+                <MenuItem
+                    icon={<MdOutlineControlPointDuplicate size={25} />}
+                    onClick={closeSidebar}
+                    active={pathname === `/dashboard/duplicate-users`}
+                    component={<Link href={`/dashboard/duplicate-users`} />} >
+                    Duplicate users
                 </MenuItem>
                 {/* 
                 <MenuItem
