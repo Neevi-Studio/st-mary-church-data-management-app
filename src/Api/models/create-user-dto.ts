@@ -159,10 +159,10 @@ export interface CreateUserDto {
     appleId?: string;
 
     /**
-     * @type {string}
+     * @type {any}
      * @memberof CreateUserDto
      */
-    responsibleServant?: string;
+    responsibleServant?: any;
 
     /**
      * @type {string}

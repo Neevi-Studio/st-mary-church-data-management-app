@@ -314,6 +314,42 @@ export async function apiGetDuplicates() {
   }
 }
 
+export async function apiUserDuplicates(userId: string) {
+  try {
+    const response = await fetch(`/api/userDuplicates`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userId)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
+export async function apiDeleteUser(userId: string) {
+  try {
+    const response = await fetch(`/api/deleteUser`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(userId)
+    });
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+    return response.json()
+  } catch (error: any) {
+    throw new Error(error);
+  }
+}
+
 export async function apiGetSingleUser(userId: string) {
   try {
     const response = await fetch(`/api/getSingleUser`, {

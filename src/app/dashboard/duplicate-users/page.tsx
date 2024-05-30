@@ -45,12 +45,12 @@ function DuplicateUsers() {
         enableColumnPinning: true,
         enableFacetedValues: true,
 
-        // muiTableBodyRowProps: ({ row }) => ({
-        //     onClick: () => router.push(`/dashboard/singleConfirmedFamily?id=${row.original?.id}`),
-        //     sx: {
-        //         cursor: 'pointer',
-        //     },
-        // }),
+        muiTableBodyRowProps: ({ row }) => ({
+            onClick: () => router.push(`/dashboard/singleDuplicateUser?id=${row.original?.[0]?.id}`),
+            sx: {
+                cursor: 'pointer',
+            },
+        }),
         paginationDisplayMode: 'pages',
         positionToolbarAlertBanner: 'bottom',
         muiSearchTextFieldProps: {
