@@ -5,18 +5,18 @@ import {
 } from '@dnd-kit/core';
 import { Button, Input, } from '@nextui-org/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, UpdatePendingUserDto, User } from '@/Api'
+import { ConfirmFamilyDTO, UpdatePendingUserDto, User, UserApi } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdEditDocument } from 'react-icons/md';
-import { apiEditPendingFamilyAddress, apiEditPendingFamilyMember, apiGetFamilies, apiGetMatchingFamilyUsers, apiGetSingleUser, apisearchUsers, apiSemiConfirmFamily } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
 import FullScreenLoader from '@/app';
 import DropComponent from './DropComponent';
 import EditFamilyData from './EditFamilyData';
-import EditFamilyMemberModal from './EditFamilyMemberModal';
 import DraggableItem from '../DraggableItem';
 import { Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, } from "@nextui-org/react";
 import UserDataModal from './UserDataModal';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import UserHandleModal from './UserHandleModal';
 
 function SingleFamilyEdit() {
 
@@ -26,20 +26,22 @@ function SingleFamilyEdit() {
     const [pendingUsers, setPendingUsers] = useState<any>([])
     const queryClient = useQueryClient()
 
+
     const { isLoading } = useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
-            const { result } = await apiGetFamilies()
-            setSelectedFamily(result?.filter((item: any) => item?.familyId == id)[0])
-            return result?.filter((item: any) => item?.familyId == id)[0]
+            if (!id) return
+            const result = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+            setSelectedFamily(result?.data?.filter((item: any) => item?.familyId == id)[0])
+            return result?.data?.filter((item: any) => item?.familyId == id)[0]
         },
     })
 
     const { mutate } = useMutation({
         mutationKey: ['pendingUsers'],
         mutationFn: async () => {
-            const { result } = await apiGetMatchingFamilyUsers({ users: selectedFamily?.individuals })
-            return result
+            const { data } = await new UserApi(AXIOS_CONFIG).findMatchingUsers({ users: selectedFamily?.individuals })
+            return data
         },
         onSuccess: (data) => {
             setPendingUsers(data)
@@ -98,8 +100,8 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const { result } = await apiSemiConfirmFamily(body)
-            return result
+            const { data } = await new UserApi(AXIOS_CONFIG).semiConfirmFamily(body)
+            return data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
@@ -120,8 +122,8 @@ function SingleFamilyEdit() {
     const { mutate: EditPendingFamilyMember, isPending: isEditing } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (body: editUser) => {
-            const { result } = await apiEditPendingFamilyMember(body.familyId, body.studentId, body.body)
-            return result
+            const data = await new UserApi(AXIOS_CONFIG).editPendingFamilyInsideTheJsonFile(body.body, body?.familyId, body?.studentId)
+            return data.data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
@@ -142,8 +144,8 @@ function SingleFamilyEdit() {
     const { mutate: EditPendingFamily, isPending: isEditiing2 } = useMutation({
         mutationKey: ['EditPendingFamily'],
         mutationFn: async (body: editFamilyData) => {
-            const { result } = await apiEditPendingFamilyAddress(body?.familyId, body.body)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).updateFamilyLastNameOrAddressInsideTheJsonFile(body.body, body?.familyId)
+            return result?.data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
@@ -153,28 +155,30 @@ function SingleFamilyEdit() {
         }
     })
 
+    const [modalType, setModalType] = useState('edit')
 
 
     function handleOpenEditModal(individual: any) {
         setSelectedIndividual(individual)
+        setModalType('edit')
         setIsEditModalOpen(true)
     }
 
     const { mutate: handleSearch, isPending: isSearching, data: users } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (searchTerm: string) => {
-            const { result } = await apisearchUsers(searchTerm)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).searchUsers(searchTerm)
+            return result?.data
         }
     })
 
     const [userDataModalState, setUserDataModal] = useState(false)
 
-    const { mutate: getSingleUser, data: singleSearchedUser, isPending: isGettingSingleUser } = useMutation({
+    const { mutate: getSingleUser, data: singleSearchedUser, isPending: isGettingSingleUser, isSuccess } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (userId: string) => {
-            const { result } = await apiGetSingleUser(userId)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).getSingleUser(userId)
+            return result?.data
         },
         onSuccess: () => {
             setUserDataModal(true)
@@ -190,12 +194,21 @@ function SingleFamilyEdit() {
     }
 
 
+
     function addIndividualManually(idv: any) {
         setSelectedFamily((old: any) => {
             const filtered = old?.individuals.filter((item: any) => item?.firstname + item?.lastname !== idv?.firstname + idv?.lastname)
             return { ...old, individuals: [...filtered, idv] }
         })
+        setIsEditModalOpen(false)
     }
+
+
+    React.useEffect(() => {
+        if (!isEditModalOpen && selectedIndividual) {
+            setSelectedIndividual(null)
+        }
+    }, [isEditModalOpen])
 
     return (
         <div>
@@ -204,18 +217,42 @@ function SingleFamilyEdit() {
                 <p className='font-semibold text-xl'>{selectedFamily?.familyAddress}</p>
                 <p className='font-semibold text-xl'>Family ID: #{selectedFamily?.familyId}</p>
                 <Button
-                    isIconOnly
                     className='absolute top-0 right-0 m-3'
+                    color='primary'
                     onClick={() => setIsOpen(true)}
                 >
 
-                    <MdEditDocument size={30} />
+                    Edit Family Name and Address
                 </Button>
             </div>
 
             {(isLoading) &&
                 <FullScreenLoader />
             }
+
+            <UserHandleModal
+                isOpen={isEditModalOpen}
+                setIsOpen={setIsEditModalOpen}
+                selectedIndividual={selectedIndividual}
+                EditPendingFamilyMember={(data) => {
+                    modalType === 'add' ?
+                        addIndividualManually({
+                            ...data
+                        })
+                        :
+                        EditPendingFamilyMember(
+                            {
+                                familyId: data?.familyId,
+                                studentId: data?.studentId,
+                                body: {
+                                    ...data
+                                }
+                            }
+                        )
+                }}
+            />
+
+
 
             <EditFamilyData
                 isOpen={isOpen}
@@ -225,19 +262,14 @@ function SingleFamilyEdit() {
             />
 
 
-            <EditFamilyMemberModal
-                isOpen={isEditModalOpen}
-                setIsOpen={setIsEditModalOpen}
-                selectedIndividual={selectedIndividual}
-                EditPendingFamilyMember={EditPendingFamilyMember}
-            />
-
-            <UserDataModal
-                isOpen={userDataModalState}
-                setIsOpen={setUserDataModal}
-                userData={singleSearchedUser}
-                onConfirm={(user: User) => addUserToPendingUsers(user)}
-            />
+            {isSuccess &&
+                <UserDataModal
+                    isOpen={userDataModalState}
+                    setIsOpen={setUserDataModal}
+                    userData={singleSearchedUser}
+                    onConfirm={(user: User) => addUserToPendingUsers(user)}
+                />
+            }
 
             <div className='flex flex-col mt-5 space-y-1'>
                 <p className='font-bold text-xl'>Important Notes:</p>
@@ -255,7 +287,7 @@ function SingleFamilyEdit() {
 
 
 
-            <div className='flex items-center justify-center w-[50%] mx-auto my-6'>
+            <div className='flex items-center justify-center w-[50%] mx-auto my-6 relative'>
 
                 <Input
                     label="Search users"
@@ -278,11 +310,11 @@ function SingleFamilyEdit() {
                     </DropdownTrigger>
                     <DropdownMenu
                         className='max-h-[150px] overflow-y-scroll w-[300px]' aria-label="Static Actions">
-                        {users?.map((item: any) => (
+                        {(users as User[])?.map((item: User) => (
                             <DropdownItem
-                                value={item?.id}
-                                key={item?.id}
-                                onClick={() => getSingleUser(item?.id)}
+                                value={item?.id?.toString()}
+                                key={item?.id?.toString()}
+                                onClick={() => getSingleUser(item?.id?.toString())}
                             >
                                 {item?.firstname} {item?.lastname}
                             </DropdownItem>
@@ -290,7 +322,12 @@ function SingleFamilyEdit() {
                     </DropdownMenu>
                 </Dropdown>
 
-                <Button>
+                <Button
+                    onClick={() => {
+                        setIsEditModalOpen(true)
+                        setModalType('add')
+                    }}
+                >
                     Add User
                 </Button>
 

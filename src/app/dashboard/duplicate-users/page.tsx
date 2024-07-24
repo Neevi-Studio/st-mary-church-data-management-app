@@ -7,14 +7,18 @@ import {
 } from 'material-react-table';
 import { useQuery } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { apiGetDuplicates } from '@/components/utils/HiddenRequests';
 import FullScreenLoader from '@/app';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import { UserApi } from '@/Api';
 
 function DuplicateUsers() {
     const router = useRouter()
     const { data: pendingFamilies, isLoading } = useQuery({
         queryKey: ['apiGetConfirmedFamilies'],
-        queryFn: apiGetDuplicates
+        queryFn: async () => {
+            const result = await new UserApi(AXIOS_CONFIG).getDuplicateUsers()
+            return result?.data
+        }
     })
 
     const columns = useMemo<MRT_ColumnDef<any>[]>(
@@ -38,7 +42,7 @@ function DuplicateUsers() {
             sx: { overflow: 'scroll' }
         },
         columns,
-        data: pendingFamilies?.result || [],
+        data: pendingFamilies || [],
         enableColumnFilterModes: true,
         enableColumnOrdering: true,
         enableGrouping: true,

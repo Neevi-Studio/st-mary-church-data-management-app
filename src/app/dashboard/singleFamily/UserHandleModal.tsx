@@ -6,12 +6,11 @@ import React from 'react'
 type props = {
     isOpen: boolean
     setIsOpen: (value: boolean) => void
-    updateUser: (editUserBody: any) => void
-    selectedIndividual: any
-    isPending?: boolean
+    EditPendingFamilyMember: (editUserBody: any) => void
+    selectedIndividual?: any
 }
 
-function EditFamilyMemberModal({ isOpen, setIsOpen, updateUser, selectedIndividual, isPending }: props) {
+function UserHandleModal({ isOpen, setIsOpen, EditPendingFamilyMember, selectedIndividual }: props) {
 
     const [pendingUserData, setPendingUserData] = React.useState<any>(selectedIndividual)
 
@@ -37,6 +36,13 @@ function EditFamilyMemberModal({ isOpen, setIsOpen, updateUser, selectedIndividu
         'Adult',
     ]
 
+
+    const familyMember = [
+        'Father',
+        'Mother',
+        'Son',
+        'Daughter',
+    ]
 
 
     return (
@@ -77,6 +83,19 @@ function EditFamilyMemberModal({ isOpen, setIsOpen, updateUser, selectedIndividu
                         </Select>
 
                         <Select
+                            label="familyMember"
+                            selectedKeys={[pendingUserData?.familyMember]}
+                            onChange={(e) => {
+                                setPendingUserData((old: any) => ({ ...old, familyMember: e?.target?.value }))
+                            }}
+                        >
+                            {familyMember?.map((grade) => (
+                                <SelectItem key={grade} value={grade}>
+                                    {grade}
+                                </SelectItem>
+                            ))}
+                        </Select>
+                        <Select
                             label="Grade"
                             selectedKeys={[pendingUserData?.grade]}
                             onChange={(e) => {
@@ -110,16 +129,9 @@ function EditFamilyMemberModal({ isOpen, setIsOpen, updateUser, selectedIndividu
                         <Button color="danger" variant="light" onPress={() => setIsOpen(false)}>
                             Close
                         </Button>
-                        <Button
-                            isLoading={isPending}
-                            color="primary" onPress={() => updateUser({
-                                firstname: pendingUserData?.firstname,
-                                lastname: pendingUserData?.lastname,
-                                gender: pendingUserData?.gender,
-                                email: pendingUserData?.email,
-                                dateOfBirth: pendingUserData?.dateOfBirth,
-                                grade: pendingUserData?.grade
-                            })}>
+                        <Button color="primary" onPress={() =>
+                            EditPendingFamilyMember(pendingUserData)}
+                        >
                             Confirm
                         </Button>
                     </ModalFooter>
@@ -131,4 +143,4 @@ function EditFamilyMemberModal({ isOpen, setIsOpen, updateUser, selectedIndividu
     )
 }
 
-export default EditFamilyMemberModal
+export default UserHandleModal

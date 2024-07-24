@@ -6,7 +6,6 @@ import { AXIOS_CONFIG } from '@/Api/wrapper';
 import { useAuth } from '../hooks/useAuth';
 import { User } from '@/Api';
 import { UserApi } from '@/Api/apis/user-api';
-import { apiGetMyProfile } from '../utils/HiddenRequests';
 
 
 type contextType = {
@@ -49,8 +48,8 @@ function AuthContext({ children }: Props) {
     const { data: userData, mutate: getMyInfo } = useMutation({
         mutationKey: ['user'],
         mutationFn: async () => {
-            const { result } = await apiGetMyProfile()
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).getMyProfile()
+            return result?.data
         },
         onError: () => {
             clearCookies()

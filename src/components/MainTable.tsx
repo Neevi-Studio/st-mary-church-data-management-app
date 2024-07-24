@@ -5,11 +5,10 @@ import {
     useMaterialReactTable,
     type MRT_ColumnDef
 } from 'material-react-table';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
-import { apiGetConfirmedFamilies } from '@/components/utils/HiddenRequests';
 import FullScreenLoader from '@/app';
-import { FamiliesApi, Family } from '@/Api';
+import { FamiliesApi, Family, UserApi } from '@/Api';
 import { AXIOS_CONFIG } from '@/Api/wrapper';
 import { Button } from '@nextui-org/react';
 import BeforeDeleteModal from '@/app/dashboard/BeforeDeleteModal';
@@ -22,28 +21,69 @@ function MainTable({ page }: props) {
 
     const router = useRouter()
 
-    const { data: pendingFamilies, isLoading } = useQuery({
-        queryKey: ['apiGetConfirmedFamilies'],
-        queryFn: async () => {
-            const result = await new FamiliesApi(AXIOS_CONFIG).getAllFamilies()
-            return result.data
+    const data = () => {
+        let get
+        let redirectLink
+        if (page === 'pending') {
+            get = async () => {
+                const result = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+                return result.data
+            }
+            redirectLink = 'singleFamily'
+        } else if (page === 'confirmed') {
+            get = async () => {
+                const result = await new FamiliesApi(AXIOS_CONFIG).getAllFamilies()
+                return result.data
+            }
+            redirectLink = 'singleConfirmedFamily'
+        } else if (page === 'semiConfirmed') {
+            get = async () => {
+                const result = await new UserApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
+                return result.data
+            }
+            redirectLink = 'single-semiconfirmed-family'
         }
-    })
+        return { get, redirectLink }
+    }
 
-    const { mutate, isPending: isDeleting } = useMutation({
+    const { data: pendingFamilies, isLoading } = useQuery({
+        queryKey: ['families' + page],
+        queryFn: data().get
+    })
+    const queryClient = useQueryClient()
+
+    const [selectedFamily, setSelectedUser] = useState<any>(null)
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
+
+
+    const toggleDeleteModal = (singleFamily?: Family) => {
+        setIsDeleteModalOpen(!isDeleteModalOpen)
+        if (singleFamily) {
+            setSelectedUser(singleFamily)
+        } else {
+            setSelectedUser(null)
+
+        }
+    }
+
+
+    const { mutate } = useMutation({
         mutationKey: ['apiGetConfirmedFamilies'],
         mutationFn: async (familyId: string) => {
             const response = await new FamiliesApi(AXIOS_CONFIG).deleteFamily(familyId)
             return response
+        },
+        onSuccess: () => {
+            toggleDeleteModal()
+            queryClient.invalidateQueries({ queryKey: ['families' + page] })
         }
     })
-
 
 
     const columns = useMemo<MRT_ColumnDef<any>[]>(
         () => [
             {
-                accessorFn: (row) => `${row?._id || ''}`,
+                accessorFn: (row) => `${page === 'pending' ? row?.familyId : row?.id || ''}`,
                 header: 'Family Id',
                 size: 150
             },
@@ -61,18 +101,6 @@ function MainTable({ page }: props) {
         []
     );
 
-
-    const [selectedFamily, setSelectedUser] = useState<any>(null)
-    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false)
-
-    const toggleDeleteModal = (singleFamily?: Family) => {
-        setIsDeleteModalOpen(!isDeleteModalOpen)
-        if (singleFamily) {
-            setSelectedUser(singleFamily)
-        } else {
-            setSelectedUser(null)
-        }
-    }
 
     const table = useMaterialReactTable({
         muiTableContainerProps: {
@@ -93,7 +121,7 @@ function MainTable({ page }: props) {
         enableFacetedValues: true,
 
         muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => router.push(`/dashboard/singleConfirmedFamily?id=${row.original?.id}`),
+            onClick: () => router.push(`/dashboard/${data().redirectLink}?id=${page === 'pending' ? row.original?.familyId : row.original?.id}`),
             sx: {
                 cursor: 'pointer',
             },
@@ -109,7 +137,7 @@ function MainTable({ page }: props) {
             shape: 'rounded',
             variant: 'outlined'
         },
-        enableRowActions: true,
+        enableRowActions: page === 'confirmed' ? true : false,
         renderRowActionMenuItems: ({ closeMenu, row }) => [
             <Button
                 onClick={() => {

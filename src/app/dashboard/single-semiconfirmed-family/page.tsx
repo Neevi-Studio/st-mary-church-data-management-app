@@ -9,16 +9,16 @@ import {
 } from '@dnd-kit/core';
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
 import { CSS } from '@dnd-kit/utilities';
-import { useMutation, useQuery } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User } from '@/Api'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { ConfirmFamilyDTO, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User, UserApi } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator, MdEdit, MdEditDocument } from 'react-icons/md';
-import { apiConfirmFamily, apiEditFamilyAddressAndLastName, apiEditFamilyMember, apiGetFamilies, apiGetMatchingFamilyUsers, apiGetSemiConfirmedFamilies, apiGetSingleUser, apisearchUsers, apiSemiConfirmFamily, apiUpdateSemiConfirmedFamily } from '@/components/utils/HiddenRequests';
 import toast from 'react-hot-toast';
 import FullScreenLoader from '@/app';
 import EditFamilyData from './EditFamilyData';
-import EditFamilyMemberModal from './EditFamilyMemberModal';
 import UserDataModal from '../singleFamily/UserDataModal';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import UserHandleModal from '../singleFamily/UserHandleModal';
 
 function SingleFamilyEdit() {
 
@@ -32,7 +32,7 @@ function SingleFamilyEdit() {
     const { isLoading } = useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
-            const { result } = await apiGetSemiConfirmedFamilies()
+            const { data: result } = await new UserApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
             setSelectedFamily(result?.filter((item: any) => item?.id == id)[0])
             setParent(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id)?.map((item: any) => ({ parentId: item?.pendingUser?.firstname + item?.pendingUser?.lastname, childId: item?.userId?.id })))
             setPendingUsers(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id).map((item: any) => item?.userId))
@@ -44,8 +44,9 @@ function SingleFamilyEdit() {
         mutationKey: ['UpdateSemiConfirmedFamily'],
         mutationFn: async (body: ConfirmFamilyDTO) => {
             console.log(id, body)
-            const { result } = await apiUpdateSemiConfirmedFamily(id || '', body)
-            return result
+            await new UserApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
+            const result = await new UserApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
+            return result?.data
         },
     })
 
@@ -107,8 +108,8 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const { result } = await apiConfirmFamily(id || '', body)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).confirmFamily(body, selectedFamily?.id)
+            return result?.data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
@@ -123,17 +124,18 @@ function SingleFamilyEdit() {
         studentId: number;
         body: UpdateSemiConfirmedUser;
     }
-
-    const { mutate: EditPendingFamilyMember, isPending: isEditing } = useMutation({
+    const queryClient = useQueryClient()
+    const { mutate: EditPendingFamilyMember } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (body: editUser) => {
-            const { result } = await apiEditFamilyMember(selectedFamily.id, body.studentId, body.body)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).editAUserInASemiConfirmedFamily(body.body, selectedFamily?.id, body?.studentId)
+            return result?.data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
             toast.success('Family member edited successfully')
-            router.back()
+            setIsEditModalOpen(false)
+            queryClient.invalidateQueries({ queryKey: [`pendingFamilies${id}`] })
         }
     })
 
@@ -146,8 +148,8 @@ function SingleFamilyEdit() {
     const { mutate: EditPendingFamily } = useMutation({
         mutationKey: ['EditPendingFamily'],
         mutationFn: async (body: editFamilyData) => {
-            const { result } = await apiEditFamilyAddressAndLastName(body?.familyId, body.body)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).updateFamilyLastNameOrAddress(body.body, body?.familyId)
+            return result?.data
         },
         onError: (error) => console.log(error),
         onSuccess: () => {
@@ -160,29 +162,31 @@ function SingleFamilyEdit() {
     const [isEditModalOpen, setIsEditModalOpen] = useState(false)
     const [selectedIndividual, setSelectedIndividual] = useState<any>(null)
 
+    const [modalType, setModalType] = useState('edit')
+
+
     function handleOpenEditModal(individual: any) {
         setSelectedIndividual(individual)
+        setModalType('edit')
         setIsEditModalOpen(true)
     }
-
-
 
 
     const { mutate: handleSearch, isPending: isSearching, data: users } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (searchTerm: string) => {
-            const { result } = await apisearchUsers(searchTerm)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).searchUsers(searchTerm)
+            return result?.data
         }
     })
 
     const [userDataModalState, setUserDataModal] = useState(false)
 
-    const { mutate: getSingleUser, data: singleSearchedUser, isPending: isGettingSingleUser } = useMutation({
+    const { mutate: getSingleUser, data: singleSearchedUser, isPending: isGettingSingleUser, isSuccess } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (userId: string) => {
-            const { result } = await apiGetSingleUser(userId)
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).getSingleUser(userId)
+            return result?.data
         },
         onSuccess: () => {
             setUserDataModal(true)
@@ -198,6 +202,19 @@ function SingleFamilyEdit() {
     }
 
 
+    function addIndividualManually(idv: any) {
+        setSelectedFamily((old: any) => {
+            return { ...old, individuals: [...old?.individuals, { pendingUser: { ...idv } }] }
+        })
+        setIsEditModalOpen(false)
+    }
+
+
+    React.useEffect(() => {
+        if (!isEditModalOpen && selectedIndividual) {
+            setSelectedIndividual(null)
+        }
+    }, [isEditModalOpen])
 
     return (
         <div>
@@ -255,28 +272,40 @@ function SingleFamilyEdit() {
                     </DropdownTrigger>
                     <DropdownMenu
                         className='max-h-[150px] overflow-y-scroll w-[300px]' aria-label="Static Actions">
-                        {users?.map((item: any) => (
+                        {(users as User[])?.map((item: User) => (
                             <DropdownItem
-                                value={item?.id}
-                                key={item?.id}
-                                onClick={() => getSingleUser(item?.id)}
+                                value={item?.id?.toString()}
+                                key={item?.id?.toString()}
+                                onClick={() => getSingleUser(item?.id?.toString())}
                             >
                                 {item?.firstname} {item?.lastname}
                             </DropdownItem>
                         ))}
                     </DropdownMenu>
                 </Dropdown>
+
+                <Button
+                    onClick={() => {
+                        setIsEditModalOpen(true)
+                        setModalType('add')
+                    }}
+                >
+                    Add User
+                </Button>
+
+
             </div>
 
-            <UserDataModal
-                isOpen={userDataModalState}
-                setIsOpen={setUserDataModal}
-                userData={singleSearchedUser}
-                onConfirm={(user: User) => {
-                    addFamilyMember(user)
-                }}
-            />
-
+            {isSuccess &&
+                <UserDataModal
+                    isOpen={userDataModalState}
+                    setIsOpen={setUserDataModal}
+                    userData={singleSearchedUser}
+                    onConfirm={(user: User) => {
+                        addFamilyMember(user)
+                    }}
+                />
+            }
             <EditFamilyData
                 isOpen={isOpen}
                 setIsOpen={setIsOpen}
@@ -288,12 +317,37 @@ function SingleFamilyEdit() {
                 EditPendingFamily={EditPendingFamily}
             />
 
+            <UserHandleModal
+                isOpen={isEditModalOpen}
+                setIsOpen={setIsEditModalOpen}
+                selectedIndividual={selectedIndividual}
+                EditPendingFamilyMember={(data) => {
+                    modalType === 'add' ?
+                        addIndividualManually({
+                            ...data
+                        })
+                        :
+                        EditPendingFamilyMember(
+                            {
+                                familyId: data?.familyId,
+                                studentId: data?.studentId,
+                                body: {
+                                    ...data
+                                }
+                            }
+                        )
+                }}
+            />
+
+
+
+            {/* 
             <EditFamilyMemberModal
                 isOpen={isEditModalOpen}
                 setIsOpen={setIsEditModalOpen}
                 selectedIndividual={selectedIndividual}
                 EditPendingFamilyMember={EditPendingFamilyMember}
-            />
+            /> */}
 
             <DndContext
                 onDragStart={() => setIsDragging(true)}

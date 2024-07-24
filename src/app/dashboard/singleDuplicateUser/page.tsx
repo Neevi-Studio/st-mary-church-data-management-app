@@ -1,16 +1,14 @@
 'use client'
 import React, { useState } from 'react'
-
-import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
+import { Avatar, Button } from '@nextui-org/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useSearchParams } from 'next/navigation'
-import { MdDelete, MdEdit, MdEditDocument } from 'react-icons/md';
-import { apiDeleteUser, apiGetSingleConfirmedFamily, apiGetSingleUser, apisearchUsers, apiUpdateFamily, apiUpdateUser, apiUserDuplicates } from '@/components/utils/HiddenRequests';
+import { MdDelete, MdEdit } from 'react-icons/md';
 import FullScreenLoader from '@/app';
 import BeforeDeleteModal from '../BeforeDeleteModal';
-import { UpdateFamilyDto, UpdateUserDto, User } from '@/Api';
-import UserDataModal from '../singleFamily/UserDataModal';
-import EditFamilyMemberModal from './EditFamilyMemberModal';
+import { UpdateUserDto, User, UserApi } from '@/Api';
+import { AXIOS_CONFIG } from '@/Api/wrapper';
+import UserHandleModal from '../singleFamily/UserHandleModal';
 
 
 function SingleDuplicateUser() {
@@ -24,8 +22,8 @@ function SingleDuplicateUser() {
     const { data, isLoading } = useQuery({
         queryKey: [`apiUserDuplicates${id}`],
         queryFn: async () => {
-            const { result } = await apiUserDuplicates(id || '')
-            return result
+            const result = await new UserApi(AXIOS_CONFIG).getUserDuplicates(id || '')
+            return result?.data
         },
     })
 
@@ -45,7 +43,7 @@ function SingleDuplicateUser() {
     const { mutate: updateUser, isPending } = useMutation({
         mutationKey: ['apiUpdateUser'],
         mutationFn: async (body: UpdateUserDto) => {
-            await apiUpdateUser(selectedUser?.id || "", body)
+            await new UserApi(AXIOS_CONFIG).updateUser(body, selectedUser?.id || "")
         },
         onSuccess: () => {
             setIsEditModalOpen(false)
@@ -59,7 +57,7 @@ function SingleDuplicateUser() {
     const { mutate: deleteUser } = useMutation({
         mutationKey: ['apiDeleteUser'],
         mutationFn: async () => {
-            await apiDeleteUser(selectedUser?.id)
+            await new UserApi(AXIOS_CONFIG).deleteUser(selectedUser?.id)
         },
         onSuccess: () => {
             setIsDeleteModalOpen(false)
@@ -77,12 +75,14 @@ function SingleDuplicateUser() {
             }
 
 
-            <EditFamilyMemberModal
+
+            <UserHandleModal
                 isOpen={isEditModalOpen}
                 setIsOpen={setIsEditModalOpen}
-                isPending={isPending}
                 selectedIndividual={selectedUser}
-                updateUser={updateUser}
+                EditPendingFamilyMember={(data) => {
+                    updateUser({ ...data })
+                }}
             />
 
             <BeforeDeleteModal
