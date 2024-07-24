@@ -327,8 +327,9 @@ function SingleFamilyEdit() {
                         setIsEditModalOpen(true)
                         setModalType('add')
                     }}
+                    className='absolute right-[-120px]'
                 >
-                    Add User
+                    Create User
                 </Button>
 
             </div>

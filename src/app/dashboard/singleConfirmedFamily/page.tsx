@@ -165,7 +165,7 @@ function SingleFamilyEdit() {
 
 
 
-            <div className='flex items-center justify-center w-[50%] mx-auto my-6'>
+            <div className='flex items-center justify-center w-[50%] mx-auto my-6 relative'>
 
                 <Input
                     label="Search users"
@@ -205,10 +205,10 @@ function SingleFamilyEdit() {
                         setIsEditModalOpen(true)
                         setModalType('add')
                     }}
+                    className='absolute right-[-120px]'
                 >
-                    Add User
+                    Create User
                 </Button>
-
             </div>
 
             {(isLoading) &&
