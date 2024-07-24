@@ -96,6 +96,10 @@ function SingleFamilyEdit() {
     const { mutate: confirmFamilyy, isPending } = useMutation({
         mutationKey: ['confirmFamily'],
         mutationFn: async () => {
+            if (!selectedFamily?.familyAddress) {
+                toast.error('Please update the family address before confirming')
+                throw new Error('Please update the family address before confirming')
+            }
             const body: ConfirmFamilyDTO = {
                 id: selectedFamily?.id,
                 familyLastName: selectedFamily?.familyLastName,
