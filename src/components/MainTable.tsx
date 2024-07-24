@@ -12,12 +12,15 @@ import FullScreenLoader from '@/app';
 import { FamiliesApi, Family } from '@/Api';
 import { AXIOS_CONFIG } from '@/Api/wrapper';
 import { Button } from '@nextui-org/react';
-import BeforeDeleteModal from '../BeforeDeleteModal';
-import MainTable from '@/components/MainTable';
+import BeforeDeleteModal from '@/app/dashboard/BeforeDeleteModal';
 
-function ConfirmedFamilies() {
+type props = {
+    page: string
+}
+
+function MainTable({ page }: props) {
+
     const router = useRouter()
-
 
     const { data: pendingFamilies, isLoading } = useQuery({
         queryKey: ['apiGetConfirmedFamilies'],
@@ -26,7 +29,6 @@ function ConfirmedFamilies() {
             return result.data
         }
     })
-
 
     const { mutate, isPending: isDeleting } = useMutation({
         mutationKey: ['apiGetConfirmedFamilies'],
@@ -123,11 +125,19 @@ function ConfirmedFamilies() {
 
     return (
         <div >
-            <MainTable
-                page='confirmed'
+            {(isLoading) &&
+                <FullScreenLoader />
+            }
+            <BeforeDeleteModal
+                isOpen={isDeleteModalOpen}
+                toggleDeleteModal={toggleDeleteModal}
+                onDelete={() => mutate(selectedFamily?.id)}
             />
+            <div className="flex-1  ">
+                <MaterialReactTable table={table} />
+            </div>
         </div>
     )
 }
 
-export default ConfirmedFamilies
+export default MainTable
