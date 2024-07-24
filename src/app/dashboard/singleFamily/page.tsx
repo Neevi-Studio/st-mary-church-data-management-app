@@ -190,6 +190,12 @@ function SingleFamilyEdit() {
     }
 
 
+    function addIndividualManually(idv: any) {
+        setSelectedFamily((old: any) => {
+            const filtered = old?.individuals.filter((item: any) => item?.firstname + item?.lastname !== idv?.firstname + idv?.lastname)
+            return { ...old, individuals: [...filtered, idv] }
+        })
+    }
 
     return (
         <div>
@@ -232,7 +238,7 @@ function SingleFamilyEdit() {
                 userData={singleSearchedUser}
                 onConfirm={(user: User) => addUserToPendingUsers(user)}
             />
-            
+
             <div className='flex flex-col mt-5 space-y-1'>
                 <p className='font-bold text-xl'>Important Notes:</p>
                 <p>The user boxes at the top contain data from the previous database, which we are importing.</p>
@@ -283,6 +289,11 @@ function SingleFamilyEdit() {
                         ))}
                     </DropdownMenu>
                 </Dropdown>
+
+                <Button>
+                    Add User
+                </Button>
+
             </div>
 
             <DndContext
