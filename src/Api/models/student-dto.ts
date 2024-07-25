@@ -21,6 +21,12 @@
 export interface StudentDto {
 
     /**
+     * @type {any}
+     * @memberof StudentDto
+     */
+    id?: any;
+
+    /**
      * @type {number}
      * @memberof StudentDto
      */
@@ -109,4 +115,22 @@ export interface StudentDto {
      * @memberof StudentDto
      */
     phoneNumber?: string;
+
+    /**
+     * @type {string}
+     * @memberof StudentDto
+     */
+    lastAttendance?: string;
+
+    /**
+     * @type {Date}
+     * @memberof StudentDto
+     */
+    createdAt: Date;
+
+    /**
+     * @type {Date}
+     * @memberof StudentDto
+     */
+    updatedAt: Date;
 }

@@ -1,5 +1,5 @@
 'use client'
-import { UpdatePendingUserDto, User } from '@/Api'
+import {  UpdatePendingFamilyDto, User } from '@/Api'
 import { Droppable } from '@/components'
 import { Button } from '@nextui-org/react'
 import React from 'react'
@@ -11,7 +11,7 @@ import DraggableItem from '../DraggableItem'
 type editUser = {
     familyId: string;
     studentId: number;
-    body: UpdatePendingUserDto;
+    body: UpdatePendingFamilyDto;
 }
 type props = {
     individual: any

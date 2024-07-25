@@ -8,7 +8,7 @@ import {
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import FullScreenLoader from '@/app';
-import { FamiliesApi, Family, UserApi } from '@/Api';
+import { FamiliesApi, Family, PendingFamiliesApi, SemiConfirmedFamiliesApi, UserApi } from '@/Api';
 import { AXIOS_CONFIG } from '@/Api/wrapper';
 import { Button } from '@nextui-org/react';
 import BeforeDeleteModal from '@/app/dashboard/BeforeDeleteModal';
@@ -26,7 +26,7 @@ function MainTable({ page }: props) {
         let redirectLink
         if (page === 'pending') {
             get = async () => {
-                const result = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
+                const result = await new PendingFamiliesApi(AXIOS_CONFIG).getAllPendingFamilies()
                 return result.data
             }
             redirectLink = 'singleFamily'
@@ -38,7 +38,7 @@ function MainTable({ page }: props) {
             redirectLink = 'singleConfirmedFamily'
         } else if (page === 'semiConfirmed') {
             get = async () => {
-                const result = await new UserApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
+                const result = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
                 return result.data
             }
             redirectLink = 'single-semiconfirmed-family'
@@ -83,7 +83,7 @@ function MainTable({ page }: props) {
     const columns = useMemo<MRT_ColumnDef<any>[]>(
         () => [
             {
-                accessorFn: (row) => `${page === 'pending' ? row?.familyId : row?.id || ''}`,
+                accessorFn: (row) => `${page === 'pending' ? row?.id : row?.id || ''}`,
                 header: 'Family Id',
                 size: 150
             },
@@ -121,7 +121,7 @@ function MainTable({ page }: props) {
         enableFacetedValues: true,
 
         muiTableBodyRowProps: ({ row }) => ({
-            onClick: () => router.push(`/dashboard/${data().redirectLink}?id=${page === 'pending' ? row.original?.familyId : row.original?.id}`),
+            onClick: () => router.push(`/dashboard/${data().redirectLink}?id=${page === 'pending' ? row.original?.id : row.original?.id}`),
             sx: {
                 cursor: 'pointer',
             },

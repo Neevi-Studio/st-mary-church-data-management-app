@@ -16,7 +16,13 @@
  * 
  *
  * @export
- * @interface UpdatePendingFamilyData
+ * @interface UpdateCommentDTO
  */
-export interface UpdatePendingFamilyData {
+export interface UpdateCommentDTO {
+
+    /**
+     * @type {string}
+     * @memberof UpdateCommentDTO
+     */
+    text: string;
 }

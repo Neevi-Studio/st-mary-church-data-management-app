@@ -12,31 +12,41 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
-import { StudentDto } from './student-dto';
  /**
  * 
  *
  * @export
- * @interface ConfirmUserDTO
+ * @interface CreateFeedbackDto
  */
-export interface ConfirmUserDTO {
-
-    /**
-     * @type {ObjectId}
-     * @memberof ConfirmUserDTO
-     */
-    id: ObjectId;
+export interface CreateFeedbackDto {
 
     /**
      * @type {string}
-     * @memberof ConfirmUserDTO
+     * @memberof CreateFeedbackDto
      */
-    userId: string;
+    userId?: string;
 
     /**
-     * @type {StudentDto}
-     * @memberof ConfirmUserDTO
+     * @type {string}
+     * @memberof CreateFeedbackDto
      */
-    pendingUser: StudentDto;
+    subject?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateFeedbackDto
+     */
+    text?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateFeedbackDto
+     */
+    userFullName?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateFeedbackDto
+     */
+    userEmail?: string;
 }

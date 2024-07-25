@@ -102,6 +102,24 @@ export interface CreateUserDto {
      * @type {string}
      * @memberof CreateUserDto
      */
+    floorNumber?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateUserDto
+     */
+    apartmentNumber?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateUserDto
+     */
+    houseNumber?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateUserDto
+     */
     maritalStatus?: string;
 
     /**

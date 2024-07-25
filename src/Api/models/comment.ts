@@ -13,30 +13,35 @@
  */
 
 import { ObjectId } from './object-id';
-import { StudentDto } from './student-dto';
  /**
  * 
  *
  * @export
- * @interface ConfirmUserDTO
+ * @interface Comment
  */
-export interface ConfirmUserDTO {
-
-    /**
-     * @type {ObjectId}
-     * @memberof ConfirmUserDTO
-     */
-    id: ObjectId;
+export interface Comment {
 
     /**
      * @type {string}
-     * @memberof ConfirmUserDTO
+     * @memberof Comment
      */
-    userId: string;
+    id: string;
 
     /**
-     * @type {StudentDto}
-     * @memberof ConfirmUserDTO
+     * @type {ObjectId}
+     * @memberof Comment
      */
-    pendingUser: StudentDto;
+    userId: ObjectId;
+
+    /**
+     * @type {string}
+     * @memberof Comment
+     */
+    userName: string;
+
+    /**
+     * @type {string}
+     * @memberof Comment
+     */
+    text: string;
 }

@@ -5,7 +5,7 @@ import {
 } from '@dnd-kit/core';
 import { Button, Input, } from '@nextui-org/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, UpdatePendingUserDto, User, UserApi } from '@/Api'
+import { ConfirmFamilyDTO, PendingFamiliesApi, SemiConfirmedFamiliesApi, UpdatePendingFamilyDto, User, UserApi } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdEditDocument } from 'react-icons/md';
 import toast from 'react-hot-toast';
@@ -31,9 +31,9 @@ function SingleFamilyEdit() {
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
             if (!id) return
-            const result = await new UserApi(AXIOS_CONFIG).getPendingFamiliesAndUsers()
-            setSelectedFamily(result?.data?.filter((item: any) => item?.familyId == id)[0])
-            return result?.data?.filter((item: any) => item?.familyId == id)[0]
+            const result = await new PendingFamiliesApi(AXIOS_CONFIG).getSinglePendingFamily(id)
+            setSelectedFamily(result?.data)
+            return result?.data
         },
     })
 
@@ -84,12 +84,11 @@ function SingleFamilyEdit() {
         setParent((old) => old.filter((item) => item.childId !== childId));
     }
 
-
     const { mutate: confirmFamilyy, isPending } = useMutation({
         mutationKey: ['confirmFamily'],
         mutationFn: async () => {
             const body: ConfirmFamilyDTO = {
-                id: "",
+                id: selectedFamily.id,
                 familyLastName: selectedFamily?.familyLastName,
                 familyAddress: selectedFamily?.familyAddress,
                 temporaryFamilyId: selectedFamily?.familyId,
@@ -100,7 +99,7 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const { data } = await new UserApi(AXIOS_CONFIG).semiConfirmFamily(body)
+            const { data } = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).semiConfirmFamily(body)
             return data
         },
         onError: (error) => console.log(error),
@@ -116,13 +115,13 @@ function SingleFamilyEdit() {
     type editUser = {
         familyId: string;
         studentId: number;
-        body: UpdatePendingUserDto;
+        body: UpdatePendingFamilyDto;
     }
 
     const { mutate: EditPendingFamilyMember, isPending: isEditing } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (body: editUser) => {
-            const data = await new UserApi(AXIOS_CONFIG).editPendingFamilyInsideTheJsonFile(body.body, body?.familyId, body?.studentId)
+            const data = await new PendingFamiliesApi(AXIOS_CONFIG).updatePendingFamilyMember(body.body, selectedFamily?.id)
             return data.data
         },
         onError: (error) => console.log(error),
@@ -137,14 +136,14 @@ function SingleFamilyEdit() {
 
     type editFamilyData = {
         familyId: string;
-        body: UpdatePendingUserDto;
+        body: UpdatePendingFamilyDto;
     }
 
 
     const { mutate: EditPendingFamily, isPending: isEditiing2 } = useMutation({
         mutationKey: ['EditPendingFamily'],
         mutationFn: async (body: editFamilyData) => {
-            const result = await new UserApi(AXIOS_CONFIG).updateFamilyLastNameOrAddressInsideTheJsonFile(body.body, body?.familyId)
+            const result = await new PendingFamiliesApi(AXIOS_CONFIG).updatePendingFamilyLastNameAndAddress(body.body, selectedFamily?.id)
             return result?.data
         },
         onError: (error) => console.log(error),

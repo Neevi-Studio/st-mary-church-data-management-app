@@ -36,6 +36,12 @@ export interface User {
     email: string;
 
     /**
+     * @type {boolean}
+     * @memberof User
+     */
+    isEmailVerified: boolean;
+
+    /**
      * @type {string}
      * @memberof User
      */
@@ -96,6 +102,12 @@ export interface User {
     lastAttendance: Attendance;
 
     /**
+     * @type {string}
+     * @memberof User
+     */
+    tempLastAttendance: string;
+
+    /**
      * @type {OutReach}
      * @memberof User
      */
@@ -130,6 +142,24 @@ export interface User {
      * @memberof User
      */
     address: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    floorNumber: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    apartmentNumber: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
+    houseNumber: string;
 
     /**
      * @type {string}

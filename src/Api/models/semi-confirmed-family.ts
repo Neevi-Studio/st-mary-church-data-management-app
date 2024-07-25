@@ -13,7 +13,6 @@
  */
 
 import { ConfirmUserDTO } from './confirm-user-dto';
-import { ObjectId } from './object-id';
  /**
  * 
  *
@@ -23,10 +22,10 @@ import { ObjectId } from './object-id';
 export interface SemiConfirmedFamily {
 
     /**
-     * @type {ObjectId}
+     * @type {string}
      * @memberof SemiConfirmedFamily
      */
-    id: ObjectId;
+    id: string;
 
     /**
      * @type {string}

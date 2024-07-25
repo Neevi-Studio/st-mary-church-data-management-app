@@ -12,31 +12,41 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
-import { StudentDto } from './student-dto';
  /**
  * 
  *
  * @export
- * @interface ConfirmUserDTO
+ * @interface CreateWhatsNewDto
  */
-export interface ConfirmUserDTO {
-
-    /**
-     * @type {ObjectId}
-     * @memberof ConfirmUserDTO
-     */
-    id: ObjectId;
+export interface CreateWhatsNewDto {
 
     /**
      * @type {string}
-     * @memberof ConfirmUserDTO
+     * @memberof CreateWhatsNewDto
      */
-    userId: string;
+    title?: string;
 
     /**
-     * @type {StudentDto}
-     * @memberof ConfirmUserDTO
+     * @type {string}
+     * @memberof CreateWhatsNewDto
      */
-    pendingUser: StudentDto;
+    content?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateWhatsNewDto
+     */
+    imageUrl?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateWhatsNewDto
+     */
+    authorId?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateWhatsNewDto
+     */
+    authorName?: string;
 }

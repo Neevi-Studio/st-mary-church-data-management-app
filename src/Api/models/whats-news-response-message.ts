@@ -16,7 +16,13 @@
  * 
  *
  * @export
- * @interface UpdatePendingUserDto
+ * @interface WhatsNewsResponseMessage
  */
-export interface UpdatePendingUserDto {
+export interface WhatsNewsResponseMessage {
+
+    /**
+     * @type {string}
+     * @memberof WhatsNewsResponseMessage
+     */
+    message: string;
 }

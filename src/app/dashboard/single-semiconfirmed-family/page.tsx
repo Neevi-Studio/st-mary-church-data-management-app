@@ -10,7 +10,7 @@ import {
 import { Avatar, Button, Dropdown, DropdownItem, DropdownMenu, DropdownTrigger, Input } from '@nextui-org/react';
 import { CSS } from '@dnd-kit/utilities';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ConfirmFamilyDTO, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User, UserApi } from '@/Api'
+import { ConfirmFamilyDTO, SemiConfirmedFamiliesApi, UpdateSemiConfirmedFamilyData, UpdateSemiConfirmedUser, User, UserApi } from '@/Api'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { MdDelete, MdDragIndicator, MdEdit, MdEditDocument } from 'react-icons/md';
 import toast from 'react-hot-toast';
@@ -32,7 +32,7 @@ function SingleFamilyEdit() {
     const { isLoading } = useQuery({
         queryKey: [`pendingFamilies${id}`],
         queryFn: async () => {
-            const { data: result } = await new UserApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
+            const { data: result } = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).getSemiConfirmedFamilies()
             setSelectedFamily(result?.filter((item: any) => item?.id == id)[0])
             setParent(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id)?.map((item: any) => ({ parentId: item?.pendingUser?.firstname + item?.pendingUser?.lastname, childId: item?.userId?.id })))
             setPendingUsers(result?.filter((item: any) => item?.id == id)[0]?.individuals?.filter((itm: any) => itm?.userId?.id).map((item: any) => item?.userId))
@@ -43,9 +43,8 @@ function SingleFamilyEdit() {
     const { mutate: UpdateSemiConfirmedFamily } = useMutation({
         mutationKey: ['UpdateSemiConfirmedFamily'],
         mutationFn: async (body: ConfirmFamilyDTO) => {
-            console.log(id, body)
-            await new UserApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
-            const result = await new UserApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
+            await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
+            const result = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).updateSemiConfirmedFamily(body, id || "")
             return result?.data
         },
     })
@@ -112,7 +111,7 @@ function SingleFamilyEdit() {
                     }
                 }))
             }
-            const result = await new UserApi(AXIOS_CONFIG).confirmFamily(body, selectedFamily?.id)
+            const result = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).confirmFamily(body, selectedFamily?.id)
             return result?.data
         },
         onError: (error) => console.log(error),
@@ -132,7 +131,7 @@ function SingleFamilyEdit() {
     const { mutate: EditPendingFamilyMember } = useMutation({
         mutationKey: ['EditPendingFamilyMember'],
         mutationFn: async (body: editUser) => {
-            const result = await new UserApi(AXIOS_CONFIG).editAUserInASemiConfirmedFamily(body.body, selectedFamily?.id, body?.studentId)
+            const result = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).editAUserInASemiConfirmedFamily(body.body, selectedFamily?.id, body?.studentId)
             return result?.data
         },
         onError: (error) => console.log(error),
@@ -152,7 +151,7 @@ function SingleFamilyEdit() {
     const { mutate: EditPendingFamily } = useMutation({
         mutationKey: ['EditPendingFamily'],
         mutationFn: async (body: editFamilyData) => {
-            const result = await new UserApi(AXIOS_CONFIG).updateFamilyLastNameOrAddress(body.body, body?.familyId)
+            const result = await new SemiConfirmedFamiliesApi(AXIOS_CONFIG).updateFamilyLastNameOrAddress(body.body, body?.familyId)
             return result?.data
         },
         onError: (error) => console.log(error),
