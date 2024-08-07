@@ -12,72 +12,85 @@
  * Do not edit the class manually.
  */
 
-import { Comment } from './comment';
+import { PopulatedComment } from './populated-comment';
+import { User } from './user';
  /**
  * 
  *
  * @export
- * @interface CreateCommunityDto
+ * @interface PopulatedPost
  */
-export interface CreateCommunityDto {
+export interface PopulatedPost {
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
+     */
+    id?: string;
+
+    /**
+     * @type {Date}
+     * @memberof PopulatedPost
+     */
+    createdAt?: Date;
+
+    /**
+     * @type {string}
+     * @memberof PopulatedPost
      */
     title?: string;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     content?: string;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     imageUrl?: string;
 
     /**
-     * @type {string}
-     * @memberof CreateCommunityDto
-     */
-    createdBy?: string;
-
-    /**
      * @type {boolean}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     anonymous?: boolean;
 
     /**
      * @type {boolean}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     accepted?: boolean;
 
     /**
      * @type {boolean}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     pinned?: boolean;
 
     /**
      * @type {Date}
-     * @memberof CreateCommunityDto
+     * @memberof PopulatedPost
      */
     acceptedAt?: Date;
 
     /**
-     * @type {Array<Comment>}
-     * @memberof CreateCommunityDto
+     * @type {User}
+     * @memberof PopulatedPost
      */
-    comments?: Array<Comment>;
+    createdBy: User;
 
     /**
-     * @type {Array<string>}
-     * @memberof CreateCommunityDto
+     * @type {Array<User>}
+     * @memberof PopulatedPost
      */
-    likes?: Array<string>;
+    likes: Array<User>;
+
+    /**
+     * @type {Array<PopulatedComment>}
+     * @memberof PopulatedPost
+     */
+    comments: Array<PopulatedComment>;
 }

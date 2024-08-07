@@ -12,35 +12,18 @@
  * Do not edit the class manually.
  */
 
+import { SingleSubscription } from './single-subscription';
  /**
  * 
  *
  * @export
- * @interface LoginDto
+ * @interface SubscriptionsResponse
  */
-export interface LoginDto {
+export interface SubscriptionsResponse {
 
     /**
-     * @type {string}
-     * @memberof LoginDto
+     * @type {Array<SingleSubscription>}
+     * @memberof SubscriptionsResponse
      */
-    email?: string;
-
-    /**
-     * @type {string}
-     * @memberof LoginDto
-     */
-    password?: string;
-
-    /**
-     * @type {string}
-     * @memberof LoginDto
-     */
-    accessToken?: string;
-
-    /**
-     * @type {string}
-     * @memberof LoginDto
-     */
-    user?: string;
+    subscriptions: Array<SingleSubscription>;
 }

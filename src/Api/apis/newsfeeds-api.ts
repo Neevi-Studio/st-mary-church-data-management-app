@@ -17,34 +17,36 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { CreateWhatsNewDto } from '../models';
+import { CreateNewsfeedDto } from '../models';
+import { Newsfeed } from '../models';
+import { NewsfeedResponseMessage } from '../models';
+import { PopulatedNewsfeed } from '../models';
 import { UpdateCommentDTO } from '../models';
-import { UpdateWhatsNewDto } from '../models';
-import { WhatsNew } from '../models';
-import { WhatsNewsResponseMessage } from '../models';
+import { UpdateNewsfeedDto } from '../models';
+import { VerseOfTheDayDTO } from '../models';
 /**
- * WhatsNewApi - axios parameter creator
+ * NewsfeedsApi - axios parameter creator
  * @export
  */
-export const WhatsNewApiAxiosParamCreator = function (configuration?: Configuration) {
+export const NewsfeedsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} body 
+         * @param {UpdateCommentDTO} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addCommentToWhatsNew: async (body: string, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addCommentToNewsfeed: async (body: UpdateCommentDTO, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling addCommentToWhatsNew.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling addCommentToNewsfeed.');
             }
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling addCommentToWhatsNew.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling addCommentToNewsfeed.');
             }
-            const localVarPath = `/whats-new/add-comment/{id}`
+            const localVarPath = `/newsfeeds/add-comment/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -78,16 +80,16 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @param {CreateWhatsNewDto} body 
+         * @param {CreateNewsfeedDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createWhatsNew: async (body: CreateWhatsNewDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createNewsfeedNew: async (body: CreateNewsfeedDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling createWhatsNew.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling createNewsfeedNew.');
             }
-            const localVarPath = `/whats-new`;
+            const localVarPath = `/newsfeeds`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -125,16 +127,16 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteCommentFromWhatsNew: async (id: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteCommentFromNewsfeed: async (id: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteCommentFromWhatsNew.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteCommentFromNewsfeed.');
             }
             // verify required parameter 'commentId' is not null or undefined
             if (commentId === null || commentId === undefined) {
-                throw new RequiredError('commentId','Required parameter commentId was null or undefined when calling deleteCommentFromWhatsNew.');
+                throw new RequiredError('commentId','Required parameter commentId was null or undefined when calling deleteCommentFromNewsfeed.');
             }
-            const localVarPath = `/whats-new/remove-comment/{id}/{commentId}`
+            const localVarPath = `/newsfeeds/remove-comment/{id}/{commentId}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -169,12 +171,12 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteWhatsNew: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        deleteNewsfeed: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteWhatsNew.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteNewsfeed.');
             }
-            const localVarPath = `/whats-new/{id}`
+            const localVarPath = `/newsfeeds/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -207,8 +209,41 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllWhatsNew: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/whats-new`;
+        getAllNewsfeeds: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/newsfeeds`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getAppVersion: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/newsfeeds/app-version`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -241,12 +276,12 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSingleWhatsNew: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSingleNewsfeed: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling getSingleWhatsNew.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling getSingleNewsfeed.');
             }
-            const localVarPath = `/whats-new/{id}`
+            const localVarPath = `/newsfeeds/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -276,33 +311,20 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
         },
         /**
          * 
-         * @param {UpdateWhatsNewDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        update: async (body: UpdateWhatsNewDto, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'body' is not null or undefined
-            if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling update.');
-            }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling update.');
-            }
-            const localVarPath = `/whats-new/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+        getVerseOfTheDay: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/newsfeeds/verse-of-the-day`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
-
-            localVarHeaderParameter['Content-Type'] = 'application/json';
 
             const query = new URLSearchParams(localVarUrlObj.search);
             for (const key in localVarQueryParameter) {
@@ -314,8 +336,6 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
             localVarUrlObj.search = (new URLSearchParams(query)).toString();
             let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
             localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
-            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
 
             return {
                 url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
@@ -330,20 +350,20 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCommentInWhatsNew: async (body: UpdateCommentDTO, id: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateCommentInNewsfeed: async (body: UpdateCommentDTO, id: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling updateCommentInWhatsNew.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateCommentInNewsfeed.');
             }
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling updateCommentInWhatsNew.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateCommentInNewsfeed.');
             }
             // verify required parameter 'commentId' is not null or undefined
             if (commentId === null || commentId === undefined) {
-                throw new RequiredError('commentId','Required parameter commentId was null or undefined when calling updateCommentInWhatsNew.');
+                throw new RequiredError('commentId','Required parameter commentId was null or undefined when calling updateCommentInNewsfeed.');
             }
-            const localVarPath = `/whats-new/{id}/comments/{commentId}`
+            const localVarPath = `/newsfeeds/{id}/comments/{commentId}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)))
                 .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
@@ -382,12 +402,12 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateLike: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateLikeInNewsfeed: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling updateLike.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateLikeInNewsfeed.');
             }
-            const localVarPath = `/whats-new/{id}/likes`
+            const localVarPath = `/newsfeeds/{id}/likes`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -415,24 +435,72 @@ export const WhatsNewApiAxiosParamCreator = function (configuration?: Configurat
                 options: localVarRequestOptions,
             };
         },
-    }
-};
-
-/**
- * WhatsNewApi - functional programming interface
- * @export
- */
-export const WhatsNewApiFp = function(configuration?: Configuration) {
-    return {
         /**
          * 
-         * @param {string} body 
+         * @param {UpdateNewsfeedDto} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCommentToWhatsNew(body: string, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).addCommentToWhatsNew(body, id, options);
+        updateNewsfeed: async (body: UpdateNewsfeedDto, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'body' is not null or undefined
+            if (body === null || body === undefined) {
+                throw new RequiredError('body','Required parameter body was null or undefined when calling updateNewsfeed.');
+            }
+            // verify required parameter 'id' is not null or undefined
+            if (id === null || id === undefined) {
+                throw new RequiredError('id','Required parameter id was null or undefined when calling updateNewsfeed.');
+            }
+            const localVarPath = `/newsfeeds/{id}`
+                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            localVarHeaderParameter['Content-Type'] = 'application/json';
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+            const needsSerialization = (typeof body !== "string") || localVarRequestOptions.headers!['Content-Type'] === 'application/json';
+            localVarRequestOptions.data =  needsSerialization ? JSON.stringify(body !== undefined ? body : {}) : (body || "");
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+    }
+};
+
+/**
+ * NewsfeedsApi - functional programming interface
+ * @export
+ */
+export const NewsfeedsApiFp = function(configuration?: Configuration) {
+    return {
+        /**
+         * 
+         * @param {UpdateCommentDTO} body 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async addCommentToNewsfeed(body: UpdateCommentDTO, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).addCommentToNewsfeed(body, id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -440,12 +508,12 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {CreateWhatsNewDto} body 
+         * @param {CreateNewsfeedDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWhatsNew(body: CreateWhatsNewDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).createWhatsNew(body, options);
+        async createNewsfeedNew(body: CreateNewsfeedDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).createNewsfeedNew(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -458,8 +526,8 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteCommentFromWhatsNew(id: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).deleteCommentFromWhatsNew(id, commentId, options);
+        async deleteCommentFromNewsfeed(id: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).deleteCommentFromNewsfeed(id, commentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -471,8 +539,8 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWhatsNew(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNewsResponseMessage>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).deleteWhatsNew(id, options);
+        async deleteNewsfeed(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<NewsfeedResponseMessage>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).deleteNewsfeed(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -483,8 +551,20 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllWhatsNew(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<WhatsNew>>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).getAllWhatsNew(options);
+        async getAllNewsfeeds(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<Newsfeed>>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).getAllNewsfeeds(options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAppVersion(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<string>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).getAppVersion(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -496,8 +576,8 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSingleWhatsNew(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).getSingleWhatsNew(id, options);
+        async getSingleNewsfeed(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PopulatedNewsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).getSingleNewsfeed(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -505,13 +585,11 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {UpdateWhatsNewDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async update(body: UpdateWhatsNewDto, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).update(body, id, options);
+        async getVerseOfTheDay(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<VerseOfTheDayDTO>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).getVerseOfTheDay(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -525,8 +603,8 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCommentInWhatsNew(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).updateCommentInWhatsNew(body, id, commentId, options);
+        async updateCommentInNewsfeed(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).updateCommentInNewsfeed(body, id, commentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -538,8 +616,22 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateLike(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<WhatsNew>>> {
-            const localVarAxiosArgs = await WhatsNewApiAxiosParamCreator(configuration).updateLike(id, options);
+        async updateLikeInNewsfeed(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).updateLikeInNewsfeed(id, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {UpdateNewsfeedDto} body 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateNewsfeed(body: UpdateNewsfeedDto, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Newsfeed>>> {
+            const localVarAxiosArgs = await NewsfeedsApiAxiosParamCreator(configuration).updateNewsfeed(body, id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -549,29 +641,29 @@ export const WhatsNewApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * WhatsNewApi - factory interface
+ * NewsfeedsApi - factory interface
  * @export
  */
-export const WhatsNewApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const NewsfeedsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
-         * @param {string} body 
+         * @param {UpdateCommentDTO} body 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCommentToWhatsNew(body: string, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).addCommentToWhatsNew(body, id, options).then((request) => request(axios, basePath));
+        async addCommentToNewsfeed(body: UpdateCommentDTO, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).addCommentToNewsfeed(body, id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {CreateWhatsNewDto} body 
+         * @param {CreateNewsfeedDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createWhatsNew(body: CreateWhatsNewDto, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).createWhatsNew(body, options).then((request) => request(axios, basePath));
+        async createNewsfeedNew(body: CreateNewsfeedDto, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).createNewsfeedNew(body, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -580,8 +672,8 @@ export const WhatsNewApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteCommentFromWhatsNew(id: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).deleteCommentFromWhatsNew(id, commentId, options).then((request) => request(axios, basePath));
+        async deleteCommentFromNewsfeed(id: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).deleteCommentFromNewsfeed(id, commentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -589,16 +681,24 @@ export const WhatsNewApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteWhatsNew(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNewsResponseMessage>> {
-            return WhatsNewApiFp(configuration).deleteWhatsNew(id, options).then((request) => request(axios, basePath));
+        async deleteNewsfeed(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<NewsfeedResponseMessage>> {
+            return NewsfeedsApiFp(configuration).deleteNewsfeed(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllWhatsNew(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<WhatsNew>>> {
-            return WhatsNewApiFp(configuration).getAllWhatsNew(options).then((request) => request(axios, basePath));
+        async getAllNewsfeeds(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<Newsfeed>>> {
+            return NewsfeedsApiFp(configuration).getAllNewsfeeds(options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getAppVersion(options?: AxiosRequestConfig): Promise<AxiosResponse<string>> {
+            return NewsfeedsApiFp(configuration).getAppVersion(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -606,18 +706,16 @@ export const WhatsNewApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSingleWhatsNew(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).getSingleWhatsNew(id, options).then((request) => request(axios, basePath));
+        async getSingleNewsfeed(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<PopulatedNewsfeed>> {
+            return NewsfeedsApiFp(configuration).getSingleNewsfeed(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {UpdateWhatsNewDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async update(body: UpdateWhatsNewDto, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).update(body, id, options).then((request) => request(axios, basePath));
+        async getVerseOfTheDay(options?: AxiosRequestConfig): Promise<AxiosResponse<VerseOfTheDayDTO>> {
+            return NewsfeedsApiFp(configuration).getVerseOfTheDay(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -627,8 +725,8 @@ export const WhatsNewApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCommentInWhatsNew(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).updateCommentInWhatsNew(body, id, commentId, options).then((request) => request(axios, basePath));
+        async updateCommentInNewsfeed(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).updateCommentInNewsfeed(body, id, commentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -636,39 +734,49 @@ export const WhatsNewApiFactory = function (configuration?: Configuration, baseP
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateLike(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<WhatsNew>> {
-            return WhatsNewApiFp(configuration).updateLike(id, options).then((request) => request(axios, basePath));
+        async updateLikeInNewsfeed(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).updateLikeInNewsfeed(id, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {UpdateNewsfeedDto} body 
+         * @param {string} id 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async updateNewsfeed(body: UpdateNewsfeedDto, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<Newsfeed>> {
+            return NewsfeedsApiFp(configuration).updateNewsfeed(body, id, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * WhatsNewApi - object-oriented interface
+ * NewsfeedsApi - object-oriented interface
  * @export
- * @class WhatsNewApi
+ * @class NewsfeedsApi
  * @extends {BaseAPI}
  */
-export class WhatsNewApi extends BaseAPI {
+export class NewsfeedsApi extends BaseAPI {
     /**
      * 
-     * @param {string} body 
+     * @param {UpdateCommentDTO} body 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async addCommentToWhatsNew(body: string, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).addCommentToWhatsNew(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async addCommentToNewsfeed(body: UpdateCommentDTO, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).addCommentToNewsfeed(body, id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {CreateWhatsNewDto} body 
+     * @param {CreateNewsfeedDto} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async createWhatsNew(body: CreateWhatsNewDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).createWhatsNew(body, options).then((request) => request(this.axios, this.basePath));
+    public async createNewsfeedNew(body: CreateNewsfeedDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).createNewsfeedNew(body, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -676,50 +784,57 @@ export class WhatsNewApi extends BaseAPI {
      * @param {string} commentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async deleteCommentFromWhatsNew(id: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).deleteCommentFromWhatsNew(id, commentId, options).then((request) => request(this.axios, this.basePath));
+    public async deleteCommentFromNewsfeed(id: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).deleteCommentFromNewsfeed(id, commentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async deleteWhatsNew(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNewsResponseMessage>> {
-        return WhatsNewApiFp(this.configuration).deleteWhatsNew(id, options).then((request) => request(this.axios, this.basePath));
+    public async deleteNewsfeed(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<NewsfeedResponseMessage>> {
+        return NewsfeedsApiFp(this.configuration).deleteNewsfeed(id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async getAllWhatsNew(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<WhatsNew>>> {
-        return WhatsNewApiFp(this.configuration).getAllWhatsNew(options).then((request) => request(this.axios, this.basePath));
+    public async getAllNewsfeeds(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<Newsfeed>>> {
+        return NewsfeedsApiFp(this.configuration).getAllNewsfeeds(options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NewsfeedsApi
+     */
+    public async getAppVersion(options?: AxiosRequestConfig) : Promise<AxiosResponse<string>> {
+        return NewsfeedsApiFp(this.configuration).getAppVersion(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async getSingleWhatsNew(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).getSingleWhatsNew(id, options).then((request) => request(this.axios, this.basePath));
+    public async getSingleNewsfeed(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<PopulatedNewsfeed>> {
+        return NewsfeedsApiFp(this.configuration).getSingleNewsfeed(id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {UpdateWhatsNewDto} body 
-     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async update(body: UpdateWhatsNewDto, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).update(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async getVerseOfTheDay(options?: AxiosRequestConfig) : Promise<AxiosResponse<VerseOfTheDayDTO>> {
+        return NewsfeedsApiFp(this.configuration).getVerseOfTheDay(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -728,19 +843,30 @@ export class WhatsNewApi extends BaseAPI {
      * @param {string} commentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async updateCommentInWhatsNew(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).updateCommentInWhatsNew(body, id, commentId, options).then((request) => request(this.axios, this.basePath));
+    public async updateCommentInNewsfeed(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).updateCommentInNewsfeed(body, id, commentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof WhatsNewApi
+     * @memberof NewsfeedsApi
      */
-    public async updateLike(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<WhatsNew>> {
-        return WhatsNewApiFp(this.configuration).updateLike(id, options).then((request) => request(this.axios, this.basePath));
+    public async updateLikeInNewsfeed(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).updateLikeInNewsfeed(id, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {UpdateNewsfeedDto} body 
+     * @param {string} id 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof NewsfeedsApi
+     */
+    public async updateNewsfeed(body: UpdateNewsfeedDto, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<Newsfeed>> {
+        return NewsfeedsApiFp(this.configuration).updateNewsfeed(body, id, options).then((request) => request(this.axios, this.basePath));
     }
 }

@@ -12,36 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface RegisterWithGoogleDTO
  */
-export interface Comment {
+export interface RegisterWithGoogleDTO {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof RegisterWithGoogleDTO
      */
-    id: string;
+    accessToken: string;
+
+    /**
+     * @type {string}
+     * @memberof RegisterWithGoogleDTO
+     */
+    firstname?: string;
+
+    /**
+     * @type {string}
+     * @memberof RegisterWithGoogleDTO
+     */
+    lastname?: string;
 
     /**
      * @type {Date}
-     * @memberof Comment
+     * @memberof RegisterWithGoogleDTO
      */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    dateOfBirth?: Date;
 }

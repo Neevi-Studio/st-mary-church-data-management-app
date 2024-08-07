@@ -12,36 +12,17 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface ImagesUploadBody
  */
-export interface Comment {
+export interface ImagesUploadBody {
 
     /**
-     * @type {string}
-     * @memberof Comment
+     * @type {Blob}
+     * @memberof ImagesUploadBody
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    file?: Blob;
 }

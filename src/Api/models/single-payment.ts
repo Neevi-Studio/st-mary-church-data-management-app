@@ -16,61 +16,55 @@
  * 
  *
  * @export
- * @interface CreateAuthDto
+ * @interface SinglePayment
  */
-export interface CreateAuthDto {
+export interface SinglePayment {
 
     /**
      * @type {string}
-     * @memberof CreateAuthDto
+     * @memberof SinglePayment
      */
-    email?: string;
+    id: string;
 
     /**
      * @type {string}
-     * @memberof CreateAuthDto
+     * @memberof SinglePayment
      */
-    password?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateAuthDto
-     */
-    accessToken?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateAuthDto
-     */
-    user?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateAuthDto
-     */
-    appleId?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateAuthDto
-     */
-    firstname?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateAuthDto
-     */
-    lastname?: string;
-
-    /**
-     * @type {Date}
-     * @memberof CreateAuthDto
-     */
-    dateOfBirth?: Date;
+    status: string;
 
     /**
      * @type {number}
-     * @memberof CreateAuthDto
+     * @memberof SinglePayment
      */
-    userAge?: number;
+    amount: number;
+
+    /**
+     * @type {number}
+     * @memberof SinglePayment
+     */
+    createdAt: number;
+
+    /**
+     * @type {string}
+     * @memberof SinglePayment
+     */
+    currency: string;
+
+    /**
+     * @type {string}
+     * @memberof SinglePayment
+     */
+    receiptEmail: string;
+
+    /**
+     * @type {string}
+     * @memberof SinglePayment
+     */
+    invoice: string;
+
+    /**
+     * @type {string}
+     * @memberof SinglePayment
+     */
+    reason: string;
 }

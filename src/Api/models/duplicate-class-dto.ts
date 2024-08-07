@@ -16,13 +16,13 @@
  * 
  *
  * @export
- * @interface WhatsNewsResponseMessage
+ * @interface DuplicateClassDto
  */
-export interface WhatsNewsResponseMessage {
+export interface DuplicateClassDto {
 
     /**
      * @type {string}
-     * @memberof WhatsNewsResponseMessage
+     * @memberof DuplicateClassDto
      */
-    message: string;
+    newDuplicatedClassName: string;
 }

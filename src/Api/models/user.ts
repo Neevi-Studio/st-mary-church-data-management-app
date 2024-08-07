@@ -147,6 +147,12 @@ export interface User {
      * @type {string}
      * @memberof User
      */
+    stripeCustomerId: string;
+
+    /**
+     * @type {string}
+     * @memberof User
+     */
     floorNumber: string;
 
     /**
@@ -310,6 +316,10 @@ export enum UserRoleEnum {
     Maintenence = 'Maintenence',
     Priest = 'Priest',
     Servant = 'Servant',
-    User = 'user'
+    User = 'user',
+    ControlsNewsfeeds = 'ControlsNewsfeeds',
+    ControlsCalendar = 'ControlsCalendar',
+    ControlsNotifications = 'ControlsNotifications',
+    ManageCommunity = 'manageCommunity'
 }
 

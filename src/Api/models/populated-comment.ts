@@ -12,41 +12,36 @@
  * Do not edit the class manually.
  */
 
+import { User } from './user';
  /**
  * 
  *
  * @export
- * @interface CreateWhatsNewDto
+ * @interface PopulatedComment
  */
-export interface CreateWhatsNewDto {
+export interface PopulatedComment {
 
     /**
      * @type {string}
-     * @memberof CreateWhatsNewDto
+     * @memberof PopulatedComment
      */
-    title?: string;
+    id?: string;
+
+    /**
+     * @type {Date}
+     * @memberof PopulatedComment
+     */
+    createdAt?: Date;
 
     /**
      * @type {string}
-     * @memberof CreateWhatsNewDto
+     * @memberof PopulatedComment
      */
-    content?: string;
+    text?: string;
 
     /**
-     * @type {string}
-     * @memberof CreateWhatsNewDto
+     * @type {User}
+     * @memberof PopulatedComment
      */
-    imageUrl?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateWhatsNewDto
-     */
-    authorId?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateWhatsNewDto
-     */
-    authorName?: string;
+    userId: User;
 }

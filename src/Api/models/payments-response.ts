@@ -12,36 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
+import { SinglePayment } from './single-payment';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface PaymentsResponse
  */
-export interface Comment {
+export interface PaymentsResponse {
 
     /**
-     * @type {string}
-     * @memberof Comment
+     * @type {Array<SinglePayment>}
+     * @memberof PaymentsResponse
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    payments: Array<SinglePayment>;
 }

@@ -18,6 +18,7 @@ import { Configuration } from '../configuration';
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
 import { CreateFeedbackDto } from '../models';
+import { PopulatedFeedBack } from '../models';
 /**
  * FeedbacksApi - axios parameter creator
  * @export
@@ -99,21 +100,15 @@ export const FeedbacksApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @param {CreateFeedbackDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        submitFeedback: async (body: CreateFeedbackDto, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        submitFeedback: async (body: CreateFeedbackDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling submitFeedback.');
             }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling submitFeedback.');
-            }
-            const localVarPath = `/feedbacks/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/feedbacks`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -171,7 +166,7 @@ export const FeedbacksApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllFeedbacks(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<any>>>> {
+        async getAllFeedbacks(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<PopulatedFeedBack>>>> {
             const localVarAxiosArgs = await FeedbacksApiAxiosParamCreator(configuration).getAllFeedbacks(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -181,12 +176,11 @@ export const FeedbacksApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {CreateFeedbackDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async submitFeedback(body: CreateFeedbackDto, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
-            const localVarAxiosArgs = await FeedbacksApiAxiosParamCreator(configuration).submitFeedback(body, id, options);
+        async submitFeedback(body: CreateFeedbackDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PopulatedFeedBack>>> {
+            const localVarAxiosArgs = await FeedbacksApiAxiosParamCreator(configuration).submitFeedback(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -215,18 +209,17 @@ export const FeedbacksApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllFeedbacks(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<any>>> {
+        async getAllFeedbacks(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<PopulatedFeedBack>>> {
             return FeedbacksApiFp(configuration).getAllFeedbacks(options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {CreateFeedbackDto} body 
-         * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async submitFeedback(body: CreateFeedbackDto, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
-            return FeedbacksApiFp(configuration).submitFeedback(body, id, options).then((request) => request(axios, basePath));
+        async submitFeedback(body: CreateFeedbackDto, options?: AxiosRequestConfig): Promise<AxiosResponse<PopulatedFeedBack>> {
+            return FeedbacksApiFp(configuration).submitFeedback(body, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -254,18 +247,17 @@ export class FeedbacksApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof FeedbacksApi
      */
-    public async getAllFeedbacks(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<any>>> {
+    public async getAllFeedbacks(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<PopulatedFeedBack>>> {
         return FeedbacksApiFp(this.configuration).getAllFeedbacks(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {CreateFeedbackDto} body 
-     * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof FeedbacksApi
      */
-    public async submitFeedback(body: CreateFeedbackDto, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
-        return FeedbacksApiFp(this.configuration).submitFeedback(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async submitFeedback(body: CreateFeedbackDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<PopulatedFeedBack>> {
+        return FeedbacksApiFp(this.configuration).submitFeedback(body, options).then((request) => request(this.axios, this.basePath));
     }
 }

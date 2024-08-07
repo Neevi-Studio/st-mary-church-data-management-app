@@ -12,36 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface InvoiceDto
  */
-export interface Comment {
+export interface InvoiceDto {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof InvoiceDto
      */
     id: string;
 
     /**
-     * @type {Date}
-     * @memberof Comment
+     * @type {string}
+     * @memberof InvoiceDto
      */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    status: string;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof InvoiceDto
      */
-    text: string;
+    invoicePdf: string;
+
+    /**
+     * @type {string}
+     * @memberof InvoiceDto
+     */
+    hostedInvoiceUrl: string;
 }

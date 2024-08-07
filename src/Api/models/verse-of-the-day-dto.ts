@@ -12,36 +12,23 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface VerseOfTheDayDTO
  */
-export interface Comment {
+export interface VerseOfTheDayDTO {
 
     /**
      * @type {string}
-     * @memberof Comment
-     */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
+     * @memberof VerseOfTheDayDTO
      */
     text: string;
+
+    /**
+     * @type {string}
+     * @memberof VerseOfTheDayDTO
+     */
+    reference: string;
 }

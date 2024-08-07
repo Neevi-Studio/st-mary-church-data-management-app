@@ -12,36 +12,29 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface GoogleEventTimeDto
  */
-export interface Comment {
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    id: string;
+export interface GoogleEventTimeDto {
 
     /**
      * @type {Date}
-     * @memberof Comment
+     * @memberof GoogleEventTimeDto
      */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    dateTime: Date;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof GoogleEventTimeDto
      */
-    text: string;
+    timeZone: string;
+
+    /**
+     * @type {string}
+     * @memberof GoogleEventTimeDto
+     */
+    dateFormated: string;
 }

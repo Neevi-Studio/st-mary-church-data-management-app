@@ -12,36 +12,18 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
+import { GoogleEvent } from './google-event';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface StoreCalednerDto
  */
-export interface Comment {
+export interface StoreCalednerDto {
 
     /**
-     * @type {string}
-     * @memberof Comment
+     * @type {Array<GoogleEvent>}
+     * @memberof StoreCalednerDto
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    calendar: Array<GoogleEvent>;
 }

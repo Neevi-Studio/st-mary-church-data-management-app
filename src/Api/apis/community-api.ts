@@ -17,9 +17,10 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { Comment } from '../models';
 import { CommunityPost } from '../models';
+import { CreateCommentDto } from '../models';
 import { CreateCommunityDto } from '../models';
+import { PopulatedPost } from '../models';
 import { UpdateCommentDTO } from '../models';
 import { UpdateCommunityDto } from '../models';
 /**
@@ -30,17 +31,17 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        acceptPost: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling acceptPost.');
+        acceptPost: async (postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling acceptPost.');
             }
-            const localVarPath = `/community/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/{postId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -69,22 +70,22 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {Comment} body 
-         * @param {string} id 
+         * @param {CreateCommentDto} body 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        addCommentToPost: async (body: Comment, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        addCommentToPost: async (body: CreateCommentDto, postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling addCommentToPost.');
             }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling addCommentToPost.');
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling addCommentToPost.');
             }
-            const localVarPath = `/community/{id}/comments`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/{postId}/comments`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -204,17 +205,17 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deletePost: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deletePost.');
+        deletePost: async (postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling deletePost.');
             }
-            const localVarPath = `/community/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/{postId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -309,17 +310,17 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getSinglePost: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling getSinglePost.');
+        getSinglePost: async (postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling getSinglePost.');
             }
-            const localVarPath = `/community/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/{postId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -381,17 +382,17 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        pinPost: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling pinPost.');
+        pinPost: async (postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling pinPost.');
             }
-            const localVarPath = `/community/pin/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/pin/{postId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -454,26 +455,26 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @param {UpdateCommentDTO} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {string} commentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updateCommentInPost: async (body: UpdateCommentDTO, id: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updateCommentInPost: async (body: UpdateCommentDTO, postId: string, commentId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling updateCommentInPost.');
             }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling updateCommentInPost.');
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling updateCommentInPost.');
             }
             // verify required parameter 'commentId' is not null or undefined
             if (commentId === null || commentId === undefined) {
                 throw new RequiredError('commentId','Required parameter commentId was null or undefined when calling updateCommentInPost.');
             }
-            const localVarPath = `/community/{id}/comments/{commentId}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)))
+            const localVarPath = `/community/{postId}/comments/{commentId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)))
                 .replace(`{${"commentId"}}`, encodeURIComponent(String(commentId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -547,21 +548,21 @@ export const CommunityApiAxiosParamCreator = function (configuration?: Configura
         /**
          * 
          * @param {UpdateCommunityDto} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        updatePost: async (body: UpdateCommunityDto, id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        updatePost: async (body: UpdateCommunityDto, postId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
                 throw new RequiredError('body','Required parameter body was null or undefined when calling updatePost.');
             }
-            // verify required parameter 'id' is not null or undefined
-            if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling updatePost.');
+            // verify required parameter 'postId' is not null or undefined
+            if (postId === null || postId === undefined) {
+                throw new RequiredError('postId','Required parameter postId was null or undefined when calling updatePost.');
             }
-            const localVarPath = `/community/{id}`
-                .replace(`{${"id"}}`, encodeURIComponent(String(id)));
+            const localVarPath = `/community/{postId}`
+                .replace(`{${"postId"}}`, encodeURIComponent(String(postId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -603,12 +604,12 @@ export const CommunityApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async acceptPost(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).acceptPost(id, options);
+        async acceptPost(postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).acceptPost(postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -616,13 +617,13 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {Comment} body 
-         * @param {string} id 
+         * @param {CreateCommentDto} body 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCommentToPost(body: Comment, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).addCommentToPost(body, id, options);
+        async addCommentToPost(body: CreateCommentDto, postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).addCommentToPost(body, postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -657,12 +658,12 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePost(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).deletePost(id, options);
+        async deletePost(postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).deletePost(postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -673,7 +674,7 @@ export const CommunityApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllAcceptedPosts(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<CommunityPost>>>> {
+        async getAllAcceptedPosts(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<PopulatedPost>>>> {
             const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).getAllAcceptedPosts(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -685,7 +686,7 @@ export const CommunityApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllPendingPostsPosts(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<CommunityPost>>>> {
+        async getAllPendingPostsPosts(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<PopulatedPost>>>> {
             const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).getAllPendingPostsPosts(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
@@ -694,12 +695,12 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSinglePost(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).getSinglePost(id, options);
+        async getSinglePost(postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PopulatedPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).getSinglePost(postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -719,12 +720,12 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pinPost(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).pinPost(id, options);
+        async pinPost(postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).pinPost(postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -745,13 +746,13 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {UpdateCommentDTO} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {string} commentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCommentInPost(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).updateCommentInPost(body, id, commentId, options);
+        async updateCommentInPost(body: UpdateCommentDTO, postId: string, commentId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).updateCommentInPost(body, postId, commentId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -773,12 +774,12 @@ export const CommunityApiFp = function(configuration?: Configuration) {
         /**
          * 
          * @param {UpdateCommunityDto} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePost(body: UpdateCommunityDto, id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
-            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).updatePost(body, id, options);
+        async updatePost(body: UpdateCommunityDto, postId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<CommunityPost>>> {
+            const localVarAxiosArgs = await CommunityApiAxiosParamCreator(configuration).updatePost(body, postId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -795,22 +796,22 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
     return {
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async acceptPost(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).acceptPost(id, options).then((request) => request(axios, basePath));
+        async acceptPost(postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
+            return CommunityApiFp(configuration).acceptPost(postId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {Comment} body 
-         * @param {string} id 
+         * @param {CreateCommentDto} body 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async addCommentToPost(body: Comment, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).addCommentToPost(body, id, options).then((request) => request(axios, basePath));
+        async addCommentToPost(body: CreateCommentDto, postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
+            return CommunityApiFp(configuration).addCommentToPost(body, postId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -833,19 +834,19 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deletePost(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
-            return CommunityApiFp(configuration).deletePost(id, options).then((request) => request(axios, basePath));
+        async deletePost(postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return CommunityApiFp(configuration).deletePost(postId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllAcceptedPosts(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<CommunityPost>>> {
+        async getAllAcceptedPosts(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<PopulatedPost>>> {
             return CommunityApiFp(configuration).getAllAcceptedPosts(options).then((request) => request(axios, basePath));
         },
         /**
@@ -853,17 +854,17 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllPendingPostsPosts(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<CommunityPost>>> {
+        async getAllPendingPostsPosts(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<PopulatedPost>>> {
             return CommunityApiFp(configuration).getAllPendingPostsPosts(options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getSinglePost(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).getSinglePost(id, options).then((request) => request(axios, basePath));
+        async getSinglePost(postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<PopulatedPost>> {
+            return CommunityApiFp(configuration).getSinglePost(postId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -875,12 +876,12 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
         },
         /**
          * 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async pinPost(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).pinPost(id, options).then((request) => request(axios, basePath));
+        async pinPost(postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
+            return CommunityApiFp(configuration).pinPost(postId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -893,13 +894,13 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @param {UpdateCommentDTO} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {string} commentId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updateCommentInPost(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).updateCommentInPost(body, id, commentId, options).then((request) => request(axios, basePath));
+        async updateCommentInPost(body: UpdateCommentDTO, postId: string, commentId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
+            return CommunityApiFp(configuration).updateCommentInPost(body, postId, commentId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -913,12 +914,12 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
         /**
          * 
          * @param {UpdateCommunityDto} body 
-         * @param {string} id 
+         * @param {string} postId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async updatePost(body: UpdateCommunityDto, id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
-            return CommunityApiFp(configuration).updatePost(body, id, options).then((request) => request(axios, basePath));
+        async updatePost(body: UpdateCommunityDto, postId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<CommunityPost>> {
+            return CommunityApiFp(configuration).updatePost(body, postId, options).then((request) => request(axios, basePath));
         },
     };
 };
@@ -932,24 +933,24 @@ export const CommunityApiFactory = function (configuration?: Configuration, base
 export class CommunityApi extends BaseAPI {
     /**
      * 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async acceptPost(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).acceptPost(id, options).then((request) => request(this.axios, this.basePath));
+    public async acceptPost(postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
+        return CommunityApiFp(this.configuration).acceptPost(postId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {Comment} body 
-     * @param {string} id 
+     * @param {CreateCommentDto} body 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async addCommentToPost(body: Comment, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).addCommentToPost(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async addCommentToPost(body: CreateCommentDto, postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
+        return CommunityApiFp(this.configuration).addCommentToPost(body, postId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -974,13 +975,13 @@ export class CommunityApi extends BaseAPI {
     }
     /**
      * 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async deletePost(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
-        return CommunityApiFp(this.configuration).deletePost(id, options).then((request) => request(this.axios, this.basePath));
+    public async deletePost(postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return CommunityApiFp(this.configuration).deletePost(postId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -988,7 +989,7 @@ export class CommunityApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async getAllAcceptedPosts(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<CommunityPost>>> {
+    public async getAllAcceptedPosts(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<PopulatedPost>>> {
         return CommunityApiFp(this.configuration).getAllAcceptedPosts(options).then((request) => request(this.axios, this.basePath));
     }
     /**
@@ -997,18 +998,18 @@ export class CommunityApi extends BaseAPI {
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async getAllPendingPostsPosts(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<CommunityPost>>> {
+    public async getAllPendingPostsPosts(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<PopulatedPost>>> {
         return CommunityApiFp(this.configuration).getAllPendingPostsPosts(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async getSinglePost(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).getSinglePost(id, options).then((request) => request(this.axios, this.basePath));
+    public async getSinglePost(postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<PopulatedPost>> {
+        return CommunityApiFp(this.configuration).getSinglePost(postId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1021,13 +1022,13 @@ export class CommunityApi extends BaseAPI {
     }
     /**
      * 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async pinPost(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).pinPost(id, options).then((request) => request(this.axios, this.basePath));
+    public async pinPost(postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
+        return CommunityApiFp(this.configuration).pinPost(postId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1041,14 +1042,14 @@ export class CommunityApi extends BaseAPI {
     /**
      * 
      * @param {UpdateCommentDTO} body 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {string} commentId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async updateCommentInPost(body: UpdateCommentDTO, id: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).updateCommentInPost(body, id, commentId, options).then((request) => request(this.axios, this.basePath));
+    public async updateCommentInPost(body: UpdateCommentDTO, postId: string, commentId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
+        return CommunityApiFp(this.configuration).updateCommentInPost(body, postId, commentId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
@@ -1063,12 +1064,12 @@ export class CommunityApi extends BaseAPI {
     /**
      * 
      * @param {UpdateCommunityDto} body 
-     * @param {string} id 
+     * @param {string} postId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
      * @memberof CommunityApi
      */
-    public async updatePost(body: UpdateCommunityDto, id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
-        return CommunityApiFp(this.configuration).updatePost(body, id, options).then((request) => request(this.axios, this.basePath));
+    public async updatePost(body: UpdateCommunityDto, postId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<CommunityPost>> {
+        return CommunityApiFp(this.configuration).updatePost(body, postId, options).then((request) => request(this.axios, this.basePath));
     }
 }

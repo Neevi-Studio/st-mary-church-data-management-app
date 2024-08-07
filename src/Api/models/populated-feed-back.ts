@@ -12,36 +12,48 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
+import { User } from './user';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface PopulatedFeedBack
  */
-export interface Comment {
+export interface PopulatedFeedBack {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof PopulatedFeedBack
      */
     id: string;
 
     /**
+     * @type {string}
+     * @memberof PopulatedFeedBack
+     */
+    userId: string;
+
+    /**
+     * @type {string}
+     * @memberof PopulatedFeedBack
+     */
+    subject: string;
+
+    /**
+     * @type {string}
+     * @memberof PopulatedFeedBack
+     */
+    text: string;
+
+    /**
      * @type {Date}
-     * @memberof Comment
+     * @memberof PopulatedFeedBack
      */
     createdAt: Date;
 
     /**
-     * @type {ObjectId}
-     * @memberof Comment
+     * @type {User}
+     * @memberof PopulatedFeedBack
      */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    userData: User;
 }

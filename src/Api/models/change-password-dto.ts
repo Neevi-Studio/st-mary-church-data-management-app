@@ -12,36 +12,23 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface ChangePasswordDto
  */
-export interface Comment {
+export interface ChangePasswordDto {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof ChangePasswordDto
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    oldPassword: string;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof ChangePasswordDto
      */
-    text: string;
+    newPassword: string;
 }

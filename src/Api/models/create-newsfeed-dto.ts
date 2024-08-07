@@ -12,36 +12,35 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface CreateNewsfeedDto
  */
-export interface Comment {
+export interface CreateNewsfeedDto {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof CreateNewsfeedDto
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    title?: string;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof CreateNewsfeedDto
      */
-    text: string;
+    content?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateNewsfeedDto
+     */
+    imageUrl?: string;
+
+    /**
+     * @type {string}
+     * @memberof CreateNewsfeedDto
+     */
+    authorId?: string;
 }

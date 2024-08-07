@@ -43,13 +43,7 @@ export interface UpdateCommunityDto {
      * @type {string}
      * @memberof UpdateCommunityDto
      */
-    authorId?: string;
-
-    /**
-     * @type {string}
-     * @memberof UpdateCommunityDto
-     */
-    authorName?: string;
+    createdBy?: string;
 
     /**
      * @type {boolean}
@@ -86,10 +80,4 @@ export interface UpdateCommunityDto {
      * @memberof UpdateCommunityDto
      */
     likes?: Array<string>;
-
-    /**
-     * @type {string}
-     * @memberof UpdateCommunityDto
-     */
-    userAvatar?: string;
 }

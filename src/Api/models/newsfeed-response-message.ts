@@ -12,36 +12,17 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface NewsfeedResponseMessage
  */
-export interface Comment {
+export interface NewsfeedResponseMessage {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof NewsfeedResponseMessage
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    message: string;
 }

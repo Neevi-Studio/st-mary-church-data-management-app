@@ -1,6 +1,6 @@
-import { LoginDto } from "@/Api";
+import { LoginWithEmailDTO } from "@/Api";
 
-export async function apiLoginUser(credentials: LoginDto) {
+export async function apiLoginUser(credentials: LoginWithEmailDTO) {
   try {
     const response = await fetch(`/api/auth/login`, {
       method: 'POST',

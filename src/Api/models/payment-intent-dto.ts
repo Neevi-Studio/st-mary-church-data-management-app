@@ -12,36 +12,29 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface PaymentIntentDTO
  */
-export interface Comment {
+export interface PaymentIntentDTO {
+
+    /**
+     * @type {number}
+     * @memberof PaymentIntentDTO
+     */
+    amount: number;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof PaymentIntentDTO
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    intervalCount: string;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof PaymentIntentDTO
      */
-    text: string;
+    interval: string;
 }

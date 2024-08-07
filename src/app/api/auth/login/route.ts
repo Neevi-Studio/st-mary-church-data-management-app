@@ -1,10 +1,10 @@
-import { AuthApi, LoginDto } from "@/Api";
+import { AuthApi, LoginWithEmailDTO,  } from "@/Api";
 import { AXIOS_CONFIG } from "@/Api/wrapper";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
     try {
-        const data = (await req.json()) as LoginDto;
+        const data = (await req.json()) as LoginWithEmailDTO;
 
         const result = await new AuthApi(AXIOS_CONFIG).dashboardSignIn({ email: data.email, password: data.password });
 

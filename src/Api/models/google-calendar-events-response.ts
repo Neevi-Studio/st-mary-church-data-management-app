@@ -12,36 +12,25 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
+import { GoogleEvent } from './google-event';
+import { SingleMarkedDate } from './single-marked-date';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface GoogleCalendarEventsResponse
  */
-export interface Comment {
+export interface GoogleCalendarEventsResponse {
 
     /**
-     * @type {string}
-     * @memberof Comment
+     * @type {Array<GoogleEvent>}
+     * @memberof GoogleCalendarEventsResponse
      */
-    id: string;
+    events: Array<GoogleEvent>;
 
     /**
-     * @type {Date}
-     * @memberof Comment
+     * @type {Array<SingleMarkedDate>}
+     * @memberof GoogleCalendarEventsResponse
      */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    markedDates: Array<SingleMarkedDate>;
 }

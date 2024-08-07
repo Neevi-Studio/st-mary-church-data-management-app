@@ -17,55 +17,55 @@ import { Comment } from './comment';
  * 
  *
  * @export
- * @interface UpdateWhatsNewDto
+ * @interface Newsfeed
  */
-export interface UpdateWhatsNewDto {
+export interface Newsfeed {
+
+    /**
+     * @type {Date}
+     * @memberof Newsfeed
+     */
+    createdAt: Date;
 
     /**
      * @type {string}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    id?: string;
+    id: string;
 
     /**
      * @type {string}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    title?: string;
+    title: string;
 
     /**
      * @type {string}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    content?: string;
+    content: string;
 
     /**
      * @type {string}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    imageUrl?: string;
+    imageUrl: string;
 
     /**
      * @type {string}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    authorId?: string;
-
-    /**
-     * @type {string}
-     * @memberof UpdateWhatsNewDto
-     */
-    authorName?: string;
+    authorId: string;
 
     /**
      * @type {Array<Comment>}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    comments?: Array<Comment>;
+    comments: Array<Comment>;
 
     /**
      * @type {Array<string>}
-     * @memberof UpdateWhatsNewDto
+     * @memberof Newsfeed
      */
-    likes?: Array<string>;
+    likes: Array<string>;
 }

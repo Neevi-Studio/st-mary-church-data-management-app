@@ -199,6 +199,10 @@ export enum CreateUserDtoRoleEnum {
     Maintenence = 'Maintenence',
     Priest = 'Priest',
     Servant = 'Servant',
-    User = 'user'
+    User = 'user',
+    ControlsNewsfeeds = 'ControlsNewsfeeds',
+    ControlsCalendar = 'ControlsCalendar',
+    ControlsNotifications = 'ControlsNotifications',
+    ManageCommunity = 'manageCommunity'
 }
 

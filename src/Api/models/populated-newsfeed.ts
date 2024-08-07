@@ -12,60 +12,61 @@
  * Do not edit the class manually.
  */
 
-import { Comment } from './comment';
+import { PopulatedComment } from './populated-comment';
+import { User } from './user';
  /**
  * 
  *
  * @export
- * @interface WhatsNew
+ * @interface PopulatedNewsfeed
  */
-export interface WhatsNew {
+export interface PopulatedNewsfeed {
+
+    /**
+     * @type {Date}
+     * @memberof PopulatedNewsfeed
+     */
+    createdAt: Date;
 
     /**
      * @type {string}
-     * @memberof WhatsNew
+     * @memberof PopulatedNewsfeed
      */
     id: string;
 
     /**
      * @type {string}
-     * @memberof WhatsNew
+     * @memberof PopulatedNewsfeed
      */
     title: string;
 
     /**
      * @type {string}
-     * @memberof WhatsNew
+     * @memberof PopulatedNewsfeed
      */
     content: string;
 
     /**
      * @type {string}
-     * @memberof WhatsNew
+     * @memberof PopulatedNewsfeed
      */
     imageUrl: string;
 
     /**
      * @type {string}
-     * @memberof WhatsNew
+     * @memberof PopulatedNewsfeed
      */
     authorId: string;
 
     /**
-     * @type {string}
-     * @memberof WhatsNew
+     * @type {Array<User>}
+     * @memberof PopulatedNewsfeed
      */
-    authorName: string;
+    likes: Array<User>;
 
     /**
-     * @type {Array<Comment>}
-     * @memberof WhatsNew
+     * @type {Array<PopulatedComment>}
+     * @memberof PopulatedNewsfeed
      */
-    comments: Array<Comment>;
-
-    /**
-     * @type {Array<string>}
-     * @memberof WhatsNew
-     */
-    likes: Array<string>;
+    comments: Array<PopulatedComment>;
 }

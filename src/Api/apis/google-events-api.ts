@@ -17,27 +17,28 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { ImagesUploadBody } from '../models';
+import { GoogleCalendarEventsResponse } from '../models';
+import { StoreCalednerDto } from '../models';
 /**
- * ImagesApi - axios parameter creator
+ * GoogleEventsApi - axios parameter creator
  * @export
  */
-export const ImagesApiAxiosParamCreator = function (configuration?: Configuration) {
+export const GoogleEventsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteFromS3: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/images/delete`;
+        getAllEvents: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/google-events`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -59,16 +60,16 @@ export const ImagesApiAxiosParamCreator = function (configuration?: Configuratio
         },
         /**
          * 
-         * @param {ImagesUploadBody} body 
+         * @param {StoreCalednerDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        uploadFile: async (body: ImagesUploadBody, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        storeCalendar: async (body: StoreCalednerDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling uploadFile.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling storeCalendar.');
             }
-            const localVarPath = `/images/upload`;
+            const localVarPath = `/google-events`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -103,18 +104,18 @@ export const ImagesApiAxiosParamCreator = function (configuration?: Configuratio
 };
 
 /**
- * ImagesApi - functional programming interface
+ * GoogleEventsApi - functional programming interface
  * @export
  */
-export const ImagesApiFp = function(configuration?: Configuration) {
+export const GoogleEventsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteFromS3(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<boolean>>> {
-            const localVarAxiosArgs = await ImagesApiAxiosParamCreator(configuration).deleteFromS3(options);
+        async getAllEvents(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<GoogleCalendarEventsResponse>>> {
+            const localVarAxiosArgs = await GoogleEventsApiAxiosParamCreator(configuration).getAllEvents(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -122,12 +123,12 @@ export const ImagesApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {ImagesUploadBody} body 
+         * @param {StoreCalednerDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadFile(body: ImagesUploadBody, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<string>>> {
-            const localVarAxiosArgs = await ImagesApiAxiosParamCreator(configuration).uploadFile(body, options);
+        async storeCalendar(body: StoreCalednerDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<void>>> {
+            const localVarAxiosArgs = await GoogleEventsApiAxiosParamCreator(configuration).storeCalendar(body, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -137,55 +138,55 @@ export const ImagesApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * ImagesApi - factory interface
+ * GoogleEventsApi - factory interface
  * @export
  */
-export const ImagesApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const GoogleEventsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteFromS3(options?: AxiosRequestConfig): Promise<AxiosResponse<boolean>> {
-            return ImagesApiFp(configuration).deleteFromS3(options).then((request) => request(axios, basePath));
+        async getAllEvents(options?: AxiosRequestConfig): Promise<AxiosResponse<GoogleCalendarEventsResponse>> {
+            return GoogleEventsApiFp(configuration).getAllEvents(options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {ImagesUploadBody} body 
+         * @param {StoreCalednerDto} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async uploadFile(body: ImagesUploadBody, options?: AxiosRequestConfig): Promise<AxiosResponse<string>> {
-            return ImagesApiFp(configuration).uploadFile(body, options).then((request) => request(axios, basePath));
+        async storeCalendar(body: StoreCalednerDto, options?: AxiosRequestConfig): Promise<AxiosResponse<void>> {
+            return GoogleEventsApiFp(configuration).storeCalendar(body, options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * ImagesApi - object-oriented interface
+ * GoogleEventsApi - object-oriented interface
  * @export
- * @class ImagesApi
+ * @class GoogleEventsApi
  * @extends {BaseAPI}
  */
-export class ImagesApi extends BaseAPI {
+export class GoogleEventsApi extends BaseAPI {
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ImagesApi
+     * @memberof GoogleEventsApi
      */
-    public async deleteFromS3(options?: AxiosRequestConfig) : Promise<AxiosResponse<boolean>> {
-        return ImagesApiFp(this.configuration).deleteFromS3(options).then((request) => request(this.axios, this.basePath));
+    public async getAllEvents(options?: AxiosRequestConfig) : Promise<AxiosResponse<GoogleCalendarEventsResponse>> {
+        return GoogleEventsApiFp(this.configuration).getAllEvents(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {ImagesUploadBody} body 
+     * @param {StoreCalednerDto} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof ImagesApi
+     * @memberof GoogleEventsApi
      */
-    public async uploadFile(body: ImagesUploadBody, options?: AxiosRequestConfig) : Promise<AxiosResponse<string>> {
-        return ImagesApiFp(this.configuration).uploadFile(body, options).then((request) => request(this.axios, this.basePath));
+    public async storeCalendar(body: StoreCalednerDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<void>> {
+        return GoogleEventsApiFp(this.configuration).storeCalendar(body, options).then((request) => request(this.axios, this.basePath));
     }
 }

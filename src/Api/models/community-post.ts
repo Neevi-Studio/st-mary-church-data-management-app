@@ -28,6 +28,12 @@ export interface CommunityPost {
     id: string;
 
     /**
+     * @type {Date}
+     * @memberof CommunityPost
+     */
+    createdAt: Date;
+
+    /**
      * @type {string}
      * @memberof CommunityPost
      */
@@ -49,13 +55,7 @@ export interface CommunityPost {
      * @type {string}
      * @memberof CommunityPost
      */
-    authorId: string;
-
-    /**
-     * @type {string}
-     * @memberof CommunityPost
-     */
-    authorName: string;
+    createdBy: string;
 
     /**
      * @type {boolean}
@@ -92,10 +92,4 @@ export interface CommunityPost {
      * @memberof CommunityPost
      */
     likes: Array<string>;
-
-    /**
-     * @type {string}
-     * @memberof CommunityPost
-     */
-    userAvatar: string;
 }

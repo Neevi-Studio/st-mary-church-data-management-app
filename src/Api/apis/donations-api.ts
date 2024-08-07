@@ -17,27 +17,36 @@ import { Configuration } from '../configuration';
 // Some imports not used depending on template conditions
 // @ts-ignore
 import { BASE_PATH, COLLECTION_FORMATS, RequestArgs, BaseAPI, RequiredError } from '../base';
-import { CreateNotificationDto } from '../models';
+import { InvoiceDto } from '../models';
+import { PaymentIntentDTO } from '../models';
+import { PaymentsResponse } from '../models';
+import { SubscriptionsResponse } from '../models';
 /**
- * NotificationsApi - axios parameter creator
+ * DonationsApi - axios parameter creator
  * @export
  */
-export const NotificationsApiAxiosParamCreator = function (configuration?: Configuration) {
+export const DonationsApiAxiosParamCreator = function (configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} subscriptionId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        checkNewNotifications: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/notifications/checkNewNotifications`;
+        cancelSubscription: async (subscriptionId: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            // verify required parameter 'subscriptionId' is not null or undefined
+            if (subscriptionId === null || subscriptionId === undefined) {
+                throw new RequiredError('subscriptionId','Required parameter subscriptionId was null or undefined when calling cancelSubscription.');
+            }
+            const localVarPath = `/donations/cancel-subscription/{subscriptionId}`
+                .replace(`{${"subscriptionId"}}`, encodeURIComponent(String(subscriptionId)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'PATCH', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -59,16 +68,16 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
-         * @param {CreateNotificationDto} body 
+         * @param {PaymentIntentDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        createNotification: async (body: CreateNotificationDto, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        createDonation: async (body: PaymentIntentDTO, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'body' is not null or undefined
             if (body === null || body === undefined) {
-                throw new RequiredError('body','Required parameter body was null or undefined when calling createNotification.');
+                throw new RequiredError('body','Required parameter body was null or undefined when calling createDonation.');
             }
-            const localVarPath = `/notifications`;
+            const localVarPath = `/donations`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -101,16 +110,49 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
         },
         /**
          * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        getCustomerPayments: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/donations`;
+            // use dummy base URL string because the URL constructor only accepts absolute URLs.
+            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
+            let baseOptions;
+            if (configuration) {
+                baseOptions = configuration.baseOptions;
+            }
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
+            const localVarHeaderParameter = {} as any;
+            const localVarQueryParameter = {} as any;
+
+            const query = new URLSearchParams(localVarUrlObj.search);
+            for (const key in localVarQueryParameter) {
+                query.set(key, localVarQueryParameter[key]);
+            }
+            for (const key in options.params) {
+                query.set(key, options.params[key]);
+            }
+            localVarUrlObj.search = (new URLSearchParams(query)).toString();
+            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
+            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
+
+            return {
+                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
+                options: localVarRequestOptions,
+            };
+        },
+        /**
+         * 
          * @param {string} id 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        deleteNotification: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+        getSubscriptionInvoice: async (id: string, options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
             // verify required parameter 'id' is not null or undefined
             if (id === null || id === undefined) {
-                throw new RequiredError('id','Required parameter id was null or undefined when calling deleteNotification.');
+                throw new RequiredError('id','Required parameter id was null or undefined when calling getSubscriptionInvoice.');
             }
-            const localVarPath = `/notifications/{id}`
+            const localVarPath = `/donations/invoice/{id}`
                 .replace(`{${"id"}}`, encodeURIComponent(String(id)));
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
@@ -118,7 +160,7 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
             if (configuration) {
                 baseOptions = configuration.baseOptions;
             }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'DELETE', ...baseOptions, ...options};
+            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
             const localVarHeaderParameter = {} as any;
             const localVarQueryParameter = {} as any;
 
@@ -143,8 +185,8 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        getAllNotificationsForUser: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/notifications`;
+        getSubscriptions: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
+            const localVarPath = `/donations/my-active-subscriptions`;
             // use dummy base URL string because the URL constructor only accepts absolute URLs.
             const localVarUrlObj = new URL(localVarPath, 'https://example.com');
             let baseOptions;
@@ -171,88 +213,23 @@ export const NotificationsApiAxiosParamCreator = function (configuration?: Confi
                 options: localVarRequestOptions,
             };
         },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        getGeneralNotifications: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/notifications/getAllNotifications`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'GET', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        markAsRead: async (options: AxiosRequestConfig = {}): Promise<RequestArgs> => {
-            const localVarPath = `/notifications/markAsRead`;
-            // use dummy base URL string because the URL constructor only accepts absolute URLs.
-            const localVarUrlObj = new URL(localVarPath, 'https://example.com');
-            let baseOptions;
-            if (configuration) {
-                baseOptions = configuration.baseOptions;
-            }
-            const localVarRequestOptions :AxiosRequestConfig = { method: 'POST', ...baseOptions, ...options};
-            const localVarHeaderParameter = {} as any;
-            const localVarQueryParameter = {} as any;
-
-            const query = new URLSearchParams(localVarUrlObj.search);
-            for (const key in localVarQueryParameter) {
-                query.set(key, localVarQueryParameter[key]);
-            }
-            for (const key in options.params) {
-                query.set(key, options.params[key]);
-            }
-            localVarUrlObj.search = (new URLSearchParams(query)).toString();
-            let headersFromBaseOptions = baseOptions && baseOptions.headers ? baseOptions.headers : {};
-            localVarRequestOptions.headers = {...localVarHeaderParameter, ...headersFromBaseOptions, ...options.headers};
-
-            return {
-                url: localVarUrlObj.pathname + localVarUrlObj.search + localVarUrlObj.hash,
-                options: localVarRequestOptions,
-            };
-        },
     }
 };
 
 /**
- * NotificationsApi - functional programming interface
+ * DonationsApi - functional programming interface
  * @export
  */
-export const NotificationsApiFp = function(configuration?: Configuration) {
+export const DonationsApiFp = function(configuration?: Configuration) {
     return {
         /**
          * 
+         * @param {string} subscriptionId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkNewNotifications(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<boolean>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).checkNewNotifications(options);
+        async cancelSubscription(subscriptionId: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
+            const localVarAxiosArgs = await DonationsApiAxiosParamCreator(configuration).cancelSubscription(subscriptionId, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -260,12 +237,24 @@ export const NotificationsApiFp = function(configuration?: Configuration) {
         },
         /**
          * 
-         * @param {CreateNotificationDto} body 
+         * @param {PaymentIntentDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createNotification(body: CreateNotificationDto, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<any>>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).createNotification(body, options);
+        async createDonation(body: PaymentIntentDTO, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
+            const localVarAxiosArgs = await DonationsApiAxiosParamCreator(configuration).createDonation(body, options);
+            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
+                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
+                return axios.request(axiosRequestArgs);
+            };
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCustomerPayments(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<PaymentsResponse>>> {
+            const localVarAxiosArgs = await DonationsApiAxiosParamCreator(configuration).getCustomerPayments(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -277,8 +266,8 @@ export const NotificationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteNotification(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<any>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).deleteNotification(id, options);
+        async getSubscriptionInvoice(id: string, options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<InvoiceDto>>> {
+            const localVarAxiosArgs = await DonationsApiAxiosParamCreator(configuration).getSubscriptionInvoice(id, options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -289,32 +278,8 @@ export const NotificationsApiFp = function(configuration?: Configuration) {
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllNotificationsForUser(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<any>>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).getAllNotificationsForUser(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getGeneralNotifications(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<Array<any>>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).getGeneralNotifications(options);
-            return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
-                const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
-                return axios.request(axiosRequestArgs);
-            };
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async markAsRead(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<boolean>>> {
-            const localVarAxiosArgs = await NotificationsApiAxiosParamCreator(configuration).markAsRead(options);
+        async getSubscriptions(options?: AxiosRequestConfig): Promise<(axios?: AxiosInstance, basePath?: string) => Promise<AxiosResponse<SubscriptionsResponse>>> {
+            const localVarAxiosArgs = await DonationsApiAxiosParamCreator(configuration).getSubscriptions(options);
             return (axios: AxiosInstance = globalAxios, basePath: string = BASE_PATH) => {
                 const axiosRequestArgs :AxiosRequestConfig = {...localVarAxiosArgs.options, url: basePath + localVarAxiosArgs.url};
                 return axios.request(axiosRequestArgs);
@@ -324,27 +289,36 @@ export const NotificationsApiFp = function(configuration?: Configuration) {
 };
 
 /**
- * NotificationsApi - factory interface
+ * DonationsApi - factory interface
  * @export
  */
-export const NotificationsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
+export const DonationsApiFactory = function (configuration?: Configuration, basePath?: string, axios?: AxiosInstance) {
     return {
         /**
          * 
+         * @param {string} subscriptionId 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async checkNewNotifications(options?: AxiosRequestConfig): Promise<AxiosResponse<boolean>> {
-            return NotificationsApiFp(configuration).checkNewNotifications(options).then((request) => request(axios, basePath));
+        async cancelSubscription(subscriptionId: string, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
+            return DonationsApiFp(configuration).cancelSubscription(subscriptionId, options).then((request) => request(axios, basePath));
         },
         /**
          * 
-         * @param {CreateNotificationDto} body 
+         * @param {PaymentIntentDTO} body 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async createNotification(body: CreateNotificationDto, options?: AxiosRequestConfig): Promise<AxiosResponse<Array<any>>> {
-            return NotificationsApiFp(configuration).createNotification(body, options).then((request) => request(axios, basePath));
+        async createDonation(body: PaymentIntentDTO, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
+            return DonationsApiFp(configuration).createDonation(body, options).then((request) => request(axios, basePath));
+        },
+        /**
+         * 
+         * @param {*} [options] Override http request option.
+         * @throws {RequiredError}
+         */
+        async getCustomerPayments(options?: AxiosRequestConfig): Promise<AxiosResponse<PaymentsResponse>> {
+            return DonationsApiFp(configuration).getCustomerPayments(options).then((request) => request(axios, basePath));
         },
         /**
          * 
@@ -352,97 +326,73 @@ export const NotificationsApiFactory = function (configuration?: Configuration, 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async deleteNotification(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<any>> {
-            return NotificationsApiFp(configuration).deleteNotification(id, options).then((request) => request(axios, basePath));
+        async getSubscriptionInvoice(id: string, options?: AxiosRequestConfig): Promise<AxiosResponse<InvoiceDto>> {
+            return DonationsApiFp(configuration).getSubscriptionInvoice(id, options).then((request) => request(axios, basePath));
         },
         /**
          * 
          * @param {*} [options] Override http request option.
          * @throws {RequiredError}
          */
-        async getAllNotificationsForUser(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<any>>> {
-            return NotificationsApiFp(configuration).getAllNotificationsForUser(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async getGeneralNotifications(options?: AxiosRequestConfig): Promise<AxiosResponse<Array<any>>> {
-            return NotificationsApiFp(configuration).getGeneralNotifications(options).then((request) => request(axios, basePath));
-        },
-        /**
-         * 
-         * @param {*} [options] Override http request option.
-         * @throws {RequiredError}
-         */
-        async markAsRead(options?: AxiosRequestConfig): Promise<AxiosResponse<boolean>> {
-            return NotificationsApiFp(configuration).markAsRead(options).then((request) => request(axios, basePath));
+        async getSubscriptions(options?: AxiosRequestConfig): Promise<AxiosResponse<SubscriptionsResponse>> {
+            return DonationsApiFp(configuration).getSubscriptions(options).then((request) => request(axios, basePath));
         },
     };
 };
 
 /**
- * NotificationsApi - object-oriented interface
+ * DonationsApi - object-oriented interface
  * @export
- * @class NotificationsApi
+ * @class DonationsApi
  * @extends {BaseAPI}
  */
-export class NotificationsApi extends BaseAPI {
+export class DonationsApi extends BaseAPI {
     /**
      * 
+     * @param {string} subscriptionId 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof NotificationsApi
+     * @memberof DonationsApi
      */
-    public async checkNewNotifications(options?: AxiosRequestConfig) : Promise<AxiosResponse<boolean>> {
-        return NotificationsApiFp(this.configuration).checkNewNotifications(options).then((request) => request(this.axios, this.basePath));
+    public async cancelSubscription(subscriptionId: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
+        return DonationsApiFp(this.configuration).cancelSubscription(subscriptionId, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
-     * @param {CreateNotificationDto} body 
+     * @param {PaymentIntentDTO} body 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof NotificationsApi
+     * @memberof DonationsApi
      */
-    public async createNotification(body: CreateNotificationDto, options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<any>>> {
-        return NotificationsApiFp(this.configuration).createNotification(body, options).then((request) => request(this.axios, this.basePath));
+    public async createDonation(body: PaymentIntentDTO, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
+        return DonationsApiFp(this.configuration).createDonation(body, options).then((request) => request(this.axios, this.basePath));
+    }
+    /**
+     * 
+     * @param {*} [options] Override http request option.
+     * @throws {RequiredError}
+     * @memberof DonationsApi
+     */
+    public async getCustomerPayments(options?: AxiosRequestConfig) : Promise<AxiosResponse<PaymentsResponse>> {
+        return DonationsApiFp(this.configuration).getCustomerPayments(options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {string} id 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof NotificationsApi
+     * @memberof DonationsApi
      */
-    public async deleteNotification(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<any>> {
-        return NotificationsApiFp(this.configuration).deleteNotification(id, options).then((request) => request(this.axios, this.basePath));
+    public async getSubscriptionInvoice(id: string, options?: AxiosRequestConfig) : Promise<AxiosResponse<InvoiceDto>> {
+        return DonationsApiFp(this.configuration).getSubscriptionInvoice(id, options).then((request) => request(this.axios, this.basePath));
     }
     /**
      * 
      * @param {*} [options] Override http request option.
      * @throws {RequiredError}
-     * @memberof NotificationsApi
+     * @memberof DonationsApi
      */
-    public async getAllNotificationsForUser(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<any>>> {
-        return NotificationsApiFp(this.configuration).getAllNotificationsForUser(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NotificationsApi
-     */
-    public async getGeneralNotifications(options?: AxiosRequestConfig) : Promise<AxiosResponse<Array<any>>> {
-        return NotificationsApiFp(this.configuration).getGeneralNotifications(options).then((request) => request(this.axios, this.basePath));
-    }
-    /**
-     * 
-     * @param {*} [options] Override http request option.
-     * @throws {RequiredError}
-     * @memberof NotificationsApi
-     */
-    public async markAsRead(options?: AxiosRequestConfig) : Promise<AxiosResponse<boolean>> {
-        return NotificationsApiFp(this.configuration).markAsRead(options).then((request) => request(this.axios, this.basePath));
+    public async getSubscriptions(options?: AxiosRequestConfig) : Promise<AxiosResponse<SubscriptionsResponse>> {
+        return DonationsApiFp(this.configuration).getSubscriptions(options).then((request) => request(this.axios, this.basePath));
     }
 }

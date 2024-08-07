@@ -5,11 +5,11 @@ import React from 'react';
 import { Button, Input, Spinner } from '@nextui-org/react';
 import toast from 'react-hot-toast';
 import { SubmitHandler, useForm } from 'react-hook-form';
-import { LoginDto } from '@/Api';
 import { BsEyeFill } from 'react-icons/bs';
 import { TbEyeMinus } from 'react-icons/tb';
 import { useAuthContext } from '@/components/context/AuthContext';
 import { apiLoginUser } from '@/components/utils/HiddenRequests';
+import { LoginWithEmailDTO } from '@/Api';
 
 function LoginPage() {
 
@@ -37,9 +37,9 @@ function LoginPage() {
         watch,
         formState: { errors },
         handleSubmit,
-    } = useForm<LoginDto>();
+    } = useForm<LoginWithEmailDTO>();
 
-    const onSubmit: SubmitHandler<LoginDto> = (data) => login(data)
+    const onSubmit: SubmitHandler<LoginWithEmailDTO> = (data) => login(data)
 
 
     const [isVisible, setIsVisible] = React.useState(false);
@@ -51,7 +51,7 @@ function LoginPage() {
     return (
         <form
             onSubmit={handleSubmit(
-                onSubmit as SubmitHandler<LoginDto>
+                onSubmit as SubmitHandler<LoginWithEmailDTO>
             )}
             className="w-full max-h-screen h-screen flex flex-row  items-center  justify-between  "
         >

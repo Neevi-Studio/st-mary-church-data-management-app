@@ -12,36 +12,23 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface LoginWithEmailDTO
  */
-export interface Comment {
+export interface LoginWithEmailDTO {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof LoginWithEmailDTO
      */
-    id: string;
-
-    /**
-     * @type {Date}
-     * @memberof Comment
-     */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
+    email: string;
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof LoginWithEmailDTO
      */
-    text: string;
+    password: string;
 }

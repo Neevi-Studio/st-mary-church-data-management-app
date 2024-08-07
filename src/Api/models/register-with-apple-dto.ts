@@ -12,36 +12,41 @@
  * Do not edit the class manually.
  */
 
-import { ObjectId } from './object-id';
  /**
  * 
  *
  * @export
- * @interface Comment
+ * @interface RegisterWithAppleDTO
  */
-export interface Comment {
+export interface RegisterWithAppleDTO {
 
     /**
      * @type {string}
-     * @memberof Comment
+     * @memberof RegisterWithAppleDTO
      */
-    id: string;
+    email?: string;
+
+    /**
+     * @type {string}
+     * @memberof RegisterWithAppleDTO
+     */
+    user: string;
+
+    /**
+     * @type {string}
+     * @memberof RegisterWithAppleDTO
+     */
+    firstname?: string;
+
+    /**
+     * @type {string}
+     * @memberof RegisterWithAppleDTO
+     */
+    lastname?: string;
 
     /**
      * @type {Date}
-     * @memberof Comment
+     * @memberof RegisterWithAppleDTO
      */
-    createdAt: Date;
-
-    /**
-     * @type {ObjectId}
-     * @memberof Comment
-     */
-    userId: ObjectId;
-
-    /**
-     * @type {string}
-     * @memberof Comment
-     */
-    text: string;
+    dateOfBirth?: Date;
 }

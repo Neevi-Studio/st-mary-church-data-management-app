@@ -16,19 +16,7 @@
  * 
  *
  * @export
- * @interface CreateFeedbackDto
+ * @interface SingleMarkedDate
  */
-export interface CreateFeedbackDto {
-
-    /**
-     * @type {string}
-     * @memberof CreateFeedbackDto
-     */
-    subject?: string;
-
-    /**
-     * @type {string}
-     * @memberof CreateFeedbackDto
-     */
-    text?: string;
+export interface SingleMarkedDate {
 }

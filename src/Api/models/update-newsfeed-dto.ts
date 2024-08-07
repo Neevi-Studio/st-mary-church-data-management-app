@@ -17,67 +17,55 @@ import { Comment } from './comment';
  * 
  *
  * @export
- * @interface CreateCommunityDto
+ * @interface UpdateNewsfeedDto
  */
-export interface CreateCommunityDto {
+export interface UpdateNewsfeedDto {
+
+    /**
+     * @type {Date}
+     * @memberof UpdateNewsfeedDto
+     */
+    createdAt?: Date;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
+     */
+    id?: string;
+
+    /**
+     * @type {string}
+     * @memberof UpdateNewsfeedDto
      */
     title?: string;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
      */
     content?: string;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
      */
     imageUrl?: string;
 
     /**
      * @type {string}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
      */
-    createdBy?: string;
-
-    /**
-     * @type {boolean}
-     * @memberof CreateCommunityDto
-     */
-    anonymous?: boolean;
-
-    /**
-     * @type {boolean}
-     * @memberof CreateCommunityDto
-     */
-    accepted?: boolean;
-
-    /**
-     * @type {boolean}
-     * @memberof CreateCommunityDto
-     */
-    pinned?: boolean;
-
-    /**
-     * @type {Date}
-     * @memberof CreateCommunityDto
-     */
-    acceptedAt?: Date;
+    authorId?: string;
 
     /**
      * @type {Array<Comment>}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
      */
     comments?: Array<Comment>;
 
     /**
      * @type {Array<string>}
-     * @memberof CreateCommunityDto
+     * @memberof UpdateNewsfeedDto
      */
     likes?: Array<string>;
 }
